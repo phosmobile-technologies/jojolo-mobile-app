@@ -11,14 +11,14 @@ const AppText = ({
   style = {},
 }: {
   children: any;
-  style: object | undefined;
+  style?: object;
 }) => {
   return <Text style={[styles.text, style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: "Nunito",
+    fontFamily: "Nunito_600SemiBold",
   },
 });
 

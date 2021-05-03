@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView } from "react-native";
+import AppText from "../../common/components/typography/app-text.component";
 
 /**
  * The user's saved posts page
@@ -9,7 +10,7 @@ import { ScrollView, Text } from "react-native";
 export const SavedPostsPage = () => {
   return (
     <ScrollView>
-      <Text>SAVED POSTS</Text>
+      <AppText>SAVED POSTS</AppText>
     </ScrollView>
   );
 };

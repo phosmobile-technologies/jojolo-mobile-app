@@ -15,12 +15,12 @@ export const getFakePosts = (count: number = 5): Post[] => {
     .map((index) => ({
       id: faker.datatype.number(1000000),
       uuid: faker.datatype.uuid(),
-      title: faker.datatype.string(50),
-      content: faker.datatype.string(500),
-      tags: getFakeTags(faker.datatype.number(5)),
+      title: faker.random.words(10),
+      content: faker.random.words(100),
+      tags: getFakeTags(2),
       likes: faker.datatype.number(1000),
       comments: [],
-      created_by: getFakeUsers()[0],
+      user: getFakeUsers()[0],
     }));
 };
 
@@ -36,7 +36,7 @@ export const getFakeTags = (count: number = 1) => {
     .map((index) => ({
       id: faker.datatype.number(1000000),
       uuid: faker.datatype.uuid(),
-      text: faker.datatype.string(50),
+      text: faker.random.words(1),
       count: faker.datatype.number(10000),
     }));
 };
@@ -53,7 +53,8 @@ export const getFakeUsers = (count: number = 1): User[] => {
     .map((index) => ({
       id: faker.datatype.number(1000000),
       uuid: faker.datatype.uuid(),
-      profile_image: faker.internet.url(),
+      full_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      profile_image: "https://i.pravatar.cc/200",
       role: faker.random.arrayElement(Object.values(UserRole)) as UserRole,
       number_of_points: faker.datatype.number(1000000),
     }));
@@ -71,7 +72,7 @@ export const getFakeComments = (count: number = 1): Comment[] => {
     .map((index) => ({
       id: faker.datatype.number(1000000),
       uuid: faker.datatype.uuid(),
-      content: faker.datatype.string(500),
+      content: faker.random.words(100),
       likes: faker.datatype.number(1000),
     }));
 };

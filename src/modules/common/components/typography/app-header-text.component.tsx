@@ -21,8 +21,8 @@ const AppHeaderText = ({
 
 const styles = StyleSheet.create({
   text: {
+    fontFamily: "Nunito_700Bold",
     fontSize: 30,
-    fontWeight: "bold",
     color: COLORS.PAGE_HEADER_BLACK,
   },
 });

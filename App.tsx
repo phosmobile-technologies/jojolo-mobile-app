@@ -4,7 +4,18 @@ import { StatusBar } from "expo-status-bar";
 import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useFonts, Nunito_900Black } from "@expo-google-fonts/nunito";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import Toast from "react-native-fast-toast";
+import { ToastProvider } from "react-native-fast-toast";
+
+import {
+  useFonts,
+  Nunito_300Light,
+  Nunito_400Regular,
+  Nunito_600SemiBold,
+  Nunito_700Bold,
+  Nunito_900Black,
+} from "@expo-google-fonts/nunito";
 
 import AppNavigator from "./src/navigation/app-navigator";
 
@@ -14,6 +25,10 @@ import AppNavigator from "./src/navigation/app-navigator";
  */
 export default function App() {
   let [fontsLoaded] = useFonts({
+    Nunito_300Light,
+    Nunito_400Regular,
+    Nunito_600SemiBold,
+    Nunito_700Bold,
     Nunito_900Black,
   });
 
@@ -22,11 +37,17 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <AppNavigator />
-        <StatusBar style="auto" />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <>
+      <ToastProvider placement="top">
+        <ActionSheetProvider>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <AppNavigator />
+              <StatusBar style="auto" />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </ActionSheetProvider>
+      </ToastProvider>
+    </>
   );
 }

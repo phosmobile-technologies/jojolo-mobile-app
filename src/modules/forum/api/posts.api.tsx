@@ -10,7 +10,10 @@ import Tag from "../models/tag.model";
  */
 export const getNewsFeed = async (): Promise<Post[]> => {
   return new Promise((resolve, reject) => {
-    setTimeout(resolve(getFakePosts(10)), MOCK_TIME_DELAY_IN_MILLISECONDS);
+    setTimeout(
+      () => resolve(getFakePosts(10)),
+      MOCK_TIME_DELAY_IN_MILLISECONDS
+    );
   });
 };
 
@@ -21,7 +24,10 @@ export const getNewsFeed = async (): Promise<Post[]> => {
  */
 export const getMyPosts = async (userUuid: string): Promise<Post[]> => {
   return new Promise((resolve, reject) => {
-    setTimeout(resolve(getFakePosts(10)), MOCK_TIME_DELAY_IN_MILLISECONDS);
+    setTimeout(
+      () => resolve(getFakePosts(10)),
+      MOCK_TIME_DELAY_IN_MILLISECONDS
+    );
   });
 };
 
@@ -32,7 +38,10 @@ export const getMyPosts = async (userUuid: string): Promise<Post[]> => {
  */
 export const getSavedPosts = async (userUuid: string): Promise<Post[]> => {
   return new Promise((resolve, reject) => {
-    setTimeout(resolve(getFakePosts(10)), MOCK_TIME_DELAY_IN_MILLISECONDS);
+    setTimeout(
+      () => resolve(getFakePosts(10)),
+      MOCK_TIME_DELAY_IN_MILLISECONDS
+    );
   });
 };
 
@@ -43,6 +52,6 @@ export const getSavedPosts = async (userUuid: string): Promise<Post[]> => {
  */
 export const getTags = async (): Promise<Tag[]> => {
   return new Promise((resolve, reject) => {
-    setTimeout(resolve(getFakeTags(10)), MOCK_TIME_DELAY_IN_MILLISECONDS);
+    setTimeout(() => resolve(getFakeTags(10)), MOCK_TIME_DELAY_IN_MILLISECONDS);
   });
 };

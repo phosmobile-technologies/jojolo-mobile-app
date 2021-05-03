@@ -1,6 +1,7 @@
 export interface User {
   id: number;
   uuid: string;
+  full_name: string;
   profile_image: string;
   role: UserRole;
   number_of_points: number;

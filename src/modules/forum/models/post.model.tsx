@@ -6,9 +6,9 @@ export default interface Post {
   id: number;
   uuid: string;
   title: string;
-  created_by: User;
   content: string;
   tags: Tag[];
   likes: number;
   comments: Comment[];
+  user: User;
 }

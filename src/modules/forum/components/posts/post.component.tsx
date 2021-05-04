@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { useToast } from "react-native-fast-toast";
@@ -6,11 +6,15 @@ import { useToast } from "react-native-fast-toast";
 import PostModel from "../../models/post.model";
 import PostHeader from "./post-header.component";
 import PostContent from "./post-content.component";
+import { ForumNavigatorNavigationContext } from "../../screens/forum.screen";
+import NAVIGATION_CONSTANTS from "../../../../navigation/navigation-constants";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Post = ({ post }: { post: PostModel }) => {
   const { user } = post;
   const toast = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
+  const navigation: any = useContext(ForumNavigatorNavigationContext);
 
   /**
    * Open the action sheet for saving / reporting posts
@@ -42,13 +46,25 @@ const Post = ({ post }: { post: PostModel }) => {
     );
   };
 
+  /**
+   * Function for navigating to a particular post
+   * @param post
+   */
+  const goToPostPage = (post: PostModel) => {
+    navigation.navigate(NAVIGATION_CONSTANTS.POST, {
+      post,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <PostHeader
         user={user}
         handleOpenPostActionSheet={handleOpenActionSheet}
       />
-      <PostContent post={post} />
+      <TouchableWithoutFeedback onPress={() => goToPostPage(post)}>
+        <PostContent post={post} />
+      </TouchableWithoutFeedback>
     </View>
   );
 };

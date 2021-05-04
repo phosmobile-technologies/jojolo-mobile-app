@@ -3,6 +3,7 @@
  */
 const NAVIGATION_CONSTANTS = {
   FORUM: "Forum",
+  FORUM_NAVIGATOR: "FORUM_NAVIGATOR",
   PRIVATE_CHAT: "Private Chat",
   BOOKING: "Booking",
   TRACKER: "Tracker",
@@ -11,6 +12,7 @@ const NAVIGATION_CONSTANTS = {
   MY_POSTS: "My Posts",
   SAVED_POSTS: "Saved Posts",
   TAGS: "Tags",
+  POST: "Post",
 };
 
 export default NAVIGATION_CONSTANTS;

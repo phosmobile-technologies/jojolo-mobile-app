@@ -8,6 +8,7 @@ import { COLORS } from "../modules/common/constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../modules/common/components/svg-icon.component";
+import ForumNavigator from "./forum-navigator.screen";
 
 const AppTabNavigationStack = createBottomTabNavigator();
 
@@ -25,7 +26,7 @@ const AppNavigator = () => {
     >
       <AppTabNavigationStack.Screen
         name={NAVIGATION_CONSTANTS.FORUM}
-        component={ForumScreen}
+        component={ForumNavigator}
       />
       <AppTabNavigationStack.Screen
         name={NAVIGATION_CONSTANTS.PRIVATE_CHAT}

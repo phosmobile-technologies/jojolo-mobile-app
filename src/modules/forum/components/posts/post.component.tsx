@@ -13,9 +13,11 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 const Post = ({
   post,
   isFullPage = false,
+  allowNavigationToPostDetails = true,
 }: {
   post: PostModel;
   isFullPage: boolean;
+  allowNavigationToPostDetails: boolean;
 }) => {
   const { user } = post;
   const toast: any = useToast();
@@ -57,6 +59,9 @@ const Post = ({
    * @param post
    */
   const goToPostPage = (post: PostModel) => {
+    if (!allowNavigationToPostDetails) {
+      return;
+    }
     navigation.navigate(NAVIGATION_CONSTANTS.POST, {
       post,
     });

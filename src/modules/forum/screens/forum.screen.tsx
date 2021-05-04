@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Button, StatusBar } from "react-native";
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import NAVIGATION_CONSTANTS from "../../../navigation/navigation-constants";
@@ -13,6 +13,9 @@ import { COLORS } from "../../common/constants";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
+// React context used to provide the navigation function to all children of the forum page
+export const ForumNavigatorNavigationContext = createContext([]);
+
 /**
  * The Main Forum screen which shows all the various forum related tabs like (Feed, My Posts, Saved Posts and tags)
  *
@@ -20,30 +23,32 @@ const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   return (
-    <View style={styles.container}>
-      <ForumHeader />
-      <ForumPageTabNavigationStack.Navigator
-        initialRouteName={NAVIGATION_CONSTANTS.FEED}
-        tabBarOptions={tabBarOptions}
-      >
-        <ForumPageTabNavigationStack.Screen
-          name={NAVIGATION_CONSTANTS.FEED}
-          component={ForumNewsFeedPage}
-        />
-        <ForumPageTabNavigationStack.Screen
-          name={NAVIGATION_CONSTANTS.MY_POSTS}
-          component={MyPostsPage}
-        />
-        <ForumPageTabNavigationStack.Screen
-          name={NAVIGATION_CONSTANTS.SAVED_POSTS}
-          component={SavedPostsPage}
-        />
-        <ForumPageTabNavigationStack.Screen
-          name={NAVIGATION_CONSTANTS.TAGS}
-          component={TagsPage}
-        />
-      </ForumPageTabNavigationStack.Navigator>
-    </View>
+    <ForumNavigatorNavigationContext.Provider value={navigation}>
+      <View style={styles.container}>
+        <ForumHeader />
+        <ForumPageTabNavigationStack.Navigator
+          initialRouteName={NAVIGATION_CONSTANTS.FEED}
+          tabBarOptions={tabBarOptions}
+        >
+          <ForumPageTabNavigationStack.Screen
+            name={NAVIGATION_CONSTANTS.FEED}
+            component={ForumNewsFeedPage}
+          />
+          <ForumPageTabNavigationStack.Screen
+            name={NAVIGATION_CONSTANTS.MY_POSTS}
+            component={MyPostsPage}
+          />
+          <ForumPageTabNavigationStack.Screen
+            name={NAVIGATION_CONSTANTS.SAVED_POSTS}
+            component={SavedPostsPage}
+          />
+          <ForumPageTabNavigationStack.Screen
+            name={NAVIGATION_CONSTANTS.TAGS}
+            component={TagsPage}
+          />
+        </ForumPageTabNavigationStack.Navigator>
+      </View>
+    </ForumNavigatorNavigationContext.Provider>
   );
 };
 

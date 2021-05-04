@@ -43,6 +43,7 @@ const PostContent = ({ post }: { post: Post }) => {
           post.tags.map((tag, index) => (
             <Tag
               tag={tag}
+              key={tag.uuid}
               style={index % 2 !== 0 ? {} : tagStyles.addMarginRight}
             />
           ))}

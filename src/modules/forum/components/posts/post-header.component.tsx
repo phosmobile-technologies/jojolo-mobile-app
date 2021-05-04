@@ -22,10 +22,18 @@ import { User } from "../../../common/models/user.model";
 const PostHeader = ({
   user,
   handleOpenPostActionSheet,
+  isFullPage = false,
 }: {
   user: User;
   handleOpenPostActionSheet: Function;
+  isFullPage?: boolean;
 }) => {
+  const fullNameStyle = isFullPage
+    ? [styles.user__details__username__Large]
+    : [styles.user__details__username];
+  const userNameAndUserBadgeStyle = isFullPage
+    ? [styles.user__details__username__and_badge_large]
+    : [styles.user__details__username__and_badge];
   return (
     <View style={styles.header}>
       <View style={styles.header__avatar_and_details}>
@@ -34,10 +42,8 @@ const PostHeader = ({
           style={styles.header__avatar}
         />
         <View>
-          <View style={styles.user__details__username__and_badge}>
-            <AppText
-              style={styles.user__details__username}
-            >{`${user.full_name}`}</AppText>
+          <View style={userNameAndUserBadgeStyle}>
+            <AppText style={fullNameStyle}>{`${user.full_name}`}</AppText>
             <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
           </View>
           <View style={styles.user__details__info}>
@@ -74,6 +80,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderBottomColor: COLORS.LIGHT_GRAY_BORDER,
     borderBottomWidth: 1,
+  },
+  user__details__username__Large: {
+    fontSize: 20,
+    fontWeight: "700",
+    paddingRight: 10,
+  },
+
+  user__details__username__and_badge_large: {
+    flexDirection: "row",
   },
 
   header__avatar_and_details: {

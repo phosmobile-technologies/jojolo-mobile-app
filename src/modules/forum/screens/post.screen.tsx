@@ -1,21 +1,23 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 
-import AppText from "../../common/components/typography/app-text.component";
-import Post from "../models/post.model";
+import PostModel from "../models/post.model";
+import Post from "../components/posts/post.component";
 
-/**
- * Page for a singular post
- * @returns
- */
 const PostScreen = ({ route }: { route: any }) => {
-  const { post }: { post: Post } = route.params;
+  const { post }: { post: PostModel } = route.params;
+  console.log(post);
   return (
-    <View>
-      <AppText>THE SINGLE POST PAGE</AppText>
-      <AppText>{post.content}</AppText>
+    <View style={styles.container}>
+      <Post post={post} isFullPage={true} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+  },
+});
 
 export default PostScreen;

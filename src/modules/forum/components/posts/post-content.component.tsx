@@ -29,15 +29,25 @@ const Tag = ({ tag, style }: { tag: TagModel; style?: object }) => {
  * @param param0
  * @returns
  */
-const PostContent = ({ post }: { post: Post }) => {
+const PostContent = ({
+  post,
+  isFullPage = false,
+}: {
+  post: Post;
+  isFullPage?: boolean;
+}) => {
+  const postContent = isFullPage
+    ? post.content
+    : post.content.length > 200
+    ? post.content.substring(0, 200 - 3) + " ..."
+    : post.content;
+  const titleStyle = isFullPage
+    ? [styles.post__body__title, styles.post__body__title_large]
+    : [styles.post__body__title];
   return (
     <View>
-      <AppText style={styles.post__body__title}>{post.title}</AppText>
-      <AppText>
-        {post.content.length > 200
-          ? post.content.substring(0, 200 - 3) + " ..."
-          : post.content}
-      </AppText>
+      <AppText style={titleStyle}>{post.title}</AppText>
+      <AppText>{postContent}</AppText>
       <View style={styles.tags__wrapper}>
         {post.tags &&
           post.tags.map((tag, index) => (
@@ -81,6 +91,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 15,
     textTransform: "capitalize",
+  },
+
+  post__body__title_large: {
+    fontSize: 20,
   },
 
   post__body__text: {

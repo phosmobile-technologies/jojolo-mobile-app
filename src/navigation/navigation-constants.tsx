@@ -1,5 +1,5 @@
 /**
- * String constants for nnavigation routes and pages
+ * String constants for navigation routes and pages
  */
 const NAVIGATION_CONSTANTS = {
   FORUM: "Forum",

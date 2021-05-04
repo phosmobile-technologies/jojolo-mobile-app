@@ -5,7 +5,6 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import Toast from "react-native-fast-toast";
 import { ToastProvider } from "react-native-fast-toast";
 
 import {

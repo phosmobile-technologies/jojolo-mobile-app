@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 20,
-    left: 7,
+    left: 1,
   },
   comment: {
     fontWeight: "200",

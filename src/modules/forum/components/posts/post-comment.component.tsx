@@ -68,7 +68,6 @@ export const CommentFeed = () => {
   if (state.isLoading) {
     return <AppActivityIndicator text={"loading comments.."} />;
   }
-  console.log(state.comments);
   return (
     <SafeAreaView>
       <CommentList comments={state.comments} />

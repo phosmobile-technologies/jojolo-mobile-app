@@ -33,7 +33,6 @@ const screenOptions = {
 
 const postScreenOptions = {
   headerShown: true,
-  tabBarVisible: false,
 };
 
 export default ForumNavigator;

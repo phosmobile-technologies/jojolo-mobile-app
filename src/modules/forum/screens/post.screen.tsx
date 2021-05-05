@@ -20,7 +20,7 @@ const PostScreen = ({ route }: { route: any }) => {
             allowNavigationToPostDetails={false}
           />
           <View>
-            <AppText style={styles.text}>Comments(1)</AppText>
+            <AppText style={styles.text}>Comments(4)</AppText>
           </View>
           <View>
             <CommentFeed />

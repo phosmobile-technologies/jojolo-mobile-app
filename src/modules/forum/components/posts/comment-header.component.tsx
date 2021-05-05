@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.LIGHT_GRAY_BORDER,
     borderBottomWidth: 1,
     width: 200,
-    left: 50,
     paddingTop: 9,
   },
   user__details__username__Large: {

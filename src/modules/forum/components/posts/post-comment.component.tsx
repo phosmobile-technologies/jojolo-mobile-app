@@ -66,7 +66,7 @@ export const CommentFeed = () => {
   }, []);
 
   if (state.isLoading) {
-    return <AppActivityIndicator text={"loading ccomments.."} />;
+    return <AppActivityIndicator text={"loading comments.."} />;
   }
   console.log(state.comments);
   return (

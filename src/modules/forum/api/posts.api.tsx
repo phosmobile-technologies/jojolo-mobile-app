@@ -64,6 +64,6 @@ export const getTags = async (): Promise<Tag[]> => {
  */
 export const getComments = async (): Promise<Comment[]> => {
   return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(getFakeComments(1)), 1000);
+    setTimeout(() => resolve(getFakeComments(4)), 1000);
   });
 };

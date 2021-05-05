@@ -83,7 +83,6 @@ const Post = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 15,

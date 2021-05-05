@@ -70,9 +70,10 @@ export const getFakeComments = (count: number = 1): Comment[] => {
   return Array(count)
     .fill(0)
     .map((index) => ({
+      user: getFakeUsers()[0],
       id: faker.datatype.number(1000000),
       uuid: faker.datatype.uuid(),
-      content: faker.random.words(100),
+      content: faker.random.words(45),
       likes: faker.datatype.number(1000),
     }));
 };

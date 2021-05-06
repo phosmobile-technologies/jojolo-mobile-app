@@ -21,6 +21,7 @@ import {
 } from "react-native-gesture-handler";
 import { createRef } from "react";
 import { COLORS } from "../../common/constants";
+import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
 const PostScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
@@ -38,7 +39,7 @@ const PostScreen = ({ route }: { route: any }) => {
         style={{
           backgroundColor: "white",
           padding: 10,
-          height: 100,
+          height: 150,
         }}
       >
         <AppText>
@@ -46,6 +47,10 @@ const PostScreen = ({ route }: { route: any }) => {
           <Text style={{ color: COLORS.PRIMARY_COLOR }}>
             My Baby is Struggling
           </Text>
+          <SvgIcon
+            iconName={SVG_ICONS.CLOSE_ICON}
+            color={COLORS.PRIMARY_COLOR}
+          />
         </AppText>
         <View>
           <TextInput
@@ -111,7 +116,7 @@ const PostScreen = ({ route }: { route: any }) => {
       </Animated.View>
       <BottomSheet
         ref={sheetRef}
-        snapPoints={[100, 0, 0]}
+        snapPoints={[150, 0, 0]}
         initialSnap={1}
         borderRadius={10}
         callbackNode={fall}

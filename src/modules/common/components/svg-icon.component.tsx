@@ -78,6 +78,10 @@ const SvgIcon = ({
       iconXml = SHARE_ICON;
       break;
 
+    case SVG_ICONS.CLOSE_ICON:
+      iconXml = CLOSE_ICON;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -104,6 +108,7 @@ export const SVG_ICONS = {
   LIKE_ICON: "LIKE_ICON",
   COMMENTS_ICON: "COMMENTS_ICON",
   SHARE_ICON: "SHARE_ICON",
+  CLOSE_ICON: "CLOSE_ICON",
 };
 
 const styles = StyleSheet.create({
@@ -289,6 +294,13 @@ const SHARE_ICON = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" 
 <path d="M2.66663 8V13.3333C2.66663 13.687 2.8071 14.0261 3.05715 14.2761C3.3072 14.5262 3.64634 14.6667 3.99996 14.6667H12C12.3536 14.6667 12.6927 14.5262 12.9428 14.2761C13.1928 14.0261 13.3333 13.687 13.3333 13.3333V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M10.6667 4L8.00004 1.33333L5.33337 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8 1.33333V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const CLOSE_ICON = `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="38" height="38" rx="19" fill="#DEF3F4"/>
+<path d="M25 13L13 25" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13 13L25 25" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 

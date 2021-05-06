@@ -29,9 +29,6 @@ const PostScreen = ({ route }: { route: any }) => {
   const bs = createRef();
   const sheetRef = React.useRef(null);
   const fall = new Animated.Value(1);
-  const snap = () => {
-    sheetRef.current.snapTo(1);
-  };
 
   const renderCommentBox = () => {
     return (
@@ -99,7 +96,7 @@ const PostScreen = ({ route }: { route: any }) => {
           </ScrollView>
           <View
             style={{
-              backgroundColor: "#ffffff",
+              backgroundColor: COLORS.WHITE,
               width: 500,
               height: 70,
               top: 11,
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 327,
     marginBottom: -1,
-    backgroundColor: "#EDEDED",
+    backgroundColor: COLORS.GRAY_BACKGROUND,
     left: 10,
   },
   text: {
@@ -149,7 +146,7 @@ const styles = StyleSheet.create({
   textBox: {
     paddingVertical: 2,
     fontSize: 15,
-    borderBottomColor: "grey",
+    borderBottomColor: COLORS.LIGHT_GRAY_BORDER,
     borderBottomWidth: 1,
     height: 48,
   },

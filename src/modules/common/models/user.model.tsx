@@ -11,6 +11,9 @@ export enum UserRole {
   GUARDIAN,
   MOTHER,
   FATHER,
+}
+
+export enum HealthProfessionalRole {
   PEDEATRICIAN,
   GENERAL_PRACTITIONER,
   DENTIST,

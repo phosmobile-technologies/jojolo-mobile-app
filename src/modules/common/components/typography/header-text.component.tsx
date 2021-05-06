@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { COLORS } from "../../constants";
-import AppText from "./app-text.component";
+import AppText from "./text.component";
 
 /**
  * Custom header text component that adds the styling for page headers

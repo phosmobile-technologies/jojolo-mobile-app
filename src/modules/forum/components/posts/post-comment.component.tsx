@@ -6,12 +6,12 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import AppActivityIndicator from "../../../common/components/app-activity-indicator.component";
+import AppActivityIndicator from "../../../common/components/activity-indicator.component";
 
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
-import AppText from "../../../common/components/typography/app-text.component";
+import AppText from "../../../common/components/typography/text.component";
 import { COLORS } from "../../../common/constants";
 import { getComments } from "../../api/posts.api";
 import Comment from "../../models/comment.model";

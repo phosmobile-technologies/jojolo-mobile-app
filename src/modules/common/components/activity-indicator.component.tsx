@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { COLORS } from "../constants";
-import AppText from "./typography/app-text.component";
+import AppText from "./typography/text.component";
 
 /**
  * Custom activity indicator used to show a spinning loading indicator and some loading text (if necessary)

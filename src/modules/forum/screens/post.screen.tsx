@@ -3,13 +3,13 @@ import { View, Image, StyleSheet, TextInput } from "react-native";
 
 import PostModel from "../models/post.model";
 import Post from "../components/posts/post.component";
-import AppText from "../../common/components/typography/app-text.component";
+import AppText from "../../common/components/typography/text.component";
 import { CommentFeed } from "../components/posts/post-comment.component";
 import { ScrollView } from "react-native-gesture-handler";
 
 const PostScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
-  console.log(post);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -27,7 +27,7 @@ const PostScreen = ({ route }: { route: any }) => {
           </View>
         </View>
       </ScrollView>
-      <View
+      {/* <View
         style={{
           backgroundColor: "#ffffff",
           width: 500,
@@ -37,7 +37,7 @@ const PostScreen = ({ route }: { route: any }) => {
         }}
       >
         <TextInput style={styles.textInput} />
-      </View>
+      </View> */}
     </View>
   );
 };

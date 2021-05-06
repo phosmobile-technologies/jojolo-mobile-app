@@ -9,7 +9,7 @@ import {
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
-import AppText from "../../../common/components/typography/app-text.component";
+import AppText from "../../../common/components/typography/text.component";
 import { COLORS } from "../../../common/constants";
 import { User } from "../../../common/models/user.model";
 

@@ -1,5 +1,12 @@
 import * as React from "react";
-import { View, Image, StyleSheet, TextInput, Text } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TextInput,
+  Text,
+  Keyboard,
+} from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
 import useAnimatedGestureHandler from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
@@ -13,6 +20,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import { createRef } from "react";
+import { COLORS } from "../../common/constants";
 
 const PostScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
@@ -20,6 +28,9 @@ const PostScreen = ({ route }: { route: any }) => {
   const bs = createRef();
   const sheetRef = React.useRef(null);
   const fall = new Animated.Value(1);
+  const snap = () => {
+    sheetRef.current.snapTo(1);
+  };
 
   const renderCommentBox = () => {
     return (
@@ -32,7 +43,9 @@ const PostScreen = ({ route }: { route: any }) => {
       >
         <AppText>
           Commenting On{"  "}
-          <Text style={{ color: "green" }}>My Baby is Struggling</Text>
+          <Text style={{ color: COLORS.PRIMARY_COLOR }}>
+            My Baby is Struggling
+          </Text>
         </AppText>
         <View>
           <TextInput
@@ -46,6 +59,7 @@ const PostScreen = ({ route }: { route: any }) => {
           <TouchableWithoutFeedback
             onPress={() => {
               sheetRef.current.snapTo(1);
+              Keyboard.dismiss();
             }}
           >
             <AppText>Reply</AppText>

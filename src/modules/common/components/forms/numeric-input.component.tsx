@@ -1,19 +1,23 @@
 import React from "react";
-import { TextInput, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import NumericInput from "react-native-numeric-input";
+
 import { COLORS } from "../../../../constants";
 import AppText from "../typography/text.component";
 
 /**
- * Text Input used in the APP, and styled appropriately
+ * Numeric Input used in the APP, and styled appropriately
  *
  * @param param0
  * @returns
  */
-const AppTextInput = ({
+const AppNumericInput = ({
+  value,
+  onChangeValue,
   label = "",
   style = {},
   error = {},
-  ...otherProps
+  otherProps = {},
 }) => {
   const errorObject: any = error;
   let errorMessage = errorObject.message ? errorObject.message : "";
@@ -26,7 +30,22 @@ const AppTextInput = ({
   return (
     <View style={styles.container}>
       {label.length > 0 && <AppText style={styles.label}>{label}</AppText>}
-      <TextInput style={textInputStyles} {...otherProps} />
+      <NumericInput
+        value={value}
+        onChange={(value) => onChangeValue(value)}
+        onLimitReached={(isMax, msg) => console.log(isMax, msg)}
+        totalWidth={200}
+        totalHeight={40}
+        iconSize={25}
+        step={1}
+        valueType="integer"
+        rounded
+        textColor={COLORS.APP_BLACK_TEXT}
+        iconStyle={{ color: "white" }}
+        rightButtonBackgroundColor={COLORS.APP_PRIMARY_COLOR}
+        leftButtonBackgroundColor={COLORS.APP_PRIMARY_COLOR}
+        {...otherProps}
+      />
       {hasError && errorMessage.length > 0 && (
         <AppText style={styles.error__label}>{errorMessage}</AppText>
       )}
@@ -64,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppTextInput;
+export default AppNumericInput;

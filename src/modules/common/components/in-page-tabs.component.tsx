@@ -10,7 +10,7 @@ export interface InPageTabsRoute {
 
 export interface InPageTabsComponentProps {
   tabRoutes: InPageTabsRoute[];
-  sceneMap: { [key: string]: ComponentType };
+  sceneMap: { [key: string]: ComponentType } | any;
 }
 
 /**
@@ -24,7 +24,9 @@ const InPageTabs = (props: InPageTabsComponentProps) => {
   const [index, setIndex] = React.useState(0);
 
   const [routes] = React.useState(tabRoutes);
-  const renderScene = SceneMap(sceneMap);
+
+  // @TODO setup code to use either sceneMap or renderMap function
+  // const renderScene = SceneMap(sceneMap);
 
   const renderTabBar = (props: any) => (
     <TabBar
@@ -42,7 +44,7 @@ const InPageTabs = (props: InPageTabsComponentProps) => {
     <TabView
       renderTabBar={renderTabBar}
       navigationState={{ index, routes }}
-      renderScene={renderScene}
+      renderScene={sceneMap}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
       sceneContainerStyle={styles.sceneContainer}

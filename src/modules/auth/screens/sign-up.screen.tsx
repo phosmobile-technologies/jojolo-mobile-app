@@ -18,17 +18,6 @@ import { SceneMap } from "react-native-tab-view";
 import SignUpCareGiver from "../components/sign-up-care-giver.component";
 import SignUpHealthProfessional from "../components/sign-up-health-professional.component";
 
-interface CareGiverSignUpInfo {
-  full_name: string;
-  email_address: string;
-  phone_number: string;
-  role: UserRole;
-  address: string;
-  city: string;
-  state: string;
-  password: string;
-}
-
 interface HealthProfessionalSignUpInfo {
   full_name: string;
   email_address: string;
@@ -55,11 +44,16 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
     healthprofessionals: SignUpHealthProfessional,
   };
 
-  // return (
-  //   <View style={{ flex: 1 }}>
-  //     <InPageTabs tabRoutes={tabRoutes} sceneMap={sceneMap} />
-  //   </View>
-  // );
+  const renderScene = ({ route }: { route: any }) => {
+    switch (route.key) {
+      case "caregivers":
+        return <SignUpCareGiver navigation={navigation} />;
+      case "healthprofessionals":
+        return <SignUpHealthProfessional navigation={navigation} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -74,7 +68,7 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
         </AppTextLink> */}
         <AppText style={styles.form__header__text}>Create an Account</AppText>
         <View style={{ flex: 1 }}>
-          <InPageTabs tabRoutes={tabRoutes} sceneMap={sceneMap} />
+          <InPageTabs tabRoutes={tabRoutes} sceneMap={renderScene} />
         </View>
       </View>
     </View>
@@ -84,7 +78,6 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "space-between",
     backgroundColor: COLORS.APP_WHITE_BACKGROUND,
   },
 

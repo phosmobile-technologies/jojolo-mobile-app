@@ -1,9 +1,9 @@
 import { isLoading } from "expo-font";
 import React, { useState, useEffect, createContext } from "react";
 import { ScrollView, StyleSheet, SafeAreaView } from "react-native";
-import AppActivityIndicator from "../../common/components/app-activity-indicator.component";
+import AppActivityIndicator from "../../common/components/activity-indicator.component";
 
-import AppText from "../../common/components/typography/app-text.component";
+import AppText from "../../common/components/typography/text.component";
 import { getNewsFeed } from "../api/posts.api";
 import Post from "../models/post.model";
 import PostsList from "../components/posts/posts-list.component";

@@ -103,6 +103,24 @@ const screenOptions = ({ route }: { route: object }) => ({
         );
         break;
 
+      case NAVIGATION_CONSTANTS.BOOKING:
+        icon = (
+          <SvgIcon
+            iconName={SVG_ICONS.BOOKING_ICON}
+            color={iconColor}
+          ></SvgIcon>
+        );
+        break;
+
+      case NAVIGATION_CONSTANTS.TRACKER:
+        icon = (
+          <SvgIcon
+            iconName={SVG_ICONS.TRACKER_ICON}
+            color={iconColor}
+          ></SvgIcon>
+        );
+        break;
+
       default:
         icon = (
           <SvgIcon

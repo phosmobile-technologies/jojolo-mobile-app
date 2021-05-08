@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-import AppText from "../../../common/components/typography/app-text.component";
+import AppText from "../../../common/components/typography/text.component";
 import Comment from "../../models/comment.model";
 import CommentHeader from "./comment-header.component";
 

@@ -22,6 +22,8 @@ export const ForumNavigatorNavigationContext = createContext([]);
  * @returns
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
+  //@TODO Replace Feed with actual my posts on all tabs
+
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
@@ -36,11 +38,11 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.MY_POSTS}
-            component={MyPostsPage}
+            component={ForumNewsFeedPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SAVED_POSTS}
-            component={SavedPostsPage}
+            component={ForumNewsFeedPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.TAGS}

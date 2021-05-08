@@ -94,6 +94,10 @@ const SvgIcon = ({
       iconXml = TRACKER_ICON;
       break;
 
+      case SVG_ICONS.CLOSE_ICON:
+        iconXml = TRACKER_ICON;
+        break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -123,6 +127,7 @@ export const SVG_ICONS = {
   UPLOAD_ICON: "UPLOAD_ICON",
   BOOKING_ICON: "BOOKING_ICON",
   TRACKER_ICON: "TRACKER_ICON",
+  CLOSE_ICON: "CLOSE_ICON"
 };
 
 const styles = StyleSheet.create({
@@ -334,5 +339,11 @@ const TRACKER_ICON = `<svg width="25" height="24" viewBox="0 0 25 24" fill="none
 <path d="M22.5 12H18.5L15.5 21L9.5 3L6.5 12H2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
+
+const CLOSE_ICON = `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="38" height="38" rx="19" fill="currentColor"/>
+<path d="M25 13L13 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13 13L25 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
 
 export default SvgIcon;

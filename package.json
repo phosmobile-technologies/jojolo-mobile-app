@@ -38,6 +38,7 @@
     "react-native-svg": "12.1.0",
     "react-native-tab-view": "^3.0.1",
     "react-native-web": "~0.13.12",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "yup": "^0.32.9"
   },
   "devDependencies": {

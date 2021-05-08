@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Button, Text, TextInput, StyleSheet } from "react-native";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import { AuthContext } from "../../../../App";
 import APP_CONSTANTS, {
@@ -12,6 +14,14 @@ import AppTextInput from "../../common/components/forms/text-input.component";
 import Loader from "../../common/components/loader.component";
 import AppTextLink from "../../common/components/typography/text-link.component";
 import AppText from "../../common/components/typography/text.component";
+import { useToast } from "react-native-fast-toast";
+import { useForm } from "react-hook-form";
+import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
+
+const schema = yup.object().shape({
+  username: yup.string().required("Please provide your username"),
+  password: yup.string().required("Your password is required"),
+});
 
 /**
  * The Sign In page
@@ -20,9 +30,19 @@ import AppText from "../../common/components/typography/text.component";
  * @returns
  */
 const SignInScreen = ({ navigation }: { navigation: any }) => {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  // const [username, setUsername] = React.useState("");
+  // const [password, setPassword] = React.useState("");
+
+  const toast: any = useToast();
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const authContext: any = React.useContext(AuthContext);
 
@@ -63,27 +83,30 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
           Sign Up
         </AppTextLink>
         <AppText style={styles.form__header__text}>Log In</AppText>
-        <AppTextInput
-          label="Username"
-          value={username}
-          style={{ marginBottom: 10 }}
-          onChangeText={setUsername}
+
+        <ControlledAppTextInput
+          name={"username"}
+          label={"Username"}
+          defaultValue={""}
+          control={control}
+          error={errors.username}
         />
-        <AppTextInput
-          label="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
+
+        <ControlledAppTextInput
+          name={"password"}
+          label={"Password"}
+          defaultValue={""}
+          control={control}
+          error={errors.password}
+          type={"password"}
+          secureTextEntry={true}
         />
         <AppText style={styles.forgot__password__text}>
           Forgot Password ?
         </AppText>
       </View>
       <View style={styles.bottomBar}>
-        <AppButton
-          title="Sign In"
-          onPress={() => handleLogin({ username, password })}
-        />
+        <AppButton title="Sign In" onPress={handleSubmit(handleLogin)} />
       </View>
     </View>
   );

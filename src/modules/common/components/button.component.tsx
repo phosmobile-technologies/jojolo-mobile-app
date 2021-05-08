@@ -9,11 +9,17 @@ import AppText from "./typography/text.component";
  * @param param0
  * @returns
  */
-const AppButton = ({ title = "", onPress = () => {}, ...otherProps }) => {
+const AppButton = ({
+  title = "",
+  onPress = () => {},
+  style = {},
+  textStyle = {},
+  ...otherProps
+}) => {
   return (
     <TouchableWithoutFeedback onPress={() => onPress()}>
-      <View style={styles.container}>
-        <AppText style={styles.text}>{title}</AppText>
+      <View style={[styles.container, style]}>
+        <AppText style={[styles.text, textStyle]}>{title}</AppText>
       </View>
     </TouchableWithoutFeedback>
   );

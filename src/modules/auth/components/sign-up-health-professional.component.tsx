@@ -38,7 +38,6 @@ const schema = yup.object().shape({
  * @returns
  */
 const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
-  const [selectedRole, setSelectedRole] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const toast: any = useToast();
   const roleOptions = [
@@ -71,10 +70,12 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
     // @TODO Replace this with an actual API call
     setTimeout(() => {
       setIsLoading(false);
-      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.SIGN_IN_SCREEN);
-      toast.show("Your account has been successfully created", {
-        type: "success",
-      });
+      navigation.navigate(
+        NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+      );
+      // toast.show("Your account has been successfully created", {
+      //   type: "success",
+      // });
     }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
   };
 
@@ -129,6 +130,17 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
           secureTextEntry={true}
           control={control}
           error={errors.password}
+        />
+      </View>
+      {/* @TODO Remove this temporary button */}
+      <View style={styles.bottomBar}>
+        <AppButton
+          title="Upload"
+          onPress={() =>
+            navigation.navigate(
+              NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+            )
+          }
         />
       </View>
       <View style={styles.bottomBar}>

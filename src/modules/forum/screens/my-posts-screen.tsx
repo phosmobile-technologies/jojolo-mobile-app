@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView } from "react-native";
-import AppText from "../../common/components/typography/app-text.component";
+import AppText from "../../common/components/typography/text.component";
 
 /**
  * The user's posts page

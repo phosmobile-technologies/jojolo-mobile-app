@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../common/constants";
-import AppHeaderText from "../../common/components/typography/app-header-text.component";
+import AppHeaderText from "../../common/components/typography/header-text.component";
 
 /**
  * The forum page header

@@ -10,9 +10,17 @@ import { ForumNavigatorNavigationContext } from "../../screens/forum.screen";
 import NAVIGATION_CONSTANTS from "../../../../navigation/navigation-constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-const Post = ({ post }: { post: PostModel }) => {
+const Post = ({
+  post,
+  isFullPage = false,
+  allowNavigationToPostDetails = true,
+}: {
+  post: PostModel;
+  isFullPage: boolean;
+  allowNavigationToPostDetails: boolean;
+}) => {
   const { user } = post;
-  const toast = useToast();
+  const toast: any = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
 
@@ -51,6 +59,9 @@ const Post = ({ post }: { post: PostModel }) => {
    * @param post
    */
   const goToPostPage = (post: PostModel) => {
+    if (!allowNavigationToPostDetails) {
+      return;
+    }
     navigation.navigate(NAVIGATION_CONSTANTS.POST, {
       post,
     });
@@ -61,9 +72,10 @@ const Post = ({ post }: { post: PostModel }) => {
       <PostHeader
         user={user}
         handleOpenPostActionSheet={handleOpenActionSheet}
+        isFullPage={isFullPage}
       />
       <TouchableWithoutFeedback onPress={() => goToPostPage(post)}>
-        <PostContent post={post} />
+        <PostContent post={post} isFullPage={isFullPage} />
       </TouchableWithoutFeedback>
     </View>
   );
@@ -71,7 +83,6 @@ const Post = ({ post }: { post: PostModel }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 15,

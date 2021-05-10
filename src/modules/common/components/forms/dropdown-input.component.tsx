@@ -44,7 +44,7 @@ const AppDropdown = (props: AppPickerProps) => {
       <View style={pickerWrapperStyles}>
         <Picker
           style={styles.picker}
-          mode="dialog"
+          mode="dropdown"
           selectedValue={selectedValue}
           onValueChange={(itemValue, itemIndex) => {
             if (!itemValue) {

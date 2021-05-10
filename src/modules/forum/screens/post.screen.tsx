@@ -39,16 +39,25 @@ const PostScreen = ({ route }: { route: any }) => {
           height: 150,
         }}
       >
-        <AppText>
-          Commenting On{"  "}
-          <Text style={{ color: COLORS.PRIMARY_COLOR }}>
-            My Baby is Struggling
-          </Text>
-          <SvgIcon
-            iconName={SVG_ICONS.CLOSE_ICON}
-            color={COLORS.PRIMARY_COLOR}
-          />
-        </AppText>
+        <View>
+          <AppText>
+            Commenting On{"  "}
+            <Text style={{ color: COLORS.PRIMARY_COLOR }}>
+              My Baby is Struggling
+            </Text>
+            {"                                       "}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                sheetRef.current.snapTo(1);
+              }}
+            >
+              <SvgIcon
+                iconName={SVG_ICONS.CLOSE_ICON}
+                style={{ paddingLeft: 50, top: 10 }}
+              />
+            </TouchableWithoutFeedback>
+          </AppText>
+        </View>
         <View>
           <TextInput
             style={styles.textBox}

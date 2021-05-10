@@ -94,9 +94,17 @@ const SvgIcon = ({
       iconXml = TRACKER_ICON;
       break;
 
-      case SVG_ICONS.CLOSE_ICON:
-        iconXml = TRACKER_ICON;
-        break;
+    case SVG_ICONS.CLOSE_ICON:
+      iconXml = CLOSE_ICON;
+      break;
+
+    case SVG_ICONS.POST_ICON:
+      iconXml = POST_ICON;
+      break;
+
+    case SVG_ICONS.ADD_PHOTO:
+      iconXml = ADD_PHOTO;
+      break;
 
     default:
       iconXml = ACCOUNT_ICON;
@@ -127,7 +135,9 @@ export const SVG_ICONS = {
   UPLOAD_ICON: "UPLOAD_ICON",
   BOOKING_ICON: "BOOKING_ICON",
   TRACKER_ICON: "TRACKER_ICON",
-  CLOSE_ICON: "CLOSE_ICON"
+  CLOSE_ICON: "CLOSE_ICON",
+  POST_ICON: "POST_ICON",
+  ADD_PHOTO: "ADD_PHOTO",
 };
 
 const styles = StyleSheet.create({
@@ -340,10 +350,35 @@ const TRACKER_ICON = `<svg width="25" height="24" viewBox="0 0 25 24" fill="none
 </svg>
 `;
 
-const CLOSE_ICON = `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="38" height="38" rx="19" fill="currentColor"/>
-<path d="M25 13L13 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M13 13L25 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`
+const CLOSE_ICON = `<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="17" cy="17" r="17" fill="#DEF3F4"/>
+<path d="M23 11L11 23" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11 11L23 23" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const POST_ICON = `<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<circle cx="45" cy="41" r="30" fill="#19A5B0"/>
+<path d="M44 33H37C36.4696 33 35.9609 33.2107 35.5858 33.5858C35.2107 33.9609 35 34.4696 35 35V49C35 49.5304 35.2107 50.0391 35.5858 50.4142C35.9609 50.7893 36.4696 51 37 51H51C51.5304 51 52.0391 50.7893 52.4142 50.4142C52.7893 50.0391 53 49.5304 53 49V42" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M51.5 31.5C51.8978 31.1022 52.4374 30.8787 53 30.8787C53.5626 30.8787 54.1022 31.1022 54.5 31.5C54.8978 31.8978 55.1213 32.4374 55.1213 33C55.1213 33.5626 54.8978 34.1022 54.5 34.5L45 44L41 45L42 41L51.5 31.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_d" x="0" y="0" width="90" height="90" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="7.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>`;
+
+const ADD_PHOTO = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#A0A4A8" stroke-dasharray="5 5"/>
+<path d="M18 12.1667V23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.1667 18H23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
 
 export default SvgIcon;

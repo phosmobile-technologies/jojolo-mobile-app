@@ -38,11 +38,11 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.MY_POSTS}
-            component={ForumNewsFeedPage}
+            component={MyPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SAVED_POSTS}
-            component={ForumNewsFeedPage}
+            component={SavedPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.TAGS}

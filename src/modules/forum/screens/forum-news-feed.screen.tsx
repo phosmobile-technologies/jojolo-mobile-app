@@ -70,7 +70,7 @@ export const ForumNewsFeedPage = () => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.CREATE_POST_SCREEN
+              NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN
             );
           }}
         >

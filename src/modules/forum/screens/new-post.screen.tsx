@@ -31,7 +31,7 @@ const schema = yup.object().shape({
   content: yup.string().required("Please provide a title"),
 });
 
-const newPostScreen = () => {
+const CreatePostScreen = () => {
   const {
     control,
     handleSubmit,
@@ -148,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default newPostScreen;
+export default CreatePostScreen;

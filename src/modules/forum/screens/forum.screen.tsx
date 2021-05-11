@@ -5,8 +5,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import NAVIGATION_CONSTANTS from "../../../navigation/navigation-constants";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
-import { MyPostsPage } from "./my-posts-screen";
-import { SavedPostsPage } from "./saved-posts.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS } from "../../common/constants";

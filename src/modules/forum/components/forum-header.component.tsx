@@ -4,13 +4,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../common/constants";
 import AppHeaderText from "../../common/components/typography/header-text.component";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 /**
  * The forum page header
  *
  * @returns
  */
-export const ForumHeader = () => {
+export const ForumHeader = ({
+  HandlePresentModalPress,
+}: {
+  HandlePresentModalPress: any;
+}) => {
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
@@ -20,11 +25,14 @@ export const ForumHeader = () => {
           iconName={SVG_ICONS.SEARCH_ICON}
           color={COLORS.BLACK_ICON}
         ></SvgIcon>
-        <SvgIcon
-          style={styles.header__icon}
-          iconName={SVG_ICONS.FUNNEL_ICON}
-          color={COLORS.BLACK_ICON}
-        ></SvgIcon>
+        <TouchableOpacity onPress={HandlePresentModalPress}>
+          <SvgIcon
+            style={styles.header__icon}
+            iconName={SVG_ICONS.FUNNEL_ICON}
+            color={COLORS.BLACK_ICON}
+          ></SvgIcon>
+        </TouchableOpacity>
+
         <SvgIcon
           style={styles.header__icon}
           iconName={SVG_ICONS.NOTIFICATION_ICON}

@@ -82,6 +82,8 @@ export const ForumNewsFeedPage = () => {
   );
 };
 
+const HeightProportions = "85%";
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     right: 30,
-    top: 499,
+    top: HeightProportions,
   },
 });
 

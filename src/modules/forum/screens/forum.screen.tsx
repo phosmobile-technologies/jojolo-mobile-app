@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Button, StatusBar } from "react-native";
 import { useState, createContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -22,8 +22,6 @@ const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 // React context used to provide the navigation function to all children of the forum page
 export const ForumNavigatorNavigationContext = createContext([]);
 
-const navigation: any = useContext(ForumNavigatorNavigationContext);
-
 const RenderFilter = () => {
   return (
     <View style={styles.renderFilter}>
@@ -45,10 +43,6 @@ const RenderFilter = () => {
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   //@TODO Replace Feed with actual my posts on all tabs
   const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
-
-  const handleSearchPage = () => {
-    navigation.navigate(NAVIGATION_CONSTANTS.NEW_POST);
-  };
 
   // variables
   const snapPoints = React.useMemo(() => ["5%", "16%"], []);

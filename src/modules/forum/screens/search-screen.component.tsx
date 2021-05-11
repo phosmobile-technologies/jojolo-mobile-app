@@ -6,7 +6,10 @@ import AppText from "../../common/components/typography/text.component";
 const SearchScreen = () => {
   return (
     <View>
-      <TextInput placeholder={"search for post using keyword"} />
+      <View>
+        <TextInput placeholder={"search for post using keyword"} />
+      </View>
+      <View></View>
     </View>
   );
 };

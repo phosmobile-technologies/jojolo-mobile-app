@@ -1,30 +1,45 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../common/constants";
 import AppHeaderText from "../../common/components/typography/header-text.component";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+import NAVIGATION_CONSTANTS from "../../../navigation/navigation-constants";
+import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
 
 /**
  * The forum page header
  *
  * @returns
  */
-export const ForumHeader = () => {
+export const ForumHeader = ({
+  HandleNavigation,
+}: {
+  HandleNavigation: any;
+}) => {
+  const navigation: any = React.useContext(ForumNavigatorNavigationContext);
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
       <View style={styles.header__icons}>
-        <SvgIcon
-          style={styles.header__icon}
-          iconName={SVG_ICONS.SEARCH_ICON}
-          color={COLORS.BLACK_ICON}
-        ></SvgIcon>
-        <SvgIcon
-          style={styles.header__icon}
-          iconName={SVG_ICONS.FUNNEL_ICON}
-          color={COLORS.BLACK_ICON}
-        ></SvgIcon>
+        <TouchableOpacity onPress={HandleNavigation}>
+          <SvgIcon
+            style={styles.header__icon}
+            iconName={SVG_ICONS.SEARCH_ICON}
+            color={COLORS.BLACK_ICON}
+          ></SvgIcon>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <SvgIcon
+            style={styles.header__icon}
+            iconName={SVG_ICONS.FUNNEL_ICON}
+            color={COLORS.BLACK_ICON}
+          ></SvgIcon>
+        </TouchableOpacity>
+
         <SvgIcon
           style={styles.header__icon}
           iconName={SVG_ICONS.NOTIFICATION_ICON}

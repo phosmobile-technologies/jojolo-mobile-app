@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import NAVIGATION_CONSTANTS from "./navigation-constants";
 import ForumScreen from "../modules/forum/screens/forum.screen";
 import PostScreen from "../modules/forum/screens/post.screen";
+import NewPostScreen from "../modules/forum/screens/new-post.screen";
+import SearchScreen from "../modules/forum/screens/search-screen.component";
 
 const ForumStackNavigator = createStackNavigator();
 
@@ -21,6 +23,16 @@ const ForumNavigator = () => {
       <ForumStackNavigator.Screen
         name={NAVIGATION_CONSTANTS.POST}
         component={PostScreen}
+        options={postScreenOptions}
+      />
+      <ForumStackNavigator.Screen
+        name={NAVIGATION_CONSTANTS.NEW_POST}
+        component={NewPostScreen}
+        options={postScreenOptions}
+      />
+      <ForumStackNavigator.Screen
+        name={NAVIGATION_CONSTANTS.SEARCH_SCREEN}
+        component={SearchScreen}
         options={postScreenOptions}
       />
     </ForumStackNavigator.Navigator>

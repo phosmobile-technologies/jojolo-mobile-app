@@ -102,8 +102,8 @@ const SvgIcon = ({
       iconXml = POST_ICON;
       break;
 
-    case SVG_ICONS.ADD_PHOTO:
-      iconXml = ADD_PHOTO;
+    case SVG_ICONS.ADD_PHOTO_ICON:
+      iconXml = ADD_PHOTO_ICON;
       break;
 
     default:
@@ -137,7 +137,7 @@ export const SVG_ICONS = {
   TRACKER_ICON: "TRACKER_ICON",
   CLOSE_ICON: "CLOSE_ICON",
   POST_ICON: "POST_ICON",
-  ADD_PHOTO: "ADD_PHOTO",
+  ADD_PHOTO_ICON: "ADD_PHOTO_ICON",
 };
 
 const styles = StyleSheet.create({
@@ -375,7 +375,7 @@ const POST_ICON = `<svg width="90" height="90" viewBox="0 0 90 90" fill="none" x
 </defs>
 </svg>`;
 
-const ADD_PHOTO = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+const ADD_PHOTO_ICON = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#A0A4A8" stroke-dasharray="5 5"/>
 <path d="M18 12.1667V23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12.1667 18H23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

@@ -76,7 +76,7 @@ const newPostScreen = () => {
               padding: 25,
             }}
           >
-            <SvgIcon iconName={SVG_ICONS.ADD_PHOTO} />
+            <SvgIcon iconName={SVG_ICONS.ADD_PHOTO_ICON} />
             <AppText style={{ padding: 10, fontSize: 18 }}>Add Image</AppText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>

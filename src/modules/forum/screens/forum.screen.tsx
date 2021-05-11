@@ -23,11 +23,13 @@ export const ForumNavigatorNavigationContext = createContext([]);
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   //@TODO Replace Feed with actual my posts on all tabs
-
+  const HandleNavigation = () => {
+    navigation.navigate(NAVIGATION_CONSTANTS.SEARCH_SCREEN);
+  };
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
-        <ForumHeader />
+        <ForumHeader HandleNavigation={HandleNavigation} />
         <ForumPageTabNavigationStack.Navigator
           initialRouteName={NAVIGATION_CONSTANTS.FEED}
           tabBarOptions={tabBarOptions}

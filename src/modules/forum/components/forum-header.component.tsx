@@ -11,11 +11,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
  *
  * @returns
  */
-export const ForumHeader = ({
-  HandlePresentModalPress,
-}: {
-  HandlePresentModalPress: any;
-}) => {
+export const ForumHeader = () => {
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
@@ -25,7 +21,7 @@ export const ForumHeader = ({
           iconName={SVG_ICONS.SEARCH_ICON}
           color={COLORS.BLACK_ICON}
         ></SvgIcon>
-        <TouchableOpacity onPress={HandlePresentModalPress}>
+        <TouchableOpacity>
           <SvgIcon
             style={styles.header__icon}
             iconName={SVG_ICONS.FUNNEL_ICON}

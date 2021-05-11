@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, Button, StatusBar } from "react-native";
 import { useState, createContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import NAVIGATION_CONSTANTS from "../../../navigation/navigation-constants";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS } from "../../common/constants";
+import { NAVIGATION_CONSTANTS } from "../../../constants";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
@@ -22,30 +22,30 @@ export const ForumNavigatorNavigationContext = createContext([]);
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   //@TODO Replace Feed with actual my posts on all tabs
   const HandleNavigation = () => {
-    navigation.navigate(NAVIGATION_CONSTANTS.SEARCH_SCREEN);
+    navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.FORUM.SEARCH_POSTS_SCREEN);
   };
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
         <ForumHeader HandleNavigation={HandleNavigation} />
         <ForumPageTabNavigationStack.Navigator
-          initialRouteName={NAVIGATION_CONSTANTS.FEED}
+          initialRouteName={NAVIGATION_CONSTANTS.SCREENS.FORUM.FEED_SCREEN}
           tabBarOptions={tabBarOptions}
         >
           <ForumPageTabNavigationStack.Screen
-            name={NAVIGATION_CONSTANTS.FEED}
+            name={NAVIGATION_CONSTANTS.SCREENS.FORUM.FEED_SCREEN}
             component={ForumNewsFeedPage}
           />
           <ForumPageTabNavigationStack.Screen
-            name={NAVIGATION_CONSTANTS.MY_POSTS}
+            name={NAVIGATION_CONSTANTS.SCREENS.FORUM.MY_POSTS_SCREEN}
             component={ForumNewsFeedPage}
           />
           <ForumPageTabNavigationStack.Screen
-            name={NAVIGATION_CONSTANTS.SAVED_POSTS}
+            name={NAVIGATION_CONSTANTS.SCREENS.FORUM.SAVED_POSTS_SCREEN}
             component={ForumNewsFeedPage}
           />
           <ForumPageTabNavigationStack.Screen
-            name={NAVIGATION_CONSTANTS.TAGS}
+            name={NAVIGATION_CONSTANTS.SCREENS.FORUM.TAGS_SCREEN}
             component={TagsPage}
           />
         </ForumPageTabNavigationStack.Navigator>

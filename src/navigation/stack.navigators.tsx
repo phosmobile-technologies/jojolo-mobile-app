@@ -20,22 +20,22 @@ export const AuthenticationStack = () => {
       screenOptions={AuthenticationStackNavOptions}
     >
       <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.SIGN_IN_SCREEN}
+        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN}
         component={SignInScreen}
         options={SignInScreenOptions}
       ></AuthenticationStackNav.Screen>
       <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.SIGN_UP_SCREEN}
+        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_UP_SCREEN}
         component={SignUpScreen}
         options={SignUpScreenOptions}
       ></AuthenticationStackNav.Screen>
       <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN}
+        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN}
         component={UploadMedicalLicense}
         options={UploadMedicalLicenseScreenOptions}
       ></AuthenticationStackNav.Screen>
       <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.UPLOAD_VALID_ID_CARD_SCREEN}
+        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_VALID_ID_CARD_SCREEN}
         component={UploadValidIdCard}
         options={UploadValidIdCardScreenOptions}
       ></AuthenticationStackNav.Screen>

@@ -94,9 +94,21 @@ const SvgIcon = ({
       iconXml = TRACKER_ICON;
       break;
 
-      case SVG_ICONS.CLOSE_ICON:
-        iconXml = TRACKER_ICON;
-        break;
+    case SVG_ICONS.CLOSE_ICON:
+      iconXml = CLOSE_ICON;
+      break;
+
+    case SVG_ICONS.POST_ICON:
+      iconXml = POST_ICON;
+      break;
+
+    case SVG_ICONS.ADD_PHOTO_ICON:
+      iconXml = ADD_PHOTO_ICON;
+      break;
+
+    case SVG_ICONS.BIG_SEARCH_ICON:
+      iconXml = BIG_SEARCH_ICON;
+      break;
 
     default:
       iconXml = ACCOUNT_ICON;
@@ -127,7 +139,10 @@ export const SVG_ICONS = {
   UPLOAD_ICON: "UPLOAD_ICON",
   BOOKING_ICON: "BOOKING_ICON",
   TRACKER_ICON: "TRACKER_ICON",
-  CLOSE_ICON: "CLOSE_ICON"
+  CLOSE_ICON: "CLOSE_ICON",
+  POST_ICON: "POST_ICON",
+  ADD_PHOTO_ICON: "ADD_PHOTO_ICON",
+  BIG_SEARCH_ICON: "BIG_SEARCH_ICON",
 };
 
 const styles = StyleSheet.create({
@@ -340,10 +355,50 @@ const TRACKER_ICON = `<svg width="25" height="24" viewBox="0 0 25 24" fill="none
 </svg>
 `;
 
-const CLOSE_ICON = `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="38" height="38" rx="19" fill="currentColor"/>
-<path d="M25 13L13 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M13 13L25 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`
+const CLOSE_ICON = `<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="17" cy="17" r="17" fill="#DEF3F4"/>
+<path d="M23 11L11 23" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11 11L23 23" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const POST_ICON = `<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<circle cx="45" cy="41" r="30" fill="#19A5B0"/>
+<path d="M44 33H37C36.4696 33 35.9609 33.2107 35.5858 33.5858C35.2107 33.9609 35 34.4696 35 35V49C35 49.5304 35.2107 50.0391 35.5858 50.4142C35.9609 50.7893 36.4696 51 37 51H51C51.5304 51 52.0391 50.7893 52.4142 50.4142C52.7893 50.0391 53 49.5304 53 49V42" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M51.5 31.5C51.8978 31.1022 52.4374 30.8787 53 30.8787C53.5626 30.8787 54.1022 31.1022 54.5 31.5C54.8978 31.8978 55.1213 32.4374 55.1213 33C55.1213 33.5626 54.8978 34.1022 54.5 34.5L45 44L41 45L42 41L51.5 31.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_d" x="0" y="0" width="90" height="90" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="7.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>`;
+
+const ADD_PHOTO_ICON = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#A0A4A8" stroke-dasharray="5 5"/>
+<path d="M18 12.1667V23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.1667 18H23.8333" stroke="#25282B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const BIG_SEARCH_ICON = `<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M155.73 140.232L141.574 155.991L215.498 222.62L229.654 206.861L155.73 140.232Z" fill="#E2EAEB"/>
+<path d="M246.698 236.296L246.532 236.479C242.068 241.451 235.432 242.763 231.714 239.411L188.87 201.384L205.25 182.334L248.047 221.217C251.766 224.577 251.162 231.324 246.698 236.296Z" fill="#19A5B0"/>
+<path opacity="0.12" d="M163.778 175.464L166.419 178.21L195.11 175.913L174.83 157.271L163.778 175.464Z" fill="#272525"/>
+<path d="M161.81 177.658C190.637 157.458 197.647 117.702 177.468 88.8607C157.288 60.0193 117.56 53.0142 88.7326 73.2144C59.9054 93.4145 52.8953 133.171 73.0751 162.012C93.2549 190.854 132.983 197.859 161.81 177.658Z" fill="#A5BFC1"/>
+<path d="M115.688 179.474C145.481 184.728 173.899 164.789 179.163 134.939C184.426 105.09 164.541 76.6337 134.748 71.3804C104.955 66.1272 76.5366 86.0662 71.2734 115.916C66.0102 145.765 85.8953 174.221 115.688 179.474Z" fill="#D4E9F4"/>
+<g opacity="0.22">
+<path opacity="0.22" d="M86.7333 116.396C89.501 99.1135 103.417 85.5011 120.866 83.6352C138.26 81.7832 155.009 92.2735 161.093 108.7C162.806 113.33 170.095 111 168.385 106.366C161.381 87.4623 143.068 75.0862 122.963 75.803C103.146 76.4976 86.1473 90.4668 80.4771 109.287C79.9381 111.11 79.5233 112.967 79.2356 114.846C78.4541 119.708 85.9378 121.292 86.7307 116.395L86.7333 116.396Z" fill="white"/>
+</g>
+<path opacity="0.51" d="M166.882 126.815C169.632 127.253 172.216 125.374 172.655 122.62C173.094 119.865 171.221 117.277 168.471 116.839C165.722 116.402 163.137 118.28 162.698 121.034C162.26 123.789 164.133 126.377 166.882 126.815Z" fill="white"/>
+<path d="M189.633 200.794L205.217 182.666C205.476 182.366 205.614 181.98 205.605 181.584C205.595 181.187 205.439 180.809 205.167 180.521L204.984 180.329C204.829 180.166 204.642 180.036 204.434 179.95C204.227 179.864 204.003 179.823 203.778 179.829C203.553 179.835 203.332 179.889 203.13 179.987C202.927 180.085 202.747 180.224 202.602 180.396L187.174 198.703C187.037 198.866 186.934 199.054 186.871 199.258C186.808 199.461 186.786 199.675 186.806 199.887C186.826 200.098 186.888 200.304 186.988 200.492C187.088 200.679 187.225 200.845 187.389 200.979L187.412 200.999C187.736 201.261 188.149 201.387 188.564 201.348C188.979 201.31 189.362 201.111 189.633 200.794Z" fill="#EA6F06"/>
+<path d="M177.764 135.091C175.434 148.092 168.489 159.813 158.212 168.092C148.059 176.25 135.194 180.393 122.221 179.959C108.958 179.516 96.1775 173.872 86.6451 164.701C77.3634 155.769 71.6045 143.499 70.3892 130.682C69.1281 117.399 73.011 103.839 80.9669 93.158C88.7281 82.8139 99.8936 75.5554 112.483 72.6696C125.528 69.7156 139.368 71.8392 151.026 78.3374C162.25 84.5942 170.886 95.01 175.325 107.045C178.623 115.982 179.382 125.708 177.766 135.083C177.439 136.937 180.315 137.444 180.634 135.589C182.872 122.595 180.614 109.227 174.232 97.6996C168.009 86.4186 157.812 77.5026 145.922 72.6493C133.588 67.6158 119.69 67.1573 107.007 71.1725C94.8166 75.0286 84.0953 83.1961 76.9702 93.8041C69.5201 104.892 66.2188 118.472 67.565 131.747C68.8744 144.578 74.7341 156.632 83.6784 165.849C92.8698 175.323 105.408 181.199 118.492 182.6C131.466 183.977 144.611 180.692 155.553 173.613C168.767 165.061 177.851 151.062 180.635 135.597C180.98 133.734 178.106 133.24 177.764 135.091Z" fill="#E2EAEB"/>
+</svg>
+`;
 
 export default SvgIcon;

@@ -5,8 +5,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import NAVIGATION_CONSTANTS from "../../../navigation/navigation-constants";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
-import { MyPostsPage } from "./my-posts-screen";
-import { SavedPostsPage } from "./saved-posts.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS } from "../../common/constants";
@@ -23,11 +21,13 @@ export const ForumNavigatorNavigationContext = createContext([]);
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   //@TODO Replace Feed with actual my posts on all tabs
-
+  const HandleNavigation = () => {
+    navigation.navigate(NAVIGATION_CONSTANTS.SEARCH_SCREEN);
+  };
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
-        <ForumHeader />
+        <ForumHeader HandleNavigation={HandleNavigation} />
         <ForumPageTabNavigationStack.Navigator
           initialRouteName={NAVIGATION_CONSTANTS.FEED}
           tabBarOptions={tabBarOptions}

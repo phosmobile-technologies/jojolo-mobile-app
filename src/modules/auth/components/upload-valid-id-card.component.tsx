@@ -15,7 +15,7 @@ import Loader from "../../common/components/loader.component";
 /**
  * Page for uploading a health professional's valid ID card during sign up
  */
-const UploadValidIdCard = ({ navigation }) => {
+const UploadValidIdCard = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast: any = useToast();
 
@@ -28,7 +28,7 @@ const UploadValidIdCard = ({ navigation }) => {
     // @TODO Replace this with an actual API call
     setTimeout(() => {
       setIsLoading(false);
-      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.SIGN_IN_SCREEN);
+      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
       toast.show("Your account has been successfully created", {
         type: "success",
       });
@@ -48,7 +48,7 @@ const UploadValidIdCard = ({ navigation }) => {
           title="Back To Upload Medical License"
           onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
             )
           }
         />

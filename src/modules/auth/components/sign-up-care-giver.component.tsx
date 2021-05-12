@@ -59,16 +59,18 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
   const onSubmit = (data: any) => {
     const userInfo = data;
 
-    setIsLoading(true);
+    //setIsLoading(true);
+
+    navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD);
 
     // @TODO Replace this with an actual API call
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.SIGN_IN_SCREEN);
-      toast.show("Your account has been successfully created", {
-        type: "success",
-      });
-    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
+    //   toast.show("Your account has been successfully created", {
+    //     type: "success",
+    //   });
+    // }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
   };
 
   return (

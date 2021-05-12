@@ -10,7 +10,7 @@ import UploadFile from "../../common/components/upload-file.component";
 /**
  * Page for uploading a health professional's medical license during sign up
  */
-const UploadMedicalLicense = ({ navigation }) => {
+const UploadMedicalLicense = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <UploadFile />
@@ -19,7 +19,7 @@ const UploadMedicalLicense = ({ navigation }) => {
           title="Next"
           onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.UPLOAD_VALID_ID_CARD_SCREEN
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_VALID_ID_CARD_SCREEN
             )
           }
         />

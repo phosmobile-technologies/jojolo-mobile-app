@@ -13,6 +13,10 @@ export const NAVIGATION_CONSTANTS = {
       SIGN_UP_SCREEN: "Sign In",
       UPLOAD_MEDICAL_LICENSE_SCREEN: "Upload Medical License Screen",
       UPLOAD_VALID_ID_CARD_SCREEN: "Upload Valid ID Card Screen",
+      ADD_CHILD: "Add Child",
+      CHILD_INFORMATION_PAGE: "Child Information Page",
+      PAST_MEDICAL_HISTORY: "Past Medical History",
+      SELECT_WHAT_TO_TRACK: "Select What To Track",
     },
 
     FORUM: {

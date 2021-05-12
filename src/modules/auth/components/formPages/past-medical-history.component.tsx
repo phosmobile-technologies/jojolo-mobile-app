@@ -38,7 +38,26 @@ const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
     { label: "Therapist", value: HealthProfessionalRole.NUTRITIONIST },
   ];
 
-  const BirthOptions = {};
+  const BirthOptions = [
+    { label: "Pre-term (28 Weeks - 37 Weeks)", value: "PreTerm" },
+    { label: "Term  (37 Weeks - 42 Weeks)", value: "PreTerm" },
+    { label: "Post-term (42 Weeks>)", value: "" },
+    { label: "Not Sure", value: "" },
+  ];
+
+  const BloodGroupOptions = [
+    { label: "A", value: "" },
+    { label: "B", value: "" },
+    { label: "AB", value: "" },
+    { label: "O", value: "" },
+  ];
+
+  const GenoTypeOptions = [
+    { label: "AC", value: "" },
+    { label: "SS", value: "" },
+    { label: "AS", value: "" },
+    { label: "AA", value: "" },
+  ];
 
   const {
     control,
@@ -55,7 +74,7 @@ const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
       </AppText>
       <View style={styles.form__input__wrapper}>
         <ControlledAppDropdownInput
-          options={roleOptions}
+          options={BirthOptions}
           name={"role"}
           control={control}
           error={errors.role}
@@ -63,7 +82,7 @@ const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
           label={"My Child Was Born?"}
         />
         <ControlledAppDropdownInput
-          options={roleOptions}
+          options={BloodGroupOptions}
           name={"role"}
           control={control}
           error={errors.role}
@@ -71,7 +90,7 @@ const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
           label={"Blood Group"}
         />
         <ControlledAppDropdownInput
-          options={roleOptions}
+          options={GenoTypeOptions}
           name={"role"}
           control={control}
           error={errors.role}

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, createContext } from "react";
 import { View, Text, StyleSheet, Button, StatusBar } from "react-native";
-import { useState, createContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useToast } from "react-native-fast-toast";
 
 import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
@@ -20,14 +21,44 @@ export const ForumNavigatorNavigationContext = createContext([]);
  * @returns
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
+  const { showActionSheetWithOptions } = useActionSheet();
   //@TODO Replace Feed with actual my posts on all tabs
+  const toast: any = useToast();
+  const handleOpenActionSheet = () => {
+    const options = ["Latest", "Popular", "Cancel"];
+    const destructiveButtonIndex = 1;
+    const cancelButtonIndex = 2;
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          //Filter The Post By The Latest
+          toast.show("Latest Posts", { type: "success" });
+        }
+
+        if (buttonIndex === 1) {
+          // FIlter The Post By the Most Popular
+          toast.show("Top Posts", {
+            type: "success",
+          });
+        }
+      }
+    );
+  };
+
   const HandleNavigation = () => {
     navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.FORUM.SEARCH_POSTS_SCREEN);
   };
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
-        <ForumHeader HandleNavigation={HandleNavigation} />
+        <ForumHeader
+          HandleNavigation={HandleNavigation}
+          handleOpenActionSheet={handleOpenActionSheet}
+        />
         <ForumPageTabNavigationStack.Navigator
           initialRouteName={NAVIGATION_CONSTANTS.SCREENS.FORUM.FEED_SCREEN}
           tabBarOptions={tabBarOptions}

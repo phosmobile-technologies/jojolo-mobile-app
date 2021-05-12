@@ -15,8 +15,10 @@ import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
  */
 export const ForumHeader = ({
   HandleNavigation,
+  handleOpenActionSheet,
 }: {
   HandleNavigation: any;
+  handleOpenActionSheet: any;
 }) => {
   const navigation: any = React.useContext(ForumNavigatorNavigationContext);
   return (
@@ -30,7 +32,11 @@ export const ForumHeader = ({
             color={COLORS.BLACK_ICON}
           ></SvgIcon>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenActionSheet();
+          }}
+        >
           <SvgIcon
             style={styles.header__icon}
             iconName={SVG_ICONS.FUNNEL_ICON}

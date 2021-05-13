@@ -71,7 +71,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
     setTimeout(() => {
       setIsLoading(false);
       navigation.navigate(
-        NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+        NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
       );
       // toast.show("Your account has been successfully created", {
       //   type: "success",
@@ -138,7 +138,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
           title="Upload"
           onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
             )
           }
         />

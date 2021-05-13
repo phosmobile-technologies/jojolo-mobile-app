@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Image,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import AppActivityIndicator from "../../../common/components/activity-indicator.component";
+import { SafeAreaView } from "react-native";
 
-import SvgIcon, {
-  SVG_ICONS,
-} from "../../../common/components/svg-icon.component";
-import AppText from "../../../common/components/typography/text.component";
-import { COLORS } from "../../../common/constants";
+import AppActivityIndicator from "../../../common/components/activity-indicator.component";
 import { getComments } from "../../api/posts.api";
 import Comment from "../../models/comment.model";
 import CommentList from "./comment-list.component";

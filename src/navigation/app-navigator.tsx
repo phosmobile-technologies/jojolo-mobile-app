@@ -1,14 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import ForumScreen from "../modules/forum/screens/forum.screen";
 import PrivateChatScreen from "../modules/privateChat/screens/index";
-import NAVIGATION_CONSTANTS from "../navigation/navigation-constants";
 import { COLORS } from "../modules/common/constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../modules/common/components/svg-icon.component";
 import ForumNavigator from "./forum-navigator.screen";
+import { NAVIGATION_CONSTANTS } from "../constants";
 
 const AppTabNavigationStack = createBottomTabNavigator();
 
@@ -20,28 +19,28 @@ const AppTabNavigationStack = createBottomTabNavigator();
 const AppNavigator = () => {
   return (
     <AppTabNavigationStack.Navigator
-      initialRouteName={NAVIGATION_CONSTANTS.FORUM}
+      initialRouteName={NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR}
       screenOptions={screenOptions}
       tabBarOptions={tabBarOptions}
     >
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.FORUM}
+        name={NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR}
         component={ForumNavigator}
       />
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.PRIVATE_CHAT}
+        name={NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.PRIVATE_CHAT_SCREEN}
         component={PrivateChatScreen}
       />
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.BOOKING}
+        name={NAVIGATION_CONSTANTS.SCREENS.BOOKING.BOOKING_SCREEN}
         component={PrivateChatScreen}
       />
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.TRACKER}
+        name={NAVIGATION_CONSTANTS.SCREENS.TRACKER.TRACKER_SCREEN}
         component={PrivateChatScreen}
       />
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.ACCOUNT}
+        name={NAVIGATION_CONSTANTS.SCREENS.ACCOUNT.ACCOUNT_SCREEN}
         component={PrivateChatScreen}
       />
     </AppTabNavigationStack.Navigator>
@@ -88,13 +87,13 @@ const screenOptions = ({ route }: { route: object }) => ({
     }
 
     switch (route.name) {
-      case NAVIGATION_CONSTANTS.FORUM:
+      case NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR:
         icon = (
           <SvgIcon iconName={SVG_ICONS.FORUM_ICON} color={iconColor}></SvgIcon>
         );
         break;
 
-      case NAVIGATION_CONSTANTS.PRIVATE_CHAT:
+      case NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.PRIVATE_CHAT_SCREEN:
         icon = (
           <SvgIcon
             iconName={SVG_ICONS.PRIVATE_CHAT_ICON}
@@ -103,7 +102,7 @@ const screenOptions = ({ route }: { route: object }) => ({
         );
         break;
 
-      case NAVIGATION_CONSTANTS.BOOKING:
+      case NAVIGATION_CONSTANTS.SCREENS.BOOKING.BOOKING_SCREEN:
         icon = (
           <SvgIcon
             iconName={SVG_ICONS.BOOKING_ICON}
@@ -112,7 +111,7 @@ const screenOptions = ({ route }: { route: object }) => ({
         );
         break;
 
-      case NAVIGATION_CONSTANTS.TRACKER:
+      case NAVIGATION_CONSTANTS.SCREENS.TRACKER.TRACKER_SCREEN:
         icon = (
           <SvgIcon
             iconName={SVG_ICONS.TRACKER_ICON}

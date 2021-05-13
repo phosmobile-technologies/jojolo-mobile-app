@@ -8,11 +8,10 @@ import {
   Keyboard,
 } from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
-import useAnimatedGestureHandler from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 
 import PostModel from "../models/post.model";
-import Post from "../components/posts/post.component";
+import Post from "../components/posts/post-details.component";
 import AppText from "../../common/components/typography/text.component";
 import { CommentFeed } from "../components/posts/post-comment.component";
 import {
@@ -23,7 +22,7 @@ import { createRef } from "react";
 import { COLORS } from "../../common/constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
-const PostScreen = ({ route }: { route: any }) => {
+const PostDetailsScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
 
   const bs = createRef();
@@ -165,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostScreen;
+export default PostDetailsScreen;

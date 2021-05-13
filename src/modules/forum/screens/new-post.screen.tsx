@@ -13,7 +13,7 @@ import * as yup from "yup";
 import { useForm, useController } from "react-hook-form";
 
 import PostModel from "../models/post.model";
-import Post from "../components/posts/post.component";
+import Post from "../components/posts/post-details.component";
 import AppText from "../../common/components/typography/text.component";
 import { CommentFeed } from "../components/posts/post-comment.component";
 import { COLORS } from "../../common/constants";

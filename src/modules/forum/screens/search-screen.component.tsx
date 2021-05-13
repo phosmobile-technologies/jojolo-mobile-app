@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { View, StyleSheet, TextInput } from "react-native";
 
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
 import AppText from "../../common/components/typography/text.component";
@@ -11,6 +11,7 @@ const SearchScreen = () => {
   return (
     <View style={styles.container}>
       <View>
+        {/* @TODO Change this to use controlled input */}
         <TextInput
           style={styles.input}
           placeholder={"🔍 search for post using keyword"}
@@ -23,7 +24,7 @@ const SearchScreen = () => {
         <AppText style={styles.text}>No Post</AppText>
       </View>
       <View style={styles.keyword}>
-        <AppText style={styles.text2}>
+        <AppText>
           Enter a keyword you’re trying to find and search for a post
         </AppText>
       </View>
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     left: 130,
   },
-  text2: {},
   keyword: {
     paddingTop: 10,
     paddingLeft: 43,

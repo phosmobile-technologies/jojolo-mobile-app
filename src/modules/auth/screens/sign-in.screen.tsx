@@ -77,7 +77,9 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
         <AppTextLink
           style={styles.header__text}
           onPress={() =>
-            navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.SIGN_UP_SCREEN)
+            navigation.navigate(
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_UP_SCREEN
+            )
           }
         >
           Sign Up

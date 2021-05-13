@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import NAVIGATION_CONSTANTS from "./navigation-constants";
 import ForumScreen from "../modules/forum/screens/forum.screen";
 import PostScreen from "../modules/forum/screens/post.screen";
 import NewPostScreen from "../modules/forum/screens/new-post.screen";
-import SearchScreen from "../modules/forum/screens/search-screen.component";
+import SearchPostsScreen from "../modules/forum/screens/search-screen.component";
+import { NAVIGATION_CONSTANTS } from "../constants";
 
 const ForumStackNavigator = createStackNavigator();
 
@@ -15,36 +15,38 @@ const ForumStackNavigator = createStackNavigator();
  */
 const ForumNavigator = () => {
   return (
-    <ForumStackNavigator.Navigator screenOptions={screenOptions}>
+    <ForumStackNavigator.Navigator
+      screenOptions={forumStackNavigatorScreenOptions}
+    >
       <ForumStackNavigator.Screen
-        name={NAVIGATION_CONSTANTS.FORUM_NAVIGATOR}
+        name={NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR}
         component={ForumScreen}
       />
       <ForumStackNavigator.Screen
-        name={NAVIGATION_CONSTANTS.POST}
+        name={NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN}
         component={PostScreen}
-        options={postScreenOptions}
+        options={{ ...showHeaderOption }}
       />
       <ForumStackNavigator.Screen
-        name={NAVIGATION_CONSTANTS.NEW_POST}
+        name={NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN}
         component={NewPostScreen}
-        options={postScreenOptions}
+        options={{ ...showHeaderOption }}
       />
       <ForumStackNavigator.Screen
-        name={NAVIGATION_CONSTANTS.SEARCH_SCREEN}
-        component={SearchScreen}
-        options={postScreenOptions}
+        name={NAVIGATION_CONSTANTS.SCREENS.FORUM.SEARCH_POSTS_SCREEN}
+        component={SearchPostsScreen}
+        options={{ ...showHeaderOption }}
       />
     </ForumStackNavigator.Navigator>
   );
 };
 
-const screenOptions = {
-  headerShown: false,
+const showHeaderOption = {
+  headerShown: true,
 };
 
-const postScreenOptions = {
-  headerShown: true,
+const forumStackNavigatorScreenOptions = {
+  headerShown: false,
 };
 
 export default ForumNavigator;

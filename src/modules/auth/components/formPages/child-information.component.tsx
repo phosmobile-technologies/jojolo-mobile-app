@@ -47,13 +47,13 @@ const ChildInformationPage = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <Wizard>
         <Wizard.Step>
-          <ChildInformation />
+          <ChildInformation navigation={navigation} />
         </Wizard.Step>
         <Wizard.Step>
-          <PastMedicalHistory />
+          <PastMedicalHistory navigation={navigation} />
         </Wizard.Step>
         <Wizard.Step>
-          <SelectWhatToTrack />
+          <SelectWhatToTrack navigation={navigation} />
         </Wizard.Step>
       </Wizard>
     </View>

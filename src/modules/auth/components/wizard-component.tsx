@@ -7,19 +7,17 @@ class Step extends PureComponent {
   state = {};
   render() {
     return (
-      <View style={{ flex: 1, bottom: 25 }}>
+      <View style={{ flex: 2, bottom: 25 }}>
         {this.props.children}
-        <AppButton
-          title="Prev"
-          disabled={this.props.currentIndex === 0}
-          onPress={this.props.prevStep}
-        />
-        <AppButton
-          title="Next"
-          disabled={this.props.isLast}
-          onPress={this.props.nextStep}
-          style={styles.button}
-        />
+        {this.props.isLast ? (
+          <></>
+        ) : (
+          <AppButton
+            title="Next"
+            onPress={this.props.nextStep}
+            style={styles.button}
+          />
+        )}
       </View>
     );
   }
@@ -60,7 +58,6 @@ class Wizard extends PureComponent {
               isLast: this.state.index === this.props.children.length - 1,
             });
           }
-
           return null;
         })}
       </View>
@@ -69,9 +66,7 @@ class Wizard extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 10,
-  },
+  button: {},
 });
 
 export default Wizard;

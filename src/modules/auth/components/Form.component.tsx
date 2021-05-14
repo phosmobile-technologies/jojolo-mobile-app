@@ -11,6 +11,7 @@ import ControlledAppTextInput from "../../common/components/forms/controlled-tex
 import AppText from "../../common/components/typography/text.component";
 import { COLORS } from "../../common/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { NAVIGATION_CONSTANTS } from "../../../constants";
 
 const ChildInformationschema = yup.object().shape({
   full_name: yup.string().required("Please provide your full name"),
@@ -21,7 +22,7 @@ const PastMedicalHistoryschema = yup.object().shape({
   full_name: yup.string().required("Please provide your full name"),
 });
 
-export const ChildInformation = () => {
+export const ChildInformation = ({ navigation }: { navigation: any }) => {
   const {
     control,
     handleSubmit,
@@ -54,11 +55,19 @@ export const ChildInformation = () => {
           error={errors.email_address}
         />
       </View>
+
+      <AppButton
+        title="Back to Child Information"
+        onPress={() =>
+          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
+        }
+        style={styles.ChildInformationPagebutton}
+      />
     </View>
   );
 };
 
-export const PastMedicalHistory = () => {
+export const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
   const [selectedRole, setSelectedRole] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -132,11 +141,18 @@ export const PastMedicalHistory = () => {
           checked={true}
         />
       </View>
+      <AppButton
+        title="Back to Child Information"
+        onPress={() =>
+          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
+        }
+        style={styles.PastMedicalHistorybutton}
+      />
     </ScrollView>
   );
 };
 
-export const SelectWhatToTrack = () => {
+export const SelectWhatToTrack = ({ navigation }: { navigation: any }) => {
   const [growthChecked, setGrowthChecked] = useState(false);
   const toggleGrowth = useCallback(
     () => setGrowthChecked(!growthChecked),
@@ -170,19 +186,37 @@ export const SelectWhatToTrack = () => {
           onPress={toggleGrowth}
         />
       </View>
+      <AppButton
+        title="Back to Child Information"
+        onPress={() =>
+          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
+        }
+        style={styles.SelectWhatToTrackBackbutton}
+      />
+      <AppButton
+        title="Register Baby"
+        onPress={() => {
+          toast.show("Your Baby has been successfully Registered", {
+            type: "success",
+          });
+          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
+        }}
+        style={styles.SelectWhatToTrackSignInbutton}
+      />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   ChildInformationPagecontainer: {
-    flex: 1,
+    flex: 2,
     justifyContent: "space-between",
     backgroundColor: COLORS.WHITE,
+    paddingBottom: 20,
   },
   ChildInformationPageform__input__wrapper: {
     padding: 20,
-    top: -350,
+    top: 35,
   },
   ChildInformationPagebottomBar: {
     paddingVertical: 50,
@@ -193,10 +227,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: 327,
     left: 24,
-    top: 23,
+    top: 150,
   },
   ChildInformationPagebutton: {
-    marginTop: 10,
+    paddingHorizontal: 10,
   },
   PastMedicalHistorycontainer: {
     flex: 1,
@@ -211,7 +245,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   PastMedicalHistorybutton: {
-    marginTop: 10,
+    marginTop: 169,
+  },
+  SelectWhatToTrackSignInbutton: {
+    top: 450,
+    width: 410,
+    left: -20,
+  },
+  SelectWhatToTrackBackbutton: {
+    top: 439,
+    width: 410,
+    left: -20,
   },
   PastMedicalHistorytext: {
     fontSize: 16,

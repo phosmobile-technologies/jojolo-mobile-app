@@ -42,7 +42,7 @@ const AddChild = ({ navigation }: { navigation: any }) => {
           title="Add Your Child"
           onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.AUTH.CHILD_INFORMATION_PAGE
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_SCREEN
             )
           }
         />

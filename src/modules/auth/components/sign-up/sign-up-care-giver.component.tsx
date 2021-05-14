@@ -6,17 +6,17 @@ import * as yup from "yup";
 import { useToast } from "react-native-fast-toast";
 import { ScrollView } from "react-native-gesture-handler";
 
-import AppTextInput from "../../common/components/forms/text-input.component";
-import AppText from "../../common/components/typography/text.component";
-import { UserRole } from "../../common/models/user.model";
-import AppButton from "../../common/components/button.component";
+import AppTextInput from "../../../common/components/forms/text-input.component";
+import AppText from "../../../common/components/typography/text.component";
+import { UserRole } from "../../../common/models/user.model";
+import AppButton from "../../../common/components/button.component";
 import APP_CONSTANTS, {
   COLORS,
   NAVIGATION_CONSTANTS,
-} from "../../../constants";
-import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
-import Loader from "../../common/components/loader.component";
+} from "../../../../constants";
+import ControlledAppTextInput from "../../../common/components/forms/controlled-text-input.component";
+import ControlledAppDropdownInput from "../../../common/components/forms/controlled-dropdown-input.component";
+import Loader from "../../../common/components/loader.component";
 
 const schema = yup.object().shape({
   role: yup.string().required("Please select a valid role"),
@@ -135,6 +135,17 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           secureTextEntry={true}
           control={control}
           error={errors.password}
+        />
+      </View>
+      {/* @TODO Remove this */}
+      <View style={styles.bottomBar}>
+        <AppButton
+          title="Next Page"
+          onPress={() => {
+            navigation.navigate(
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_OR_SKIP_SCREEN
+            );
+          }}
         />
       </View>
       <View style={styles.bottomBar}>

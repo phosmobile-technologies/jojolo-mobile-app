@@ -15,8 +15,8 @@ import AppText from "../../common/components/typography/text.component";
 import { UserRole } from "../../common/models/user.model";
 import InPageTabs from "../../common/components/in-page-tabs.component";
 import { SceneMap } from "react-native-tab-view";
-import SignUpCareGiver from "../components/sign-up-care-giver.component";
-import SignUpHealthProfessional from "../components/sign-up-health-professional.component";
+import SignUpCareGiver from "../components/sign-up/sign-up-care-giver.component";
+import SignUpHealthProfessional from "../components/sign-up/sign-up-health-professional.component";
 
 interface HealthProfessionalSignUpInfo {
   full_name: string;

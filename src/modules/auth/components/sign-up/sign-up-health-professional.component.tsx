@@ -6,16 +6,16 @@ import * as yup from "yup";
 import { useToast } from "react-native-fast-toast";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { HealthProfessionalRole } from "../../common/models/user.model";
-import AppButton from "../../common/components/button.component";
+import { HealthProfessionalRole } from "../../../common/models/user.model";
+import AppButton from "../../../common/components/button.component";
 import APP_CONSTANTS, {
   COLORS,
   NAVIGATION_CONSTANTS,
-} from "../../../constants";
-import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
-import Loader from "../../common/components/loader.component";
-import ControlledAppNumericInput from "../../common/components/forms/controlled-numeric-input.component";
+} from "../../../../constants";
+import ControlledAppTextInput from "../../../common/components/forms/controlled-text-input.component";
+import ControlledAppDropdownInput from "../../../common/components/forms/controlled-dropdown-input.component";
+import Loader from "../../../common/components/loader.component";
+import ControlledAppNumericInput from "../../../common/components/forms/controlled-numeric-input.component";
 
 const schema = yup.object().shape({
   role: yup.string().required("Please select a valid role"),

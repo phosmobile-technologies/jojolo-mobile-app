@@ -17,6 +17,9 @@ export const NAVIGATION_CONSTANTS = {
       CHILD_INFORMATION_PAGE: "Child Information Page",
       PAST_MEDICAL_HISTORY: "Past Medical History",
       SELECT_WHAT_TO_TRACK: "Select What To Track",
+
+      ADD_CHILD_OR_SKIP_SCREEN: "Add Child or Skip",
+      ADD_CHILD_SCREEN: "Add Child Screen",
     },
 
     FORUM: {

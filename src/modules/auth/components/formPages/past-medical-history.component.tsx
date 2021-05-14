@@ -132,21 +132,21 @@ const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  PastMedicalHistorycontainer: {
     flex: 1,
     backgroundColor: COLORS.APP_WHITE_BACKGROUND,
   },
-  form__input__wrapper: {
+  PastMedicalHistoryform__input__wrapper: {
     padding: 20,
   },
-  bottomBar: {
+  PastMedicalHistorybottomBar: {
     paddingVertical: 50,
     paddingHorizontal: 30,
   },
-  button: {
+  PastMedicalHistorybutton: {
     marginTop: 10,
   },
-  text: {
+  PastMedicalHistorytext: {
     fontSize: 18,
     width: 327,
     left: 20,

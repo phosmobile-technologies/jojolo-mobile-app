@@ -7,8 +7,7 @@ import { useToast } from "react-native-fast-toast";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
-import { COLORS } from "../../common/constants";
-import { NAVIGATION_CONSTANTS } from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
@@ -100,12 +99,12 @@ const tabBarOptions = {
     fontSize: 11,
   },
   indicatorStyle: {
-    backgroundColor: COLORS.PRIMARY_COLOR,
+    backgroundColor: COLORS.APP_PRIMARY_COLOR,
     height: 4,
     borderRadius: 10,
   },
-  activeTintColor: COLORS.PRIMARY_COLOR,
-  inactiveTintColor: COLORS.GRAY_TEXT_COLOR,
+  activeTintColor: COLORS.APP_PRIMARY_COLOR,
+  inactiveTintColor: COLORS.APP_GRAY_TEXT,
   pressColor: "transparent",
 };
 

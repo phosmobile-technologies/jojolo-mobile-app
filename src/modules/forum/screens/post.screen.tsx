@@ -19,8 +19,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import { createRef } from "react";
-import { COLORS } from "../../common/constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
+import { COLORS } from "../../../constants";
 
 const PostDetailsScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
@@ -41,10 +41,9 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
         <View>
           <AppText>
             Commenting On{"  "}
-            <Text style={{ color: COLORS.PRIMARY_COLOR }}>
+            <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
               My Baby is Struggling
             </Text>
-            {"                                       "}
             <TouchableWithoutFeedback
               onPress={() => {
                 sheetRef.current.snapTo(1);
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 327,
     marginBottom: -1,
-    backgroundColor: COLORS.GRAY_BACKGROUND,
+    backgroundColor: COLORS.APP_GRAY_BACKGROUND,
     left: 10,
   },
   text: {
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
   textBox: {
     paddingVertical: 2,
     fontSize: 15,
-    borderBottomColor: COLORS.LIGHT_GRAY_BORDER,
+    borderBottomColor: COLORS.APP_GRAY_BACKGROUND,
     borderBottomWidth: 1,
     height: 48,
   },

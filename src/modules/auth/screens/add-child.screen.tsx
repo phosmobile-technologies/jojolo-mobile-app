@@ -1,61 +1,224 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { useToast } from "react-native-fast-toast";
 import StepIndicator from "react-native-step-indicator";
 
-import AppText from "../../common/components/typography/text.component";
-import { ChildInformation } from "../components/Form.component";
+import {
+  APP_CONSTANTS,
+  COLORS,
+  NAVIGATION_CONSTANTS,
+} from "../../../constants";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
+import AppHeaderTitle from "../../common/components/header/app-header-title.component";
+import Loader from "../../common/components/loader.component";
+import AppModal from "../../common/components/modal.component";
+import { APP_STYLES } from "../../common/styles";
+import AddChildInformationForm from "../components/child-registration/add-child-information.component";
+import AddChildMedicalHistoryForm from "../components/child-registration/add-child-medical-history.component";
+import AddChildDataToTrackForm from "../components/child-registration/add-what-to-track.component";
 
 /**
  * Page for adding child information during registration of a care giver
  */
 const AddChildScreen = () => {
-  const [stepperPosition, setStepperPosition] = useState(0);
-  const labels = [
-    "Child Information",
-    "Past Medical History",
-    "Select What To Track",
-  ];
-  const customStyles = {
-    stepIndicatorSize: 25,
-    currentStepIndicatorSize: 30,
-    separatorStrokeWidth: 2,
-    currentStepStrokeWidth: 3,
-    stepStrokeCurrentColor: "#fe7013",
-    stepStrokeWidth: 3,
-    stepStrokeFinishedColor: "#fe7013",
-    stepStrokeUnFinishedColor: "#aaaaaa",
-    separatorFinishedColor: "#fe7013",
-    separatorUnFinishedColor: "#aaaaaa",
-    stepIndicatorFinishedColor: "#fe7013",
-    stepIndicatorUnFinishedColor: "#ffffff",
-    stepIndicatorCurrentColor: "#ffffff",
-    stepIndicatorLabelFontSize: 12,
-    currentStepIndicatorLabelFontSize: 13,
-    stepIndicatorLabelCurrentColor: "#fe7013",
-    stepIndicatorLabelFinishedColor: "#ffffff",
-    stepIndicatorLabelUnFinishedColor: "#aaaaaa",
-    labelColor: "#999999",
-    labelSize: 13,
-    currentStepLabelColor: "#fe7013",
-  };
+  const navigation = useNavigation() as any;
+  const route = useRoute() as any;
 
-  const renderStepIndicator = (position: number, stepStatus: string) => {
-    if (position === 0) {
-      return <ChildInformation />;
-    }
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"Add Child"} />,
+      headerRight: () => <></>,
+      headerStyle: { ...APP_STYLES.base__header__styles },
+    });
+  }, [navigation]);
+
+  const toast: any = useToast();
+
+  /**
+   * State data passed to the sub components in the various tabs
+   */
+  const [stepperPosition, setStepperPosition] = useState(0);
+  const [childInformation, setChildInformation] = useState({
+    first_name: "",
+    date_of_birth: undefined,
+    gender: "",
+  });
+  const [childMedicalHistory, setChildMedicalHistory] = useState({
+    birth_term: "",
+    blood_group: "",
+    genotype: "",
+    has_allergies: false,
+    has_special_needs: false,
+    has_medical_conditions: false,
+    allergies: [],
+  });
+  const [childDataToTrack, setChildDataToTrack] = useState({
+    milestones: false,
+    growth: false,
+    immunizations: false,
+  });
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [isRegistering, setIsRegistering] = React.useState(false);
+
+  /**
+   * Called when completing the child registration
+   */
+  const completeChildRegistration = () => {
+    const { careGiverInfo } = route.params;
+    const {
+      full_name,
+      role,
+      email,
+      password,
+      phone_number,
+      state,
+      city,
+      address,
+    } = careGiverInfo;
+    const { first_name, date_of_birth, gender } = childInformation;
+    const {
+      birth_term,
+      blood_group,
+      genotype,
+      has_allergies,
+      has_special_needs,
+      has_medical_conditions,
+      allergies,
+    } = childMedicalHistory;
+    const { milestones, growth, immunizations } = childDataToTrack;
+
+    const careGiverRegistrationData = {
+      full_name,
+      email,
+      role,
+      phone_number,
+      state,
+      city,
+      address,
+      password,
+      country: "Nigeria", // @TODO update this when country dropdown is added
+      child: {
+        allergies,
+        birth_term,
+        blood_group,
+        date_of_birth,
+        first_name,
+        gender,
+        genotype,
+        has_allergies,
+        has_medical_conditions,
+        has_special_needs,
+        track_growth: growth,
+        track_milestones: milestones,
+        track_immunizations: immunizations,
+      },
+    };
+
+    console.log(careGiverRegistrationData);
+
+    setShowConfirmationModal(false);
+    setIsRegistering(true);
+
+    // @TODO Replace this with an actual API call
+    setTimeout(() => {
+      setIsRegistering(false);
+      toast.show("Your account has been successfully created", {
+        type: "success",
+      });
+      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
+    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Loader loading={isRegistering} />
+      <AppModal
+        visible={showConfirmationModal}
+        setVisibility={setShowConfirmationModal}
+        title={"Confirm Child Addition"}
+        message={
+          "You are about to add a child, please check again to make sure you put in the right information."
+        }
+        onPressConfirm={completeChildRegistration}
+      ></AppModal>
       <StepIndicator
-        customStyles={customStyles}
+        customStyles={StepperStyles}
         currentPosition={stepperPosition}
-        labels={labels}
+        labels={stepperLabels}
         stepCount={3}
-        onPress={(position) => setStepperPosition(position)}
+        onPress={(position) => {}}
       />
+
+      {stepperPosition === 0 && (
+        <AddChildInformationForm
+          childInformation={childInformation}
+          saveChildInformation={setChildInformation}
+          setStepperPosition={setStepperPosition}
+        />
+      )}
+
+      {stepperPosition === 1 && (
+        <AddChildMedicalHistoryForm
+          saveChildMedicalInformation={setChildMedicalHistory}
+          setStepperPosition={setStepperPosition}
+          childMedicalHistory={childMedicalHistory}
+        />
+      )}
+
+      {stepperPosition === 2 && (
+        <AddChildDataToTrackForm
+          saveChildDataToTrack={setChildDataToTrack}
+          setStepperPosition={setStepperPosition}
+          childDataToTrack={childDataToTrack}
+          completeChildRegistration={() => setShowConfirmationModal(true)}
+        />
+      )}
     </View>
   );
 };
+
+const stepperLabels = [
+  "Child Information",
+  "Past Medical History",
+  "Select What To Track",
+];
+
+const StepperStyles = {
+  stepIndicatorSize: 25,
+  currentStepIndicatorSize: 30,
+  separatorStrokeWidth: 2,
+  currentStepStrokeWidth: 3,
+  stepStrokeCurrentColor: COLORS.WHITE,
+  stepStrokeWidth: 3,
+  stepStrokeFinishedColor: COLORS.WHITE,
+  stepStrokeUnFinishedColor: COLORS.WHITE,
+  separatorFinishedColor: COLORS.APP_GREEN,
+  separatorUnFinishedColor: COLORS.APP_GRAY_BACKGROUND,
+  stepIndicatorFinishedColor: COLORS.APP_GREEN,
+  stepIndicatorUnFinishedColor: COLORS.WHITE,
+  stepIndicatorCurrentColor: COLORS.APP_ORANGE_TEXT,
+  stepIndicatorLabelFontSize: 12,
+  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelCurrentColor: COLORS.WHITE,
+  stepIndicatorLabelFinishedColor: COLORS.WHITE,
+  stepIndicatorLabelUnFinishedColor: COLORS.APP_GRAY_TEXT,
+  labelColor: COLORS.APP_GRAY_TEXT,
+  labelSize: 12,
+  currentStepLabelColor: COLORS.APP_ORANGE_TEXT,
+};
+
+const styles = StyleSheet.create({
+  container: {
+    ...APP_STYLES.base__container__styles,
+    paddingTop: 30,
+  },
+});
 
 export default AddChildScreen;

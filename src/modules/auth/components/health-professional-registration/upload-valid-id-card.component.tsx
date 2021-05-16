@@ -3,7 +3,8 @@ import { Platform, View, StyleSheet } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useToast } from "react-native-fast-toast";
 
-import APP_CONSTANTS, {
+import {
+  APP_CONSTANTS,
   COLORS,
   NAVIGATION_CONSTANTS,
 } from "../../../../constants";

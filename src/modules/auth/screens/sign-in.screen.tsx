@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Button, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { AuthContext } from "../../../../App";
-import APP_CONSTANTS, {
+import {
+  APP_CONSTANTS,
   COLORS,
   NAVIGATION_CONSTANTS,
 } from "../../../constants";
@@ -17,6 +17,7 @@ import AppText from "../../common/components/typography/text.component";
 import { useToast } from "react-native-fast-toast";
 import { useForm } from "react-hook-form";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
+import { AuthContext } from "../../../auth.context";
 
 const schema = yup.object().shape({
   username: yup.string().required("Please provide your username"),
@@ -30,9 +31,6 @@ const schema = yup.object().shape({
  * @returns
  */
 const SignInScreen = ({ navigation }: { navigation: any }) => {
-  // const [username, setUsername] = React.useState("");
-  // const [password, setPassword] = React.useState("");
-
   const toast: any = useToast();
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
 

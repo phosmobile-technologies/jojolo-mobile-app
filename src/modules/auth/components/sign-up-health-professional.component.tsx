@@ -6,17 +6,17 @@ import * as yup from "yup";
 import { useToast } from "react-native-fast-toast";
 import { ScrollView } from "react-native-gesture-handler";
 
-import AppTextInput from "../../../common/components/forms/text-input.component";
-import AppText from "../../../common/components/typography/text.component";
-import { UserRole } from "../../../common/models/user.model";
-import AppButton from "../../../common/components/button.component";
-import APP_CONSTANTS, {
+import { HealthProfessionalRole } from "../../common/models/user.model";
+import AppButton from "../../common/components/button.component";
+import {
+  APP_CONSTANTS,
   COLORS,
   NAVIGATION_CONSTANTS,
-} from "../../../../constants";
-import ControlledAppTextInput from "../../../common/components/forms/controlled-text-input.component";
-import ControlledAppDropdownInput from "../../../common/components/forms/controlled-dropdown-input.component";
-import Loader from "../../../common/components/loader.component";
+} from "../../../constants";
+import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
+import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
+import Loader from "../../common/components/loader.component";
+import ControlledAppNumericInput from "../../common/components/forms/controlled-numeric-input.component";
 
 const schema = yup.object().shape({
   role: yup.string().required("Please select a valid role"),
@@ -26,25 +26,32 @@ const schema = yup.object().shape({
     .email("Please provide a valid email address")
     .required("Your email address is required"),
   phone_number: yup.string().required("Please provide your phone number"),
-  address: yup.string().required("Please provide your address"),
-  city: yup.string().required("Please provide your city"),
-  state: yup.string().required("Please provide your state"),
+  years_of_experience: yup
+    .number()
+    .min(1, "You must have at least 1 year of experience")
+    .required("Please provide your years of experience"),
   password: yup.string().required("Your password is required"),
 });
 
 /**
- * The caregiver signup form
+ * The health professional signup form
  *
  * @returns
  */
-const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
-  const [selectedRole, setSelectedRole] = useState();
+const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast: any = useToast();
   const roleOptions = [
-    { label: "Mother", value: UserRole.MOTHER },
-    { label: "Father", value: UserRole.FATHER },
-    { label: "Guardian", value: UserRole.GUARDIAN },
+    { label: "Dentist", value: HealthProfessionalRole.DENTIST },
+    { label: "Dermatologist", value: HealthProfessionalRole.DERMATOLOGIST },
+    {
+      label: "General Practitioner",
+      value: HealthProfessionalRole.GENERAL_PRACTITIONER,
+    },
+    { label: "Lactationist", value: HealthProfessionalRole.LACTATIONIST },
+    { label: "Nutritionist", value: HealthProfessionalRole.NUTRITIONIST },
+    { label: "Pediatrician", value: HealthProfessionalRole.PEDIATRICIAN },
+    { label: "Therapist", value: HealthProfessionalRole.THERAPIST },
   ];
 
   const {
@@ -59,32 +66,24 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
   const onSubmit = (data: any) => {
     const userInfo = data;
 
-    //setIsLoading(true);
-
-    navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD);
+    setIsLoading(true);
 
     // @TODO Replace this with an actual API call
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    //   navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
-    //   toast.show("Your account has been successfully created", {
-    //     type: "success",
-    //   });
-    // }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.navigate(
+        NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
+      );
+      // toast.show("Your account has been successfully created", {
+      //   type: "success",
+      // });
+    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
   };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Loader loading={isLoading} />
       <View style={styles.form__input__wrapper}>
-        <ControlledAppDropdownInput
-          options={roleOptions}
-          name={"role"}
-          control={control}
-          error={errors.role}
-          defaultValue={""}
-          label={"Which Of These Roles Best Describes You?"}
-        />
         <ControlledAppTextInput
           name={"full_name"}
           label={"Full Name"}
@@ -106,26 +105,23 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           control={control}
           error={errors.phone_number}
         />
-        <ControlledAppTextInput
-          name={"address"}
-          label={"Address"}
-          defaultValue={""}
+
+        <ControlledAppNumericInput
+          name={"years_of_experience"}
           control={control}
-          error={errors.address}
+          error={errors.years_of_experience}
+          defaultValue={0}
+          label={"Years Of Experience"}
+          minValue={0}
         />
-        <ControlledAppTextInput
-          name={"city"}
-          label={"City"}
-          defaultValue={""}
+
+        <ControlledAppDropdownInput
+          options={roleOptions}
+          name={"role"}
           control={control}
-          error={errors.city}
-        />
-        <ControlledAppTextInput
-          name={"state"}
-          label={"State"}
+          error={errors.role}
           defaultValue={""}
-          control={control}
-          error={errors.state}
+          label={"Role"}
         />
         <ControlledAppTextInput
           name={"password"}
@@ -137,15 +133,15 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           error={errors.password}
         />
       </View>
-      {/* @TODO Remove this */}
+      {/* @TODO Remove this temporary button */}
       <View style={styles.bottomBar}>
         <AppButton
-          title="Next Page"
-          onPress={() => {
+          title="Upload"
+          onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_OR_SKIP_SCREEN
-            );
-          }}
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
+            )
+          }
         />
       </View>
       <View style={styles.bottomBar}>
@@ -162,8 +158,8 @@ const styles = StyleSheet.create({
   },
   form__input__wrapper: {},
   bottomBar: {
-    paddingVertical: 50,
+    paddingVertical: 70,
   },
 });
 
-export default SignUpCareGiver;
+export default SignUpHealthProfessional;

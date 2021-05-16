@@ -6,7 +6,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { ToastProvider } from "react-native-fast-toast";
-import { createStackNavigator } from "@react-navigation/stack";
 import * as SecureStore from "expo-secure-store";
 import {
   useFonts,
@@ -19,8 +18,7 @@ import {
 
 import AppNavigator from "./src/navigation/app-navigator";
 import { AuthenticationStack } from "./src/navigation/stack.navigators";
-
-export const AuthContext = React.createContext({});
+import { AuthContext } from "./src/auth.context";
 
 /**
  * The root app component

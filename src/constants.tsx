@@ -1,4 +1,4 @@
-const APP_CONSTANTS = {
+export const APP_CONSTANTS = {
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 
@@ -59,14 +59,40 @@ export const NAVIGATION_CONSTANTS = {
 export const COLORS = {
   WHITE: "white",
   APP_GRAY_BACKGROUND: "#E8E8E8",
+  APP_LIGHT_GRAY_BACKGROUND: "#f1eded",
   APP_WHITE_BACKGROUND: "#F8F8F8",
   APP_PRIMARY_COLOR: "#19A5B0",
   APP_PRIMARY_COLOR_LIGHT: "#DEF3F4",
   APP_ORANGE_TEXT: "#EA6F06",
+  APP_TAG_ORANGE: "#F97B1C",
   APP_GRAY_TEXT: "#A0A4A8",
   APP_BLACK_TEXT: "#14142B",
+  APP_BLACK_ICON: "#52575C",
+  APP_PAGE_HEADER_BLACK_TEXT: "#25282B",
   APP_ERROR_RED: "#E5251D",
+  APP_GREEN: "#2AC769",
   TRANSPARENT: "transparent",
 };
 
-export default APP_CONSTANTS;
+export const DROPDOWN_OPTIONS = {
+  CHILD_BIRTH_TERM: [
+    { label: "Pre-term (28 Weeks - 37 Weeks)", value: "PRE_TERM" },
+    { label: "Term (37 Weeks - 42 Weeks)", value: "TERM" },
+    { label: "Post-Term ( > 42 Weeks)", value: "POST_TERM" },
+    { label: "Not Sure", value: "NOT_SURE" },
+  ],
+
+  BLOOD_GROUP: [
+    { label: "A", value: "A" },
+    { label: "B", value: "B" },
+    { label: "AB", value: "AB" },
+    { label: "O", value: "O" },
+  ],
+
+  GENOTYPE: [
+    { label: "AA", value: "AA" },
+    { label: "AS", value: "AS" },
+    { label: "SS", value: "SS" },
+    { label: "AC", value: "AC" },
+  ],
+};

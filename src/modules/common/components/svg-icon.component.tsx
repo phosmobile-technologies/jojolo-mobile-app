@@ -1,7 +1,7 @@
 import React from "react";
 import { SvgXml } from "react-native-svg";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../constants";
+import { COLORS } from "../../../constants";
 
 /**
  * SVG Icon component
@@ -22,7 +22,7 @@ const SvgIcon = ({
   let iconXml: string;
 
   if (!color) {
-    color = COLORS.GRAY_TEXT_COLOR;
+    color = COLORS.APP_GRAY_TEXT;
   }
 
   if (!style) {
@@ -118,6 +118,10 @@ const SvgIcon = ({
       iconXml = HEADER_GO_BACK_ICON;
       break;
 
+    case SVG_ICONS.ROUND_ADD_BUTTON_ICON:
+      iconXml = ROUND_ADD_BUTTON_ICON;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -153,11 +157,12 @@ export const SVG_ICONS = {
   BIG_SEARCH_ICON: "BIG_SEARCH_ICON",
   BABY_ICON: "BABY_ICON",
   HEADER_GO_BACK_ICON: "HEADER_GO_BACK_ICON",
+  ROUND_ADD_BUTTON_ICON: "ROUND_ADD_BUTTON_ICON",
 };
 
 const styles = StyleSheet.create({
   svgIcon: {
-    color: COLORS.BLACK_ICON,
+    color: COLORS.APP_BLACK_TEXT,
   },
 });
 
@@ -454,6 +459,13 @@ const HEADER_GO_BACK_ICON = `<svg width="48" height="48" viewBox="0 0 48 48" fil
 <rect x="5" y="5" width="38" height="38" rx="19" fill="#DEF3F4"/>
 <path d="M31.5 24.8333H18.1667" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M24.8334 31.5L18.1667 24.8333L24.8334 18.1667" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const ROUND_ADD_BUTTON_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="12" fill="#19A5B0"/>
+<path d="M12 9.2002V14.8002" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.2002 12H14.8002" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 

@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import { COLORS } from "../../../../constants";
 
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import { COLORS } from "../../../common/constants";
 import Post from "../../models/post.model";
 import TagModel from "../../models/tag.model";
 
@@ -62,14 +62,17 @@ const PostContent = ({
       {/* Social interaction */}
       <View style={styles.social_icons_container}>
         <View style={styles.social_icon_group}>
-          <SvgIcon iconName={SVG_ICONS.LIKE_ICON} color={COLORS.BLACK_ICON} />
+          <SvgIcon
+            iconName={SVG_ICONS.LIKE_ICON}
+            color={COLORS.APP_BLACK_ICON}
+          />
           <AppText style={styles.social_icon_group__text}>{post.likes}</AppText>
         </View>
 
         <View style={styles.social_icon_group}>
           <SvgIcon
             iconName={SVG_ICONS.COMMENTS_ICON}
-            color={COLORS.BLACK_ICON}
+            color={COLORS.APP_BLACK_ICON}
           />
           <AppText style={styles.social_icon_group__text}>
             {post.comments.length}
@@ -77,7 +80,10 @@ const PostContent = ({
         </View>
 
         <View style={styles.social_icon_group}>
-          <SvgIcon iconName={SVG_ICONS.SHARE_ICON} color={COLORS.BLACK_ICON} />
+          <SvgIcon
+            iconName={SVG_ICONS.SHARE_ICON}
+            color={COLORS.APP_BLACK_ICON}
+          />
           <AppText style={styles.social_icon_group__text}>Share</AppText>
         </View>
       </View>
@@ -129,7 +135,7 @@ const tagStyles = StyleSheet.create({
   container: {
     padding: 5,
     paddingHorizontal: 10,
-    backgroundColor: COLORS.TAG_ORANGE,
+    backgroundColor: COLORS.APP_TAG_ORANGE,
     flexDirection: "row",
     borderRadius: 10,
   },

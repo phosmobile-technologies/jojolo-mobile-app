@@ -1,6 +1,7 @@
 import React from "react";
 import { TextInput, StyleSheet, View } from "react-native";
 import { COLORS } from "../../../../constants";
+import { APP_STYLES } from "../../styles";
 import AppText from "../typography/text.component";
 
 /**
@@ -25,7 +26,9 @@ const AppTextInput = ({
 
   return (
     <View style={styles.container}>
-      {label.length > 0 && <AppText style={styles.label}>{label}</AppText>}
+      {label.length > 0 && (
+        <AppText style={APP_STYLES.form__input__label}>{label}</AppText>
+      )}
       <TextInput style={textInputStyles} {...otherProps} />
       {hasError && errorMessage.length > 0 && (
         <AppText style={styles.error__label}>{errorMessage}</AppText>
@@ -37,12 +40,6 @@ const AppTextInput = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-  },
-
-  label: {
-    marginBottom: 10,
-    fontWeight: "600",
-    fontSize: 14,
   },
 
   error__label: {

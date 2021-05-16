@@ -5,12 +5,12 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+import { COLORS } from "../../../../constants";
 
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import { COLORS } from "../../../common/constants";
 import { User } from "../../../common/models/user.model";
 
 /**
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 10,
     marginBottom: 15,
-    borderBottomColor: COLORS.LIGHT_GRAY_BORDER,
+    borderBottomColor: COLORS.APP_GRAY_BACKGROUND,
     borderBottomWidth: 1,
     paddingTop: 9,
   },

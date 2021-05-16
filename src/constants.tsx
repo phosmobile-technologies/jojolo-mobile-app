@@ -1,4 +1,5 @@
 export const APP_CONSTANTS = {
+  GRAPHQL_API_URL: "http://localhost:3100/graphql",
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 

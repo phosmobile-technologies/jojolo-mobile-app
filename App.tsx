@@ -15,10 +15,18 @@ import {
   Nunito_700Bold,
   Nunito_900Black,
 } from "@expo-google-fonts/nunito";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 
 import AppNavigator from "./src/navigation/app-navigator";
 import { AuthenticationStack } from "./src/navigation/stack.navigators";
-import { AuthContext } from "./src/auth.context";
+import { AuthenticationContext } from "./src/contexts/authentication.context";
+import { queryClient } from "./src/contexts/query-client.context";
 
 /**
  * The root app component
@@ -32,12 +40,6 @@ export default function App({ navigation }: { navigation: any }) {
     Nunito_700Bold,
     Nunito_900Black,
   });
-
-  // @TODO this was commented out because it was causing the "Rendered different number of hooks error".
-  // See https://stackoverflow.com/questions/55622768/uncaught-invariant-violation-rendered-more-hooks-than-during-the-previous-rende
-  // if (!fontsLoaded) {
-  //   return <AppLoading />;
-  // }
 
   // Reducer for auth state
   const [state, dispatch] = React.useReducer(
@@ -115,6 +117,12 @@ export default function App({ navigation }: { navigation: any }) {
     []
   );
 
+  // @TODO this was commented out because it was causing the "Rendered different number of hooks error".
+  // See https://stackoverflow.com/questions/55622768/uncaught-invariant-violation-rendered-more-hooks-than-during-the-previous-rende
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   let PagesToShow = <></>;
 
   if (state.userToken === null) {
@@ -125,18 +133,20 @@ export default function App({ navigation }: { navigation: any }) {
 
   return (
     <>
-      <AuthContext.Provider value={authContext}>
-        <ToastProvider placement="top">
-          <ActionSheetProvider>
-            <SafeAreaProvider>
-              <NavigationContainer>
-                {PagesToShow}
-                <StatusBar style="auto" />
-              </NavigationContainer>
-            </SafeAreaProvider>
-          </ActionSheetProvider>
-        </ToastProvider>
-      </AuthContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationContext.Provider value={authContext}>
+          <ToastProvider placement="top">
+            <ActionSheetProvider>
+              <SafeAreaProvider>
+                <NavigationContainer>
+                  {PagesToShow}
+                  <StatusBar style="auto" />
+                </NavigationContainer>
+              </SafeAreaProvider>
+            </ActionSheetProvider>
+          </ToastProvider>
+        </AuthenticationContext.Provider>
+      </QueryClientProvider>
     </>
   );
 }

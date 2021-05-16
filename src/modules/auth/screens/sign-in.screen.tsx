@@ -17,7 +17,7 @@ import AppText from "../../common/components/typography/text.component";
 import { useToast } from "react-native-fast-toast";
 import { useForm } from "react-hook-form";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import { AuthContext } from "../../../auth.context";
+import { AuthenticationContext } from "../../../contexts/authentication.context";
 
 const schema = yup.object().shape({
   username: yup.string().required("Please provide your username"),
@@ -31,6 +31,7 @@ const schema = yup.object().shape({
  * @returns
  */
 const SignInScreen = ({ navigation }: { navigation: any }) => {
+  const authContext: any = React.useContext(AuthenticationContext);
   const toast: any = useToast();
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
 
@@ -41,8 +42,6 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const authContext: any = React.useContext(AuthContext);
 
   /**
    * Login a user
@@ -64,9 +63,9 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
     }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
   };
 
-  if (isAuthenticating) {
-    <AppActivityIndicator text={"Signing In..."} />;
-  }
+  // if (isAuthenticating) {
+  //   <AppActivityIndicator text={"Signing In..."} />;
+  // }
 
   return (
     <View style={styles.container}>
@@ -121,7 +120,6 @@ const styles = StyleSheet.create({
 
   form__input__wrapper: {
     paddingHorizontal: 30,
-    // marginTop: 40,
   },
 
   header__text: {

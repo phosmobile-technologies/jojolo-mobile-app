@@ -9,6 +9,7 @@ export const COLORS = {
   TAG_ORANGE: "#F97B1C",
   WHITE: "#ffffff",
   GRAY_BACKGROUND: "#EDEDED",
+  LIGHT_GREEN: "#DEF3F4",
 };
 
 export const MOCK_TIME_DELAY_IN_MILLISECONDS = 3000;

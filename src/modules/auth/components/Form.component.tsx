@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useToast } from "react-native-fast-toast";
 import { View, ScrollView, StyleSheet } from "react-native";
-import { CheckBox } from "react-native-elements/dist/checkbox/CheckBox";
+// import { CheckBox } from "react-native-elements/dist/checkbox/CheckBox";
+import SwitchSelector from "react-native-switch-selector";
+import CheckBox from "react-native-check-box";
 
 import * as yup from "yup";
 import AppButton from "../../common/components/button.component";
@@ -12,6 +14,7 @@ import AppText from "../../common/components/typography/text.component";
 import { COLORS } from "../../common/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NAVIGATION_CONSTANTS } from "../../../constants";
+import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
 const ChildInformationschema = yup.object().shape({
   full_name: yup.string().required("Please provide your full name"),
@@ -30,6 +33,8 @@ export const ChildInformation = ({ navigation }: { navigation: any }) => {
   } = useForm({
     resolver: yupResolver(ChildInformationschema),
   });
+
+  const [gender, setGender] = useState("");
 
   return (
     <View style={styles.ChildInformationPagecontainer}>
@@ -55,14 +60,22 @@ export const ChildInformation = ({ navigation }: { navigation: any }) => {
           error={errors.email_address}
         />
       </View>
-
-      <AppButton
-        title="Back to Child Information"
-        onPress={() =>
-          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
-        }
-        style={styles.ChildInformationPagebutton}
-      />
+      <View style={{ marginTop: 19 }}>
+        <AppText>Gender</AppText>
+        <SwitchSelector
+          initial={0}
+          onPress={(value) => setGender(value)}
+          hasPadding
+          options={[
+            { label: "Female", value: "f", activeColor: COLORS.PRIMARY_COLOR },
+            { label: "Male", value: "m", activeColor: COLORS.PRIMARY_COLOR },
+          ]}
+          testID="gender-switch-selector"
+          accessibilityLabel="gender-switch-selector"
+          height={60}
+          borderRadius={10}
+        />
+      </View>
     </View>
   );
 };
@@ -71,6 +84,8 @@ export const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
   const [selectedRole, setSelectedRole] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const [checked, setChecked] = useState(false);
+  const [needsChecked, setNeedsChecked] = useState(false);
   const BirthOptions = [
     { label: "Pre-term (28 Weeks - 37 Weeks)", value: "PreTerm" },
     { label: "Term  (37 Weeks - 42 Weeks)", value: "PreTerm" },
@@ -131,39 +146,38 @@ export const PastMedicalHistory = ({ navigation }: { navigation: any }) => {
           label={"Genotype"}
         />
         <AppText>Background Health Conditions/Challenges</AppText>
-        <CheckBox
-          title="Allergies"
-          checked={false}
-          style={{ borderColor: "#FFFFFF" }}
-        />
-        <CheckBox
-          title="Special Needs (i.e Mental or Physical Needs)"
-          checked={true}
-        />
+        <View>
+          <CheckBox
+            style={{ flex: 1, padding: 10, marginTop: 20 }}
+            onClick={() => {
+              setChecked(!checked);
+            }}
+            isChecked={checked}
+            rightText={"Allergies"}
+            checkedImage={<SvgIcon iconName={SVG_ICONS.ACTIVE} />}
+            unCheckedImage={<SvgIcon iconName={SVG_ICONS.INACTIVE} />}
+          />
+          <CheckBox
+            style={{ flex: 1, padding: 10, marginTop: 10 }}
+            onClick={() => {
+              setNeedsChecked(!needsChecked);
+            }}
+            isChecked={!needsChecked}
+            rightText={"Special Needs (i.e Mental or Physical Needs)"}
+            checkedImage={<SvgIcon iconName={SVG_ICONS.ACTIVE} />}
+            unCheckedImage={<SvgIcon iconName={SVG_ICONS.INACTIVE} />}
+          />
+        </View>
       </View>
-      <AppButton
-        title="Back to Child Information"
-        onPress={() =>
-          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
-        }
-        style={styles.PastMedicalHistorybutton}
-      />
     </ScrollView>
   );
 };
 
 export const SelectWhatToTrack = ({ navigation }: { navigation: any }) => {
   const [growthChecked, setGrowthChecked] = useState(false);
-  const toggleGrowth = useCallback(
-    () => setGrowthChecked(!growthChecked),
-    [growthChecked, setGrowthChecked]
-  );
   const toast: any = useToast();
-  const [milestoneChecked, setMilestoneChecked] = useState(false);
-  const toggleMilestone = useCallback(
-    () => setMilestoneChecked(!milestoneChecked),
-    [milestoneChecked, setMilestoneChecked]
-  );
+  const [milestoneChecked, setMilestoneChecked] = useState(true);
+  const [immunizationChecked, setImmunizationChecked] = useState(false);
 
   return (
     <ScrollView style={styles.SelectWhatToTrackcontainer}>
@@ -172,80 +186,78 @@ export const SelectWhatToTrack = ({ navigation }: { navigation: any }) => {
           Select What You Would Like To Track
         </AppText>
       </View>
-      <View>
+      <View style={styles.CheckBox}>
         <CheckBox
-          title="My Child Milestones"
-          checked={milestoneChecked}
-          onPress={toggleMilestone}
+          style={{ flex: 1, padding: 10 }}
+          onClick={() => {
+            setMilestoneChecked(!milestoneChecked);
+          }}
+          isChecked={milestoneChecked}
+          rightText={"My Child's Milestone"}
+          checkedImage={<SvgIcon iconName={SVG_ICONS.ACTIVE} />}
+          unCheckedImage={<SvgIcon iconName={SVG_ICONS.INACTIVE} />}
         />
       </View>
-      <View>
+      <View style={styles.CheckBox}>
         <CheckBox
-          title="My Child's Growth"
-          checked={growthChecked}
-          onPress={toggleGrowth}
+          style={{ flex: 1, padding: 10 }}
+          onClick={() => {
+            setGrowthChecked(!growthChecked);
+          }}
+          isChecked={growthChecked}
+          rightText={"My Child's Growth"}
+          checkedImage={<SvgIcon iconName={SVG_ICONS.ACTIVE} />}
+          unCheckedImage={<SvgIcon iconName={SVG_ICONS.INACTIVE} />}
         />
       </View>
-      <AppButton
-        title="Back to Child Information"
-        onPress={() =>
-          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD)
-        }
-        style={styles.SelectWhatToTrackBackbutton}
-      />
-      <AppButton
-        title="Register Baby"
-        onPress={() => {
-          toast.show("Your Baby has been successfully Registered", {
-            type: "success",
-          });
-          navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
-        }}
-        style={styles.SelectWhatToTrackSignInbutton}
-      />
+      <View style={styles.CheckBox}>
+        <CheckBox
+          style={{ flex: 1, padding: 10 }}
+          onClick={() => {
+            setImmunizationChecked(!immunizationChecked);
+          }}
+          isChecked={immunizationChecked}
+          rightText={"My Child's Growth"}
+          checkedImage={<SvgIcon iconName={SVG_ICONS.ACTIVE} />}
+          unCheckedImage={<SvgIcon iconName={SVG_ICONS.INACTIVE} />}
+        />
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  ChildInformationPagecontainer: {
-    flex: 2,
-    justifyContent: "space-between",
-    backgroundColor: COLORS.WHITE,
-    paddingBottom: 20,
-  },
-  ChildInformationPageform__input__wrapper: {
-    padding: 20,
-    top: 35,
-  },
+  ChildInformationPagecontainer: {},
+  ChildInformationPageform__input__wrapper: {},
   ChildInformationPagebottomBar: {
     paddingVertical: 50,
     paddingHorizontal: 30,
   },
-  ChildInformationPagetitle: {},
+  CheckBox: {
+    width: 362,
+    backgroundColor: COLORS.WHITE,
+    justifyContent: "center",
+    paddingVertical: 20,
+    borderRadius: 9,
+    right: 2,
+    marginTop: 10,
+  },
   ChildInformationPagetext: {
+    height: 84,
     fontSize: 16,
-    width: 327,
-    left: 24,
-    top: 150,
+    fontWeight: "400",
+    lineHeight: 25,
   },
   ChildInformationPagebutton: {
     paddingHorizontal: 10,
   },
   PastMedicalHistorycontainer: {
-    flex: 1,
     top: 23,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.APP_WHITE_BACKGROUND,
+    flex: 1,
   },
   PastMedicalHistoryform__input__wrapper: {
     padding: 20,
-  },
-  PastMedicalHistorybottomBar: {
-    paddingVertical: 50,
-    paddingHorizontal: 30,
-  },
-  PastMedicalHistorybutton: {
-    marginTop: 169,
   },
   SelectWhatToTrackSignInbutton: {
     top: 450,
@@ -266,7 +278,7 @@ const styles = StyleSheet.create({
   SelectWhatToTrackcontainer: {
     flex: 1,
     padding: 23,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.APP_WHITE_BACKGROUND,
   },
   SelectWhatToTrackform__input__wrapper: {
     padding: 30,
@@ -277,7 +289,7 @@ const styles = StyleSheet.create({
   SelectWhatToTracktext: {
     fontSize: 16,
     width: 327,
-    left: 24,
+    left: 25,
   },
   SelectWhatToTracktextContainer: {
     padding: 30,

@@ -64,6 +64,7 @@ export const COLORS = {
   APP_BLACK_TEXT: "#14142B",
   APP_ERROR_RED: "#E5251D",
   TRANSPARENT: "transparent",
+  LIGHT_GREEN: "#DEF3F4",
 };
 
 export default APP_CONSTANTS;

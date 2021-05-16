@@ -114,6 +114,14 @@ const SvgIcon = ({
       iconXml = BABY_ICON;
       break;
 
+    case SVG_ICONS.ACTIVE:
+      iconXml = ACTIVE;
+      break;
+
+    case SVG_ICONS.INACTIVE:
+      iconXml = INACTIVE;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -148,6 +156,8 @@ export const SVG_ICONS = {
   ADD_PHOTO_ICON: "ADD_PHOTO_ICON",
   BIG_SEARCH_ICON: "BIG_SEARCH_ICON",
   BABY_ICON: "BABY_ICON",
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
 };
 
 const styles = StyleSheet.create({
@@ -443,5 +453,15 @@ const BABY_ICON = `<svg width="221" height="220" viewBox="0 0 221 220" fill="non
 <path d="M109.021 157.808C109.474 158.126 109.887 158.496 110.253 158.911C111.362 160.038 113.113 158.311 111.991 157.171C111.465 156.619 110.882 156.122 110.253 155.689C108.91 154.831 107.677 156.914 109.021 157.808Z" fill="#3D1B11"/>
 </svg>
 `;
+
+const ACTIVE = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#EA6F06"/>
+<path d="M15.4937 8.75844C15.8383 8.41385 16.397 8.41385 16.7416 8.75844C17.0861 9.10302 17.0861 9.66169 16.7416 10.0063L11.4474 15.3004C11.1029 15.645 10.5442 15.645 10.1996 15.3004L7.25844 12.3592C6.91385 12.0146 6.91385 11.456 7.25844 11.1114C7.60302 10.7668 8.16169 10.7668 8.50627 11.1114L10.8235 13.4286L15.4937 8.75844Z" fill="white"/>
+</svg>
+`;
+
+const INACTIVE = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.5 12C23.5 18.3513 18.3513 23.5 12 23.5C5.64873 23.5 0.5 18.3513 0.5 12C0.5 5.64873 5.64873 0.5 12 0.5C18.3513 0.5 23.5 5.64873 23.5 12Z" fill="white" stroke="#DBDDE0"/>
+</svg>`;
 
 export default SvgIcon;

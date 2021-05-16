@@ -38,7 +38,7 @@ export const ChildInformation = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.ChildInformationPagecontainer}>
-      <View style={styles.ChildInformationPagetitle}>
+      <View>
         <AppText style={styles.ChildInformationPagetext}>
           Adding your child is the first step in ensuring you’re aware of how
           your child is growing and developing.

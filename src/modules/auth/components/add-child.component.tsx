@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     alignSelf: "flex-end",
     color: COLORS.APP_ORANGE_TEXT,
-    top: -30,
+    top: -34,
     right: 10,
   },
   header__title: {

@@ -8,8 +8,6 @@ import UploadMedicalLicense from "../modules/auth/components/upload-medical-lice
 import UploadValidIdCard from "../modules/auth/components/upload-valid-id-card.component";
 import AddChild from "../modules/auth/components/add-child.component";
 import ChildInformationPage from "../modules/auth/components/formPages/child-information.component";
-import PastMedicalHistory from "../modules/auth/components/formPages/past-medical-history.component";
-import SelectWhatToTrack from "../modules/auth/components/formPages/select-what-to-track.component";
 
 const AuthenticationStackNav = createStackNavigator();
 
@@ -51,16 +49,6 @@ export const AuthenticationStack = () => {
       <AuthenticationStackNav.Screen
         name={NAVIGATION_CONSTANTS.SCREENS.AUTH.CHILD_INFORMATION_PAGE}
         component={ChildInformationPage}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen>
-      <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.PAST_MEDICAL_HISTORY}
-        component={PastMedicalHistory}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen>
-      <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.SELECT_WHAT_TO_TRACK}
-        component={SelectWhatToTrack}
         options={AddChildOptions}
       ></AuthenticationStackNav.Screen>
     </AuthenticationStackNav.Navigator>

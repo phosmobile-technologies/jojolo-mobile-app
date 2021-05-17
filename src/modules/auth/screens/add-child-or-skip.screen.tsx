@@ -1,11 +1,7 @@
 import React from "react";
 import { Platform, View, StyleSheet } from "react-native";
 
-import {
-  APP_CONSTANTS,
-  COLORS,
-  NAVIGATION_CONSTANTS,
-} from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import AppButton from "../../common/components/button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
@@ -16,6 +12,11 @@ import { APP_STYLES } from "../../common/styles";
 import { useToast } from "react-native-fast-toast";
 import Loader from "../../common/components/loader.component";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  CreateCareGiverInput,
+  useSignUpCareGiverMutation,
+} from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
 
 /**
  * Page For choosing whether to add a child or skip during caregiver sign up
@@ -25,7 +26,6 @@ const AddChildOrSkipScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
   const toast: any = useToast();
-  const [isRegistering, setIsRegistering] = React.useState(false);
 
   /**
    * Customize the navigation header components for the screen
@@ -43,26 +43,42 @@ const AddChildOrSkipScreen = () => {
     });
   }, [navigation]);
 
-  /**
-   * Skip child registration and signup the caregiver
-   */
-  const skipChildRegistration = () => {
-    const careGiverInfo = route.params.careGiverInfo;
-    setIsRegistering(true);
-
-    // @TODO Replace this with an actual API call
-    setTimeout(() => {
-      setIsRegistering(false);
+  const { mutate, isLoading } = useSignUpCareGiverMutation(AppGraphQLClient, {
+    onSuccess: () => {
       toast.show("Your account has been successfully created", {
         type: "success",
       });
       navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
-    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    },
+
+    onError: () => {
+      toast.show(
+        "An error occured while creating your account. Please try again later",
+        {
+          type: "error",
+        }
+      );
+    },
+
+    onMutate: () => {},
+  });
+
+  /**
+   * Skip child registration and signup the caregiver
+   */
+  const skipChildRegistration = () => {
+    const careGiverInfo: CreateCareGiverInput = route.params.careGiverInfo;
+    mutate({
+      input: {
+        ...careGiverInfo,
+        country: "Nigeria", // @TODO Remove this when the country dropdown is added
+      },
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Loader loading={isRegistering} />
+      <Loader loading={isLoading} />
       {/* Icon and Text paragraph */}
       <View style={styles.baby__icon__and__text_wrapper}>
         <SvgIcon iconName={SVG_ICONS.BABY_ICON} />
@@ -76,9 +92,6 @@ const AddChildOrSkipScreen = () => {
         <AppButton
           title="Add Your Child"
           onPress={() => {
-            console.log({
-              careGiverInfo: route.params.careGiverInfo,
-            });
             navigation.navigate(
               NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_SCREEN,
               {

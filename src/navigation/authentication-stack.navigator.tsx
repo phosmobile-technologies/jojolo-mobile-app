@@ -6,9 +6,7 @@ import SignInScreen from "../modules/auth/screens/sign-in.screen";
 import SignUpScreen from "../modules/auth/screens/sign-up.screen";
 import UploadMedicalLicense from "../modules/auth/components/health-professional-registration/upload-medical-license.component";
 import UploadValidIdCard from "../modules/auth/components/health-professional-registration/upload-valid-id-card.component";
-import AddChildOrSkip from "../modules/auth/screens/add-child-or-skip.screen";
 import AddChildOrSkipScreen from "../modules/auth/screens/add-child-or-skip.screen";
-import AppTextLink from "../modules/common/components/typography/text-link.component";
 import AddChildScreen from "../modules/auth/screens/add-child.screen";
 
 const AuthenticationStackNav = createStackNavigator();
@@ -52,26 +50,6 @@ export const AuthenticationStack = () => {
         component={AddChildScreen}
         options={AddChildScreenOptions}
       ></AuthenticationStackNav.Screen>
-      {/* <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD}
-        component={AddChild}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen>
-      <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.CHILD_INFORMATION_PAGE}
-        component={ChildInformationPage}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen>
-      <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.PAST_MEDICAL_HISTORY}
-        component={PastMedicalHistory}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen>
-      <AuthenticationStackNav.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.AUTH.SELECT_WHAT_TO_TRACK}
-        component={SelectWhatToTrack}
-        options={AddChildOptions}
-      ></AuthenticationStackNav.Screen> */}
     </AuthenticationStackNav.Navigator>
   );
 };

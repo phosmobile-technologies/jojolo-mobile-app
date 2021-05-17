@@ -37,7 +37,9 @@ export const NAVIGATION_CONSTANTS = {
     },
 
     PRIVATE_CHAT: {
-      PRIVATE_CHAT_SCREEN: "Private Chat",
+      GET_DOCTOR_FOR_CHAT_SCREEN: "Private Chat",
+      DOCTOR_PROFILE_SCREEN: "Doctor Profile",
+      CHAT_SCREEN: "Chat",
     },
 
     BOOKING: {
@@ -54,7 +56,8 @@ export const NAVIGATION_CONSTANTS = {
   },
 
   NAVIGATORS: {
-    FORUM_NAVIGATOR: "FORUM_NAVIGATOR",
+    FORUM_NAVIGATOR: "Forum",
+    PRIVATE_CHAT_NAVIGATOR: "Private Chat",
     MODULE_TABS_STACK: "MODULE_TABS_STACK",
   },
 };

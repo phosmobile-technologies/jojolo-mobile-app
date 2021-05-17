@@ -438,6 +438,27 @@ export type SignUpCareGiverMutation = (
   ) }
 );
 
+export type SignUpHealthCareProfessionalMutationVariables = Exact<{
+  input: CreateHealthCareProfessionalInput;
+}>;
+
+
+export type SignUpHealthCareProfessionalMutation = (
+  { __typename?: 'Mutation' }
+  & { SignUpHealthCareProfessional: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'uuid' | 'email' | 'full_name' | 'phone_number' | 'user_type' | 'created_at' | 'updated_at'>
+    & { health_care_professional_profile?: Maybe<(
+      { __typename?: 'HealthCareProfessionalProfile' }
+      & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
+      & { verification_files: Array<(
+        { __typename?: 'HealthCareProfessionalVerificationFile' }
+        & Pick<HealthCareProfessionalVerificationFile, 'id' | 'file_url' | 'type'>
+      )> }
+    )> }
+  ) }
+);
+
 
 export const LoginDocument = `
     mutation Login($input: LoginInput!) {
@@ -504,5 +525,39 @@ export const useSignUpCareGiverMutation = <
     ) => 
     useMutation<SignUpCareGiverMutation, TError, SignUpCareGiverMutationVariables, TContext>(
       (variables?: SignUpCareGiverMutationVariables) => fetcher<SignUpCareGiverMutation, SignUpCareGiverMutationVariables>(client, SignUpCareGiverDocument, variables)(),
+      options
+    );
+export const SignUpHealthCareProfessionalDocument = `
+    mutation SignUpHealthCareProfessional($input: CreateHealthCareProfessionalInput!) {
+  SignUpHealthCareProfessional(input: $input) {
+    id
+    uuid
+    email
+    full_name
+    phone_number
+    user_type
+    health_care_professional_profile {
+      id
+      years_of_experience
+      verification_files {
+        id
+        file_url
+        type
+      }
+    }
+    created_at
+    updated_at
+  }
+}
+    `;
+export const useSignUpHealthCareProfessionalMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>
+    ) => 
+    useMutation<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>(
+      (variables?: SignUpHealthCareProfessionalMutationVariables) => fetcher<SignUpHealthCareProfessionalMutation, SignUpHealthCareProfessionalMutationVariables>(client, SignUpHealthCareProfessionalDocument, variables)(),
       options
     );

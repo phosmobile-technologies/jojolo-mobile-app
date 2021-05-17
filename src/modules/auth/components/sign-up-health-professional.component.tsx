@@ -8,7 +8,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import { HealthProfessionalRole } from "../../common/models/user.model";
 import AppButton from "../../common/components/button.component";
-import APP_CONSTANTS, {
+import {
+  APP_CONSTANTS,
   COLORS,
   NAVIGATION_CONSTANTS,
 } from "../../../constants";
@@ -49,7 +50,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
     },
     { label: "Lactationist", value: HealthProfessionalRole.LACTATIONIST },
     { label: "Nutritionist", value: HealthProfessionalRole.NUTRITIONIST },
-    { label: "Pedeatrician", value: HealthProfessionalRole.PEDEATRICIAN },
+    { label: "Pediatrician", value: HealthProfessionalRole.PEDIATRICIAN },
     { label: "Therapist", value: HealthProfessionalRole.THERAPIST },
   ];
 
@@ -71,7 +72,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
     setTimeout(() => {
       setIsLoading(false);
       navigation.navigate(
-        NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+        NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
       );
       // toast.show("Your account has been successfully created", {
       //   type: "success",
@@ -109,7 +110,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
           name={"years_of_experience"}
           control={control}
           error={errors.years_of_experience}
-          defaultValue={""}
+          defaultValue={0}
           label={"Years Of Experience"}
           minValue={0}
         />
@@ -138,7 +139,7 @@ const SignUpHealthProfessional = ({ navigation }: { navigation: any }) => {
           title="Upload"
           onPress={() =>
             navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.UPLOAD_MEDICAL_LICENSE_SCREEN
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.UPLOAD_MEDICAL_LICENSE_SCREEN
             )
           }
         />

@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { useForm, useController } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useToast } from "react-native-fast-toast";
 import { ScrollView } from "react-native-gesture-handler";
 
-import AppTextInput from "../../common/components/forms/text-input.component";
-import AppText from "../../common/components/typography/text.component";
 import { UserRole } from "../../common/models/user.model";
 import AppButton from "../../common/components/button.component";
-import APP_CONSTANTS, {
-  COLORS,
-  NAVIGATION_CONSTANTS,
-} from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
 import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
 import Loader from "../../common/components/loader.component";
@@ -21,7 +16,7 @@ import Loader from "../../common/components/loader.component";
 const schema = yup.object().shape({
   role: yup.string().required("Please select a valid role"),
   full_name: yup.string().required("Please provide your full name"),
-  email_address: yup
+  email: yup
     .string()
     .email("Please provide a valid email address")
     .required("Your email address is required"),
@@ -38,7 +33,6 @@ const schema = yup.object().shape({
  * @returns
  */
 const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
-  const [selectedRole, setSelectedRole] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const toast: any = useToast();
   const roleOptions = [
@@ -57,18 +51,12 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
 
   // Handle the form submit after validation
   const onSubmit = (data: any) => {
-    const userInfo = data;
-
-    setIsLoading(true);
-
-    // @TODO Replace this with an actual API call
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.SIGN_IN_SCREEN);
-      toast.show("Your account has been successfully created", {
-        type: "success",
-      });
-    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    navigation.navigate(
+      NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_OR_SKIP_SCREEN,
+      {
+        careGiverInfo: data,
+      }
+    );
   };
 
   return (
@@ -91,11 +79,11 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           error={errors.full_name}
         />
         <ControlledAppTextInput
-          name={"email_address"}
+          name={"email"}
           label={"Email Address"}
           defaultValue={""}
           control={control}
-          error={errors.email_address}
+          error={errors.email}
         />
         <ControlledAppTextInput
           name={"phone_number"}
@@ -105,11 +93,11 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           error={errors.phone_number}
         />
         <ControlledAppTextInput
-          name={"address"}
-          label={"Address"}
+          name={"state"}
+          label={"State"}
           defaultValue={""}
           control={control}
-          error={errors.address}
+          error={errors.state}
         />
         <ControlledAppTextInput
           name={"city"}
@@ -119,11 +107,11 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           error={errors.city}
         />
         <ControlledAppTextInput
-          name={"state"}
-          label={"State"}
+          name={"address"}
+          label={"Address"}
           defaultValue={""}
           control={control}
-          error={errors.state}
+          error={errors.address}
         />
         <ControlledAppTextInput
           name={"password"}
@@ -133,6 +121,17 @@ const SignUpCareGiver = ({ navigation }: { navigation: any }) => {
           secureTextEntry={true}
           control={control}
           error={errors.password}
+        />
+      </View>
+      {/* @TODO Remove this */}
+      <View style={styles.bottomBar}>
+        <AppButton
+          title="Next Page"
+          onPress={() => {
+            navigation.navigate(
+              NAVIGATION_CONSTANTS.SCREENS.AUTH.ADD_CHILD_OR_SKIP_SCREEN
+            );
+          }}
         />
       </View>
       <View style={styles.bottomBar}>

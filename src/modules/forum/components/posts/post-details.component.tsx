@@ -7,8 +7,8 @@ import PostModel from "../../models/post.model";
 import PostHeader from "./post-header.component";
 import PostContent from "./post-content.component";
 import { ForumNavigatorNavigationContext } from "../../screens/forum.screen";
-import NAVIGATION_CONSTANTS from "../../../../navigation/navigation-constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { NAVIGATION_CONSTANTS } from "../../../../constants";
 
 const Post = ({
   post,
@@ -16,8 +16,8 @@ const Post = ({
   allowNavigationToPostDetails = true,
 }: {
   post: PostModel;
-  isFullPage: boolean;
-  allowNavigationToPostDetails: boolean;
+  isFullPage?: boolean;
+  allowNavigationToPostDetails?: boolean;
 }) => {
   const { user } = post;
   const toast: any = useToast();
@@ -62,9 +62,12 @@ const Post = ({
     if (!allowNavigationToPostDetails) {
       return;
     }
-    navigation.navigate(NAVIGATION_CONSTANTS.POST, {
-      post,
-    });
+    navigation.navigate(
+      NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
+      {
+        post,
+      }
+    );
   };
 
   return (

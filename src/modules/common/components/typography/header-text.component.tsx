@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants";
+
+import { COLORS } from "../../../../constants";
 import AppText from "./text.component";
 
 /**
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Nunito_700Bold",
     fontSize: 30,
-    color: COLORS.PAGE_HEADER_BLACK,
+    color: COLORS.APP_PAGE_HEADER_BLACK_TEXT,
   },
 });
 

@@ -1,34 +1,53 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { COLORS } from "../../common/constants";
 import AppHeaderText from "../../common/components/typography/header-text.component";
+import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
+import { COLORS } from "../../../constants";
 
 /**
  * The forum page header
  *
  * @returns
  */
-export const ForumHeader = () => {
+export const ForumHeader = ({
+  HandleNavigation,
+  handleOpenActionSheet,
+}: {
+  HandleNavigation: any;
+  handleOpenActionSheet: any;
+}) => {
+  const navigation: any = React.useContext(ForumNavigatorNavigationContext);
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
       <View style={styles.header__icons}>
-        <SvgIcon
-          style={styles.header__icon}
-          iconName={SVG_ICONS.SEARCH_ICON}
-          color={COLORS.BLACK_ICON}
-        ></SvgIcon>
-        <SvgIcon
-          style={styles.header__icon}
-          iconName={SVG_ICONS.FUNNEL_ICON}
-          color={COLORS.BLACK_ICON}
-        ></SvgIcon>
+        <TouchableOpacity onPress={HandleNavigation}>
+          <SvgIcon
+            style={styles.header__icon}
+            iconName={SVG_ICONS.SEARCH_ICON}
+            color={COLORS.APP_BLACK_ICON}
+          ></SvgIcon>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenActionSheet();
+          }}
+        >
+          <SvgIcon
+            style={styles.header__icon}
+            iconName={SVG_ICONS.FUNNEL_ICON}
+            color={COLORS.APP_BLACK_ICON}
+          ></SvgIcon>
+        </TouchableOpacity>
+
         <SvgIcon
           style={styles.header__icon}
           iconName={SVG_ICONS.NOTIFICATION_ICON}
-          color={COLORS.BLACK_ICON}
+          color={COLORS.APP_BLACK_ICON}
         ></SvgIcon>
       </View>
     </SafeAreaView>

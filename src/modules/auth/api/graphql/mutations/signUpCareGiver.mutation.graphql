@@ -1,0 +1,36 @@
+mutation SignUpCareGiver($input: CreateCareGiverInput!) {
+  SignUpCareGiver(input: $input) {
+    id
+    uuid
+    email
+    full_name
+    phone_number
+    user_type
+    care_giver_profile {
+      id
+      uuid
+      country
+      state
+      city
+      address
+      role
+      children {
+        first_name
+        birth_term
+        date_of_birth
+        gender
+        genotype
+        blood_group
+        has_allergies
+        has_medical_conditions
+        has_special_needs
+        track_growth
+        track_immunizations
+        track_milestones
+        allergies
+      }
+    }
+    created_at
+    updated_at
+  }
+}

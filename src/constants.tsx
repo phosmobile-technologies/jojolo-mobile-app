@@ -78,6 +78,7 @@ export const COLORS = {
   APP_ERROR_RED: "#E5251D",
   APP_GREEN: "#2AC769",
   TRANSPARENT: "transparent",
+  APP_LIGHT_GREEN: "#B2E9ED",
 };
 
 export const DROPDOWN_OPTIONS = {

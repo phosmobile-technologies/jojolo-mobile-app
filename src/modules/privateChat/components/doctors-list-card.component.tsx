@@ -1,11 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useContext } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { User } from "../../../generated/graphql";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
@@ -21,6 +23,7 @@ interface DoctorsListCardProps {
  * @returns
  */
 const DoctorsListCardItem = () => {
+  const navigation = useNavigation() as any;
   let user = {
     profile_image: "https://i.pravatar.cc/200",
     full_name: "Doctor Raji Mike",
@@ -28,36 +31,47 @@ const DoctorsListCardItem = () => {
     rating: 4,
     points: 5,
   };
+
   return (
     <View style={styles.header}>
-      <View style={styles.header__avatar_and_details}>
-        <Image
-          source={{ uri: user.profile_image }}
-          style={styles.header__avatar}
-        />
-        <View>
-          <View style={styles.user__details__username__and_badge}>
-            <AppText
-              style={styles.user__details__username}
-            >{`${user.full_name}`}</AppText>
-            <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
-          </View>
-          <View style={styles.user__details__info}>
-            <AppText style={styles.user__details__info__user_role}>
-              {`Mother`}
-            </AppText>
-            <View style={styles.user__details__info__user_rating}>
-              <SvgIcon iconName={SVG_ICONS.GOLD_STAR_ICON} />
-              <AppText style={styles.user__details__info__user_rating_number}>
-                {`5.0`}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.DOCTOR_PROFILE_SCREEN,
+            { user }
+          );
+        }}
+      >
+        <View style={styles.header__avatar_and_details}>
+          <Image
+            source={{ uri: user.profile_image }}
+            style={styles.header__avatar}
+          />
+          <View>
+            <View style={styles.user__details__username__and_badge}>
+              <AppText
+                style={styles.user__details__username}
+              >{`${user.full_name}`}</AppText>
+              <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
+            </View>
+            <View style={styles.user__details__info}>
+              <AppText style={styles.user__details__info__user_role}>
+                {`Mother`}
+              </AppText>
+              <View style={styles.user__details__info__user_rating}>
+                <SvgIcon iconName={SVG_ICONS.GOLD_STAR_ICON} />
+                <AppText style={styles.user__details__info__user_rating_number}>
+                  {`5.0`}
+                </AppText>
+              </View>
+              <AppText style={styles.user__details__info__last_seen}>
+                5 hrs ago
               </AppText>
             </View>
-            <AppText style={styles.user__details__info__last_seen}>
-              5 hrs ago
-            </AppText>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
+
       <TouchableWithoutFeedback onPress={() => {}}>
         <SvgIcon iconName={SVG_ICONS.PRIVATE_CHAT_MESSAGE_DOCTOR_ICON} />
       </TouchableWithoutFeedback>

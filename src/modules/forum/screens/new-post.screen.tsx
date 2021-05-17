@@ -16,7 +16,6 @@ import PostModel from "../models/post.model";
 import Post from "../components/posts/post-details.component";
 import AppText from "../../common/components/typography/text.component";
 import { CommentFeed } from "../components/posts/post-comment.component";
-import { COLORS } from "../../common/constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { Picker } from "@react-native-picker/picker";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
@@ -25,6 +24,7 @@ import Loader from "../../common/components/loader.component";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppTextInput from "../../common/components/forms/text-input.component";
 import AppButton from "../../common/components/button.component";
+import { COLORS } from "../../../constants";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   sendPostText: {
     padding: 25,
     width: 400,
-    backgroundColor: COLORS.PRIMARY_COLOR,
+    backgroundColor: COLORS.APP_PRIMARY_COLOR,
     alignItems: "center",
     borderRadius: 20,
   },
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     top: 6,
   },
   dropDown: {
-    backgroundColor: COLORS.GRAY_BACKGROUND,
+    backgroundColor: COLORS.APP_GRAY_BACKGROUND,
     paddingHorizontal: 20,
   },
 });

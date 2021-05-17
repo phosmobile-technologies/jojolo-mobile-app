@@ -1,7 +1,7 @@
 import React from "react";
 import { SvgXml } from "react-native-svg";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../constants";
+import { COLORS } from "../../../constants";
 
 /**
  * SVG Icon component
@@ -22,7 +22,7 @@ const SvgIcon = ({
   let iconXml: string;
 
   if (!color) {
-    color = COLORS.GRAY_TEXT_COLOR;
+    color = COLORS.APP_GRAY_TEXT;
   }
 
   if (!style) {
@@ -114,6 +114,14 @@ const SvgIcon = ({
       iconXml = BABY_ICON;
       break;
 
+    case SVG_ICONS.HEADER_GO_BACK_ICON:
+      iconXml = HEADER_GO_BACK_ICON;
+      break;
+
+    case SVG_ICONS.ROUND_ADD_BUTTON_ICON:
+      iconXml = ROUND_ADD_BUTTON_ICON;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -148,11 +156,13 @@ export const SVG_ICONS = {
   ADD_PHOTO_ICON: "ADD_PHOTO_ICON",
   BIG_SEARCH_ICON: "BIG_SEARCH_ICON",
   BABY_ICON: "BABY_ICON",
+  HEADER_GO_BACK_ICON: "HEADER_GO_BACK_ICON",
+  ROUND_ADD_BUTTON_ICON: "ROUND_ADD_BUTTON_ICON",
 };
 
 const styles = StyleSheet.create({
   svgIcon: {
-    color: COLORS.BLACK_ICON,
+    color: COLORS.APP_BLACK_TEXT,
   },
 });
 
@@ -441,6 +451,21 @@ const BABY_ICON = `<svg width="221" height="220" viewBox="0 0 221 220" fill="non
 <path d="M79.7737 91.7569C81.5238 94.2073 85.7143 95.3346 88.2902 96.474C92.4171 98.22 96.8572 99.1161 101.342 99.1082C105.991 99.1457 110.637 98.8591 115.245 98.2505C119.244 97.933 123.2 97.2104 127.052 96.0942C131.588 94.5259 135.482 91.6589 139.537 88.9634" stroke="#5A3C33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M75.6206 197.909C77.1615 199.12 78.4014 200.667 79.2441 202.43" stroke="#5A3C33" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M109.021 157.808C109.474 158.126 109.887 158.496 110.253 158.911C111.362 160.038 113.113 158.311 111.991 157.171C111.465 156.619 110.882 156.122 110.253 155.689C108.91 154.831 107.677 156.914 109.021 157.808Z" fill="#3D1B11"/>
+</svg>
+`;
+
+const HEADER_GO_BACK_ICON = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" fill="#F8F8F8"/>
+<rect x="5" y="5" width="38" height="38" rx="19" fill="#DEF3F4"/>
+<path d="M31.5 24.8333H18.1667" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M24.8334 31.5L18.1667 24.8333L24.8334 18.1667" stroke="#19A5B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const ROUND_ADD_BUTTON_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="12" fill="#19A5B0"/>
+<path d="M12 9.2002V14.8002" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.2002 12H14.8002" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 

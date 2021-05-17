@@ -4,6 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 
 import AppText from "../typography/text.component";
 import { COLORS } from "../../../../constants";
+import { APP_STYLES } from "../../styles";
 
 export interface AppPickerItem {
   label: string;
@@ -40,7 +41,9 @@ const AppDropdown = (props: AppPickerProps) => {
 
   return (
     <View style={styles.container}>
-      {label.length > 0 && <AppText style={styles.label}>{label}</AppText>}
+      {label.length > 0 && (
+        <AppText style={APP_STYLES.form__input__label}>{label}</AppText>
+      )}
       <View style={pickerWrapperStyles}>
         <Picker
           style={styles.picker}
@@ -75,12 +78,6 @@ const AppDropdown = (props: AppPickerProps) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-  },
-
-  label: {
-    marginBottom: 10,
-    fontWeight: "600",
-    fontSize: 14,
   },
 
   picker__wrapper: {

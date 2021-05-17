@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
-import { COLORS } from "../constants";
+import { COLORS } from "../../../constants";
 import AppText from "./typography/text.component";
 
 /**
@@ -19,7 +19,7 @@ const AppActivityIndicator = ({
     <View style={styles.container}>
       <ActivityIndicator
         {...otherProps}
-        color={COLORS.PRIMARY_COLOR}
+        color={COLORS.APP_PRIMARY_COLOR}
         size={"large"}
       ></ActivityIndicator>
       <AppText style={styles.loadingText}>{text}</AppText>

@@ -5,8 +5,7 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { ToastProvider } from "react-native-fast-toast";
-import { createStackNavigator } from "@react-navigation/stack";
+import { ToastProvider, useToast } from "react-native-fast-toast";
 import * as SecureStore from "expo-secure-store";
 import {
   useFonts,
@@ -16,11 +15,20 @@ import {
   Nunito_700Bold,
   Nunito_900Black,
 } from "@expo-google-fonts/nunito";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 
 import AppNavigator from "./src/navigation/app-navigator";
 import { AuthenticationStack } from "./src/navigation/stack.navigators";
-
-export const AuthContext = React.createContext({});
+import { AuthenticationContext } from "./src/contexts/authentication.context";
+import { queryClient } from "./src/contexts/query-client.context";
+import { LoginInput, useLoginMutation } from "./src/generated/graphql";
+import { AppGraphQLClient } from "./src/modules/common/api/graphql-client";
 
 /**
  * The root app component
@@ -34,12 +42,7 @@ export default function App({ navigation }: { navigation: any }) {
     Nunito_700Bold,
     Nunito_900Black,
   });
-
-  // @TODO this was commented out because it was causing the "Rendered different number of hooks error".
-  // See https://stackoverflow.com/questions/55622768/uncaught-invariant-violation-rendered-more-hooks-than-during-the-previous-rende
-  // if (!fontsLoaded) {
-  //   return <AppLoading />;
-  // }
+  const toast: any = useToast();
 
   // Reducer for auth state
   const [state, dispatch] = React.useReducer(
@@ -96,26 +99,24 @@ export default function App({ navigation }: { navigation: any }) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
+      signIn: async (access_token: string) => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
-
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        authContext.dispatch({ type: "SIGN_IN", token: access_token });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
-      signUp: async (data) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-      },
+      dispatch,
     }),
     []
   );
+
+  // @TODO this was commented out because it was causing the "Rendered different number of hooks error".
+  // See https://stackoverflow.com/questions/55622768/uncaught-invariant-violation-rendered-more-hooks-than-during-the-previous-rende
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   let PagesToShow = <></>;
 
@@ -127,18 +128,20 @@ export default function App({ navigation }: { navigation: any }) {
 
   return (
     <>
-      <AuthContext.Provider value={authContext}>
-        <ToastProvider placement="top">
-          <ActionSheetProvider>
-            <SafeAreaProvider>
-              <NavigationContainer>
-                {PagesToShow}
-                <StatusBar style="auto" />
-              </NavigationContainer>
-            </SafeAreaProvider>
-          </ActionSheetProvider>
-        </ToastProvider>
-      </AuthContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationContext.Provider value={authContext}>
+          <ToastProvider placement="top">
+            <ActionSheetProvider>
+              <SafeAreaProvider>
+                <NavigationContainer>
+                  {PagesToShow}
+                  <StatusBar style="auto" />
+                </NavigationContainer>
+              </SafeAreaProvider>
+            </ActionSheetProvider>
+          </ToastProvider>
+        </AuthenticationContext.Provider>
+      </QueryClientProvider>
     </>
   );
 }

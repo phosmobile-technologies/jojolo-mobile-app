@@ -1,4 +1,7 @@
-const APP_CONSTANTS = {
+import { BirthTerm, BloodGroup, Genotype } from "./generated/graphql";
+
+export const APP_CONSTANTS = {
+  GRAPHQL_API_URL: "http://192.168.100.3:3100/graphql",
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 
@@ -17,6 +20,9 @@ export const NAVIGATION_CONSTANTS = {
       CHILD_INFORMATION_PAGE: "Child Information Page",
       PAST_MEDICAL_HISTORY: "Past Medical History",
       SELECT_WHAT_TO_TRACK: "Select What To Track",
+
+      ADD_CHILD_OR_SKIP_SCREEN: "Add Child or Skip",
+      ADD_CHILD_SCREEN: "Add Child Screen",
     },
 
     FORUM: {
@@ -56,14 +62,40 @@ export const NAVIGATION_CONSTANTS = {
 export const COLORS = {
   WHITE: "white",
   APP_GRAY_BACKGROUND: "#E8E8E8",
+  APP_LIGHT_GRAY_BACKGROUND: "#f1eded",
   APP_WHITE_BACKGROUND: "#F8F8F8",
   APP_PRIMARY_COLOR: "#19A5B0",
   APP_PRIMARY_COLOR_LIGHT: "#DEF3F4",
   APP_ORANGE_TEXT: "#EA6F06",
+  APP_TAG_ORANGE: "#F97B1C",
   APP_GRAY_TEXT: "#A0A4A8",
   APP_BLACK_TEXT: "#14142B",
+  APP_BLACK_ICON: "#52575C",
+  APP_PAGE_HEADER_BLACK_TEXT: "#25282B",
   APP_ERROR_RED: "#E5251D",
+  APP_GREEN: "#2AC769",
   TRANSPARENT: "transparent",
 };
 
-export default APP_CONSTANTS;
+export const DROPDOWN_OPTIONS = {
+  CHILD_BIRTH_TERM: [
+    { label: "Pre-term (28 Weeks - 37 Weeks)", value: BirthTerm.PreTerm },
+    { label: "Term (37 Weeks - 42 Weeks)", value: BirthTerm.Term },
+    { label: "Post-Term ( > 42 Weeks)", value: BirthTerm.PostTerm },
+    { label: "Not Sure", value: BirthTerm.NotSure },
+  ],
+
+  BLOOD_GROUP: [
+    { label: "A", value: BloodGroup.A },
+    { label: "B", value: BloodGroup.B },
+    { label: "AB", value: BloodGroup.Ab },
+    { label: "O", value: BloodGroup.O },
+  ],
+
+  GENOTYPE: [
+    { label: "AA", value: Genotype.Aa },
+    { label: "AS", value: Genotype.As },
+    { label: "SS", value: Genotype.Ss },
+    { label: "AC", value: Genotype.Ac },
+  ],
+};

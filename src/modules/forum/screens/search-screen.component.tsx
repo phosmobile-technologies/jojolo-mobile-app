@@ -5,7 +5,7 @@ import ControlledAppTextInput from "../../common/components/forms/controlled-tex
 import AppText from "../../common/components/typography/text.component";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { COLORS } from "../../common/constants";
+import { COLORS } from "../../../constants";
 
 const SearchScreen = () => {
   return (
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   input: {
-    backgroundColor: COLORS.GRAY_BACKGROUND,
+    backgroundColor: COLORS.APP_GRAY_BACKGROUND,
     width: 300,
     height: 50,
     borderRadius: 12,

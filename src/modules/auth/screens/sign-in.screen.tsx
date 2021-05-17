@@ -1,22 +1,19 @@
 import React from "react";
-import { View, Button, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { AuthContext } from "../../../../App";
-import APP_CONSTANTS, {
-  COLORS,
-  NAVIGATION_CONSTANTS,
-} from "../../../constants";
-import AppActivityIndicator from "../../common/components/activity-indicator.component";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import AppButton from "../../common/components/button.component";
-import AppTextInput from "../../common/components/forms/text-input.component";
 import Loader from "../../common/components/loader.component";
 import AppTextLink from "../../common/components/typography/text-link.component";
 import AppText from "../../common/components/typography/text.component";
 import { useToast } from "react-native-fast-toast";
 import { useForm } from "react-hook-form";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
+import { AuthenticationContext } from "../../../contexts/authentication.context";
+import { LoginInput, useLoginMutation } from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
 
 const schema = yup.object().shape({
   username: yup.string().required("Please provide your username"),
@@ -30,9 +27,7 @@ const schema = yup.object().shape({
  * @returns
  */
 const SignInScreen = ({ navigation }: { navigation: any }) => {
-  // const [username, setUsername] = React.useState("");
-  // const [password, setPassword] = React.useState("");
-
+  const authContext: any = React.useContext(AuthenticationContext);
   const toast: any = useToast();
   const [isAuthenticating, setIsAuthenticating] = React.useState(false);
 
@@ -44,7 +39,24 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
     resolver: yupResolver(schema),
   });
 
-  const authContext: any = React.useContext(AuthContext);
+  /**
+   * Mutation for logging in
+   */
+  const { mutate, isLoading } = useLoginMutation(AppGraphQLClient, {
+    onSuccess: (response) => {
+      const { access_token } = response.Login;
+      authContext.dispatch({ type: "SIGN_IN", token: access_token });
+    },
+
+    onError: () => {
+      authContext.dispatch({ type: "SIGN_OUT" });
+      toast.show("Invalid email/password provided", {
+        type: "error",
+      });
+    },
+
+    onMutate: () => {},
+  });
 
   /**
    * Login a user
@@ -58,21 +70,13 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
     username: string;
     password: string;
   }) => {
-    setIsAuthenticating(true);
-
-    // @TODO Replace this with an actual API call
-    setTimeout(() => {
-      authContext.signIn({ username, password });
-    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    const loginInput: LoginInput = { email: username, password };
+    mutate({ input: loginInput });
   };
-
-  if (isAuthenticating) {
-    <AppActivityIndicator text={"Signing In..."} />;
-  }
 
   return (
     <View style={styles.container}>
-      <Loader loading={isAuthenticating} />
+      <Loader loading={isLoading} />
       <View style={styles.form__input__wrapper}>
         <AppTextLink
           style={styles.header__text}
@@ -123,7 +127,6 @@ const styles = StyleSheet.create({
 
   form__input__wrapper: {
     paddingHorizontal: 30,
-    // marginTop: 40,
   },
 
   header__text: {

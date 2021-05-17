@@ -4,9 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { COLORS } from "../../common/constants";
 import AppHeaderText from "../../common/components/typography/header-text.component";
 import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
+import { COLORS } from "../../../constants";
 
 /**
  * The forum page header
@@ -29,7 +29,7 @@ export const ForumHeader = ({
           <SvgIcon
             style={styles.header__icon}
             iconName={SVG_ICONS.SEARCH_ICON}
-            color={COLORS.BLACK_ICON}
+            color={COLORS.APP_BLACK_ICON}
           ></SvgIcon>
         </TouchableOpacity>
         <TouchableOpacity
@@ -40,14 +40,14 @@ export const ForumHeader = ({
           <SvgIcon
             style={styles.header__icon}
             iconName={SVG_ICONS.FUNNEL_ICON}
-            color={COLORS.BLACK_ICON}
+            color={COLORS.APP_BLACK_ICON}
           ></SvgIcon>
         </TouchableOpacity>
 
         <SvgIcon
           style={styles.header__icon}
           iconName={SVG_ICONS.NOTIFICATION_ICON}
-          color={COLORS.BLACK_ICON}
+          color={COLORS.APP_BLACK_ICON}
         ></SvgIcon>
       </View>
     </SafeAreaView>

@@ -2,12 +2,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import PrivateChatScreen from "../modules/privateChat/screens/index";
-import { COLORS } from "../modules/common/constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../modules/common/components/svg-icon.component";
 import ForumNavigator from "./forum-navigator.screen";
-import { NAVIGATION_CONSTANTS } from "../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../constants";
 
 const AppTabNavigationStack = createBottomTabNavigator();
 
@@ -49,9 +48,9 @@ const AppNavigator = () => {
 
 // Options for styling the bottom tab navigation bar
 const tabBarOptions = {
-  activeTintColor: COLORS.PRIMARY_COLOR,
+  activeTintColor: COLORS.APP_PRIMARY_COLOR,
   style: {
-    color: COLORS.GRAY_TEXT_COLOR,
+    color: COLORS.APP_GRAY_TEXT,
     height: 85,
     paddingHorizontal: 5,
     paddingBottom: 20,
@@ -83,7 +82,7 @@ const screenOptions = ({ route }: { route: object }) => ({
     let icon, iconColor;
 
     if (focused) {
-      iconColor = COLORS.PRIMARY_COLOR;
+      iconColor = COLORS.APP_PRIMARY_COLOR;
     }
 
     switch (route.name) {

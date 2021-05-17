@@ -8,8 +8,8 @@ const TagComponent = ({ tag }: { tag: any }) => {
     <View style={styles.container}>
       <TouchableOpacity>
         <View style={styles.tag}>
-          <AppText>{tag.item.name}</AppText>
-          <AppText>{tag.item.number}</AppText>
+          <AppText style={styles.tag__text}>{tag.item.name}</AppText>
+          <AppText style={styles.tag__text}>{tag.item.number}</AppText>
         </View>
       </TouchableOpacity>
     </View>
@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
     margin: 0,
     borderRadius: 7,
     paddingVertical: 30,
+  },
+  tag__text: {
+    color: COLORS.WHITE,
   },
 });
 

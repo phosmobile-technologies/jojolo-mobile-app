@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import AppText from "../../common/components/typography/text.component";
 import { User } from "../../../generated/graphql";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../../constants";
 
 /**
- *
+ * Screen To Display Doctor Profile Information.
  * @returns
  */
 const DoctorProfileInPrivateChat = () => {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: COLORS.APP_LIGHT_GREEN,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     paddingVertical: 30,
     marginHorizontal: 10,
     width: 160,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     backgroundColor: COLORS.APP_LIGHT_GREEN,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     paddingVertical: 30,
     marginHorizontal: 10,
     width: 160,

@@ -1,16 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { useContext } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
+
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { User } from "../../../generated/graphql";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-
 import AppText from "../../common/components/typography/text.component";
 
 interface DoctorsListCardProps {

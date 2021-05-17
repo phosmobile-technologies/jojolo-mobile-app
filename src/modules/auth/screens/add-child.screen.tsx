@@ -29,6 +29,7 @@ import AddChildDataToTrackForm from "../components/child-registration/add-what-t
 const AddChildScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
+  const toast: any = useToast();
 
   /**
    * Customize the navigation header components for the screen
@@ -43,8 +44,6 @@ const AddChildScreen = () => {
       headerStyle: { ...APP_STYLES.base__header__styles },
     });
   }, [navigation]);
-
-  const toast: any = useToast();
 
   /**
    * State data passed to the sub components in the various tabs

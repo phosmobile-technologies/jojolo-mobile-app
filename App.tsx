@@ -5,7 +5,7 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { ToastProvider } from "react-native-fast-toast";
+import { ToastProvider, useToast } from "react-native-fast-toast";
 import * as SecureStore from "expo-secure-store";
 import {
   useFonts,
@@ -27,6 +27,8 @@ import AppNavigator from "./src/navigation/app-navigator";
 import { AuthenticationStack } from "./src/navigation/stack.navigators";
 import { AuthenticationContext } from "./src/contexts/authentication.context";
 import { queryClient } from "./src/contexts/query-client.context";
+import { LoginInput, useLoginMutation } from "./src/generated/graphql";
+import { AppGraphQLClient } from "./src/modules/common/api/graphql-client";
 
 /**
  * The root app component
@@ -40,6 +42,7 @@ export default function App({ navigation }: { navigation: any }) {
     Nunito_700Bold,
     Nunito_900Black,
   });
+  const toast: any = useToast();
 
   // Reducer for auth state
   const [state, dispatch] = React.useReducer(
@@ -96,23 +99,15 @@ export default function App({ navigation }: { navigation: any }) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
+      signIn: async (access_token: string) => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
-
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        authContext.dispatch({ type: "SIGN_IN", token: access_token });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
-      signUp: async (data) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-      },
+      dispatch,
     }),
     []
   );

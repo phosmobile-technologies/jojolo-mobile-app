@@ -404,6 +404,19 @@ export enum UserType {
   HealthCareProfessional = 'HEALTH_CARE_PROFESSIONAL'
 }
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { Login: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'access_token'>
+  ) }
+);
+
 export type SignUpCareGiverMutationVariables = Exact<{
   input: CreateCareGiverInput;
 }>;
@@ -426,6 +439,24 @@ export type SignUpCareGiverMutation = (
 );
 
 
+export const LoginDocument = `
+    mutation Login($input: LoginInput!) {
+  Login(input: $input) {
+    access_token
+  }
+}
+    `;
+export const useLoginMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>
+    ) => 
+    useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+      (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables)(),
+      options
+    );
 export const SignUpCareGiverDocument = `
     mutation SignUpCareGiver($input: CreateCareGiverInput!) {
   SignUpCareGiver(input: $input) {

@@ -20,7 +20,7 @@ interface DoctorsListCardProps {
  * @param param0
  * @returns
  */
-const DoctorsListCard = () => {
+const DoctorsListCardItem = () => {
   let user = {
     profile_image: "https://i.pravatar.cc/200",
     full_name: "Doctor Raji Mike",
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems: "center",
     flex: 1,
     padding: 20,
     marginBottom: 15,
@@ -133,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DoctorsListCard;
+export default DoctorsListCardItem;

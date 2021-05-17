@@ -1,12 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import PrivateChatScreen from "../modules/privateChat/screens/index";
+import PrivateChatScreen from "../modules/privateChat/screens/get-doctor-for-chat.screen";
 import SvgIcon, {
   SVG_ICONS,
 } from "../modules/common/components/svg-icon.component";
 import ForumNavigator from "./forum-navigator.screen";
 import { COLORS, NAVIGATION_CONSTANTS } from "../constants";
+import { PrivateChatNavigator } from "./private-chat-stack.navigator";
 
 const AppTabNavigationStack = createBottomTabNavigator();
 
@@ -27,8 +28,8 @@ const AppNavigator = () => {
         component={ForumNavigator}
       />
       <AppTabNavigationStack.Screen
-        name={NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.PRIVATE_CHAT_SCREEN}
-        component={PrivateChatScreen}
+        name={NAVIGATION_CONSTANTS.NAVIGATORS.PRIVATE_CHAT_NAVIGATOR}
+        component={PrivateChatNavigator}
       />
       <AppTabNavigationStack.Screen
         name={NAVIGATION_CONSTANTS.SCREENS.BOOKING.BOOKING_SCREEN}
@@ -92,7 +93,7 @@ const screenOptions = ({ route }: { route: object }) => ({
         );
         break;
 
-      case NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.PRIVATE_CHAT_SCREEN:
+      case NAVIGATION_CONSTANTS.NAVIGATORS.PRIVATE_CHAT_NAVIGATOR:
         icon = (
           <SvgIcon
             iconName={SVG_ICONS.PRIVATE_CHAT_ICON}

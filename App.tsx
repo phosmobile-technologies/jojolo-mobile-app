@@ -24,11 +24,11 @@ import {
 } from "react-query";
 
 import AppNavigator from "./src/navigation/app-navigator";
-import { AuthenticationStack } from "./src/navigation/stack.navigators";
 import { AuthenticationContext } from "./src/contexts/authentication.context";
 import { queryClient } from "./src/contexts/query-client.context";
 import { LoginInput, useLoginMutation } from "./src/generated/graphql";
 import { AppGraphQLClient } from "./src/modules/common/api/graphql-client";
+import { AuthenticationStack } from "./src/navigation/authentication-stack.navigator";
 
 /**
  * The root app component

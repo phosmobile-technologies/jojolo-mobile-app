@@ -1,5 +1,7 @@
+import { BirthTerm, BloodGroup, Genotype } from "./generated/graphql";
+
 export const APP_CONSTANTS = {
-  GRAPHQL_API_URL: "http://localhost:3100/graphql",
+  GRAPHQL_API_URL: "http://192.168.100.3:3100/graphql",
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 
@@ -77,23 +79,23 @@ export const COLORS = {
 
 export const DROPDOWN_OPTIONS = {
   CHILD_BIRTH_TERM: [
-    { label: "Pre-term (28 Weeks - 37 Weeks)", value: "PRE_TERM" },
-    { label: "Term (37 Weeks - 42 Weeks)", value: "TERM" },
-    { label: "Post-Term ( > 42 Weeks)", value: "POST_TERM" },
-    { label: "Not Sure", value: "NOT_SURE" },
+    { label: "Pre-term (28 Weeks - 37 Weeks)", value: BirthTerm.PreTerm },
+    { label: "Term (37 Weeks - 42 Weeks)", value: BirthTerm.Term },
+    { label: "Post-Term ( > 42 Weeks)", value: BirthTerm.PostTerm },
+    { label: "Not Sure", value: BirthTerm.NotSure },
   ],
 
   BLOOD_GROUP: [
-    { label: "A", value: "A" },
-    { label: "B", value: "B" },
-    { label: "AB", value: "AB" },
-    { label: "O", value: "O" },
+    { label: "A", value: BloodGroup.A },
+    { label: "B", value: BloodGroup.B },
+    { label: "AB", value: BloodGroup.Ab },
+    { label: "O", value: BloodGroup.O },
   ],
 
   GENOTYPE: [
-    { label: "AA", value: "AA" },
-    { label: "AS", value: "AS" },
-    { label: "SS", value: "SS" },
-    { label: "AC", value: "AC" },
+    { label: "AA", value: Genotype.Aa },
+    { label: "AS", value: Genotype.As },
+    { label: "SS", value: Genotype.Ss },
+    { label: "AC", value: Genotype.Ac },
   ],
 };

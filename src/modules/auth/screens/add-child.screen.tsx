@@ -9,6 +9,11 @@ import {
   COLORS,
   NAVIGATION_CONSTANTS,
 } from "../../../constants";
+import {
+  CreateCareGiverInput,
+  useSignUpCareGiverMutation,
+} from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 import Loader from "../../common/components/loader.component";
@@ -65,7 +70,31 @@ const AddChildScreen = () => {
     immunizations: false,
   });
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [isRegistering, setIsRegistering] = React.useState(false);
+
+  /**
+   * Using the react-hook mutation for creating care giver accounts
+   */
+  const { mutate, isLoading } = useSignUpCareGiverMutation(AppGraphQLClient, {
+    onSuccess: () => {
+      toast.show("Your account has been successfully created", {
+        type: "success",
+      });
+      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
+    },
+
+    onError: () => {
+      toast.show(
+        "An error occured while creating your account. Please try again later",
+        {
+          type: "error",
+        }
+      );
+    },
+
+    onMutate: () => {
+      setShowConfirmationModal(false);
+    },
+  });
 
   /**
    * Called when completing the child registration
@@ -94,7 +123,7 @@ const AddChildScreen = () => {
     } = childMedicalHistory;
     const { milestones, growth, immunizations } = childDataToTrack;
 
-    const careGiverRegistrationData = {
+    const careGiverRegistrationData: CreateCareGiverInput = {
       full_name,
       email,
       role,
@@ -121,24 +150,12 @@ const AddChildScreen = () => {
       },
     };
 
-    console.log(careGiverRegistrationData);
-
-    setShowConfirmationModal(false);
-    setIsRegistering(true);
-
-    // @TODO Replace this with an actual API call
-    setTimeout(() => {
-      setIsRegistering(false);
-      toast.show("Your account has been successfully created", {
-        type: "success",
-      });
-      navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_IN_SCREEN);
-    }, APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS);
+    mutate({ input: careGiverRegistrationData });
   };
 
   return (
     <View style={styles.container}>
-      <Loader loading={isRegistering} />
+      <Loader loading={isLoading} />
       <AppModal
         visible={showConfirmationModal}
         setVisibility={setShowConfirmationModal}

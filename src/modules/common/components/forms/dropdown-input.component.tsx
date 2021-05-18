@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 import AppText from "../typography/text.component";
@@ -39,35 +39,64 @@ const AppDropdown = (props: AppPickerProps) => {
     ? [styles.picker__wrapper, styles.picker__wrapper__with__error]
     : [styles.picker__wrapper];
 
+  let PickerComponent = <></>;
+
+  if (Platform.OS === "ios") {
+    // @TODO Replace this with a proper IOS picker that works
+    <Picker
+      style={styles.picker}
+      itemStyle={{ height: 70 }}
+      mode="dropdown"
+      selectedValue={selectedValue}
+      onValueChange={(itemValue, itemIndex) => {
+        if (!itemValue) {
+          return;
+        }
+        updateSelectedValue(itemValue);
+      }}
+    >
+      <Picker.Item label="Select one..." value="" />
+      {options.map((option, index) => {
+        return (
+          <Picker.Item label={option.label} value={option.value} key={index} />
+        );
+      })}
+    </Picker>;
+  }
+
+  if (Platform.OS === "android") {
+    PickerComponent = (
+      <Picker
+        style={styles.picker}
+        mode="dropdown"
+        selectedValue={selectedValue}
+        onValueChange={(itemValue, itemIndex) => {
+          if (!itemValue) {
+            return;
+          }
+          updateSelectedValue(itemValue);
+        }}
+      >
+        <Picker.Item label="Select one..." value="" />
+        {options.map((option, index) => {
+          return (
+            <Picker.Item
+              label={option.label}
+              value={option.value}
+              key={index}
+            />
+          );
+        })}
+      </Picker>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {label.length > 0 && (
         <AppText style={APP_STYLES.form__input__label}>{label}</AppText>
       )}
-      <View style={pickerWrapperStyles}>
-        <Picker
-          style={styles.picker}
-          mode="dropdown"
-          selectedValue={selectedValue}
-          onValueChange={(itemValue, itemIndex) => {
-            if (!itemValue) {
-              return;
-            }
-            updateSelectedValue(itemValue);
-          }}
-        >
-          <Picker.Item label="Select one..." value="" />
-          {options.map((option, index) => {
-            return (
-              <Picker.Item
-                label={option.label}
-                value={option.value}
-                key={index}
-              />
-            );
-          })}
-        </Picker>
-      </View>
+      <View style={pickerWrapperStyles}>{PickerComponent}</View>
       {hasError && errorMessage.length > 0 && (
         <AppText style={styles.error__label}>{errorMessage}</AppText>
       )}

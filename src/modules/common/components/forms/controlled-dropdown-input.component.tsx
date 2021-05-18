@@ -1,7 +1,7 @@
 import React from "react";
 import { useController } from "react-hook-form";
+import { Platform } from "react-native";
 
-import AppTextInput from "./text-input.component";
 import AppDropdown, { AppPickerItem } from "./dropdown-input.component";
 
 /**
@@ -34,16 +34,29 @@ const ControlledAppDropdownInput = ({
     defaultValue,
     name,
   });
-  return (
-    <AppDropdown
-      selectedValue={field.value}
-      updateSelectedValue={field.onChange}
-      label={label}
-      error={error}
-      options={options}
-      {...otherProps}
-    />
-  );
+  if (Platform.OS === "android") {
+    return (
+      <AppDropdown
+        selectedValue={field.value}
+        updateSelectedValue={field.onChange}
+        label={label}
+        error={error}
+        options={options}
+        {...otherProps}
+      />
+    );
+  } else {
+    return (
+      <AppDropdown
+        selectedValue={field.value}
+        updateSelectedValue={field.onChange}
+        label={label}
+        error={error}
+        options={options}
+        {...otherProps}
+      />
+    );
+  }
 };
 
 export default ControlledAppDropdownInput;

@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import DoctorsListCardItem from "../components/doctors-list-card.component";
 
+import DoctorsListCardItem from "../components/doctors-list-card.component";
+import FilterDoctors from "../components/filter-doctors-card.component";
 /**
  * The Main Private Chat screen which shows all the various private chat related functionality
  *
@@ -12,6 +13,9 @@ const GetDoctorForChatScreen = () => {
 
   return (
     <ScrollView>
+      <View>
+        <FilterDoctors />
+      </View>
       <View style={styles.container}>
         {doctorsList.map((doctor) => (
           <DoctorsListCardItem />

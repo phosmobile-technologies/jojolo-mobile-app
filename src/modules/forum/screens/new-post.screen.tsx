@@ -1,36 +1,30 @@
 import React, { useState } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Text,
-  Keyboard,
-  Modal,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useForm, useController } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-import PostModel from "../models/post.model";
-import Post from "../components/posts/post-details.component";
 import AppText from "../../common/components/typography/text.component";
-import { CommentFeed } from "../components/posts/post-comment.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { Picker } from "@react-native-picker/picker";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
-import Loader from "../../common/components/loader.component";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import AppTextInput from "../../common/components/forms/text-input.component";
 import AppButton from "../../common/components/button.component";
-import { COLORS } from "../../../constants";
+import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
+import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
+import { APP_STYLES } from "../../common/styles";
+import AppCheckboxInput from "../../common/components/forms/checkbox.component";
+import { CreatePostInput } from "../../../generated/graphql";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
   content: yup.string().required("Please provide a title"),
 });
 
+/**
+ * Page used for creating a new post.
+ *
+ * @returns
+ */
 const CreatePostScreen = () => {
   const {
     control,
@@ -40,10 +34,15 @@ const CreatePostScreen = () => {
     resolver: yupResolver(schema),
   });
 
+  const [postAnonymously, setPostAnonymously] = useState(false);
+
   const onSubmit = (data: any) => {
-    const post = data;
-    console.log(post);
+    const post: CreatePostInput = {
+      ...data,
+      posted_anonymously: postAnonymously,
+    };
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.form__input__wrapper}>
@@ -61,30 +60,32 @@ const CreatePostScreen = () => {
           control={control}
           error={errors.content}
         />
-        <ControlledAppTextInput
+        <ControlledAppDropdownInput
+          options={DROPDOWN_OPTIONS.POST_TAGS}
+          control={control}
+          defaultValue={""}
           name={"select_tags"}
           label={"Select Tag(s)"}
-          defaultValue={""}
-          control={control}
-          error={errors.phone_number}
         />
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              padding: 25,
-            }}
-          >
+        <View style={styles.bottomActions}>
+          <TouchableOpacity style={styles.add__image}>
             <SvgIcon iconName={SVG_ICONS.ADD_PHOTO_ICON} />
-            <AppText style={{ padding: 10, fontSize: 18 }}>Add Image</AppText>
+            <AppText style={styles.add__image__text}>Add Image</AppText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.post__anonymously}>
+            <AppCheckboxInput
+              label={""}
+              value={postAnonymously}
+              setValue={setPostAnonymously}
+              textStyle={{
+                color: COLORS.APP_BLACK_ICON,
+              }}
+            />
             <AppText style={{ fontSize: 18 }}>Post Anonymously?</AppText>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.sendPost}>
+      <View style={APP_STYLES.screen__bottom__bar__button}>
         <AppButton
           type="submit"
           title="Send Post"
@@ -97,54 +98,35 @@ const CreatePostScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    flex: 1,
+    justifyContent: "space-between",
   },
-  title: {},
-  picker: {
-    paddingTop: 10,
+  bottomActions: {
+    marginVertical: 50,
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
-  titleInput: {
-    width: 400,
-    backgroundColor: "blue",
-    borderRadius: 10,
-    height: 60,
-    marginTop: 10,
+  add__image: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
   },
-  contentInput: {
-    width: 400,
-    borderRadius: 10,
-    height: 60,
-    marginTop: 10,
+  add__image__text: {
+    fontSize: 18,
+    marginLeft: 10,
   },
-  form__input__wrapper: {},
+
+  form__input__wrapper: {
+    padding: 20,
+  },
+  post__anonymously: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
   bottomBar: {
     paddingVertical: 50,
-  },
-  sendPost: {
-    top: 179,
-  },
-  sendPostText: {
-    padding: 25,
-    width: 400,
-    backgroundColor: COLORS.APP_PRIMARY_COLOR,
-    alignItems: "center",
-    borderRadius: 20,
-  },
-  text: {
-    fontSize: 19,
-  },
-  content: {
-    height: 120,
-  },
-  button: {
-    padding: 30,
-    left: 15,
-    top: 6,
-  },
-  dropDown: {
-    backgroundColor: COLORS.APP_GRAY_BACKGROUND,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
 });
 

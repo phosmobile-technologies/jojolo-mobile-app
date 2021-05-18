@@ -5,6 +5,7 @@ import { COLORS, NAVIGATION_CONSTANTS } from "../constants";
 import GetDoctorForChatScreen from "../modules/privateChat/screens/get-doctor-for-chat.screen";
 import DoctorProfileInPrivateChat from "../modules/privateChat/screens/doctor-profile.screen";
 import ChatScreen from "../modules/privateChat/screens/chat.screen";
+import { createContext } from "react";
 
 const PrivateChatStackNav = createStackNavigator();
 

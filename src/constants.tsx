@@ -78,6 +78,26 @@ export const COLORS = {
   APP_ERROR_RED: "#E5251D",
   APP_GREEN: "#2AC769",
   TRANSPARENT: "transparent",
+  APP_LIGHT_GREEN: "#B2E9ED",
+};
+
+export const DOCTOR_TYPES = [
+  "Dentist",
+  "Dermatologist",
+  "General Practitioner",
+  "Lactationist",
+  "Nutritionist",
+  "Pediatrician",
+  "Therapist",
+];
+
+export const TAGS = {
+  General: 1,
+  Breastfeeding: 2,
+  Teething: 3,
+  Feeding: 4,
+  Stooling: 5,
+  Illness: 6,
 };
 
 export const DROPDOWN_OPTIONS = {
@@ -100,5 +120,14 @@ export const DROPDOWN_OPTIONS = {
     { label: "AS", value: Genotype.As },
     { label: "SS", value: Genotype.Ss },
     { label: "AC", value: Genotype.Ac },
+  ],
+
+  POST_TAGS: [
+    { label: "General", value: TAGS.General },
+    { label: "Breastfeeding", value: TAGS.Breastfeeding },
+    { label: "Teething", value: TAGS.Teething },
+    { label: "Feeding", value: TAGS.Feeding },
+    { label: "Stooling", value: TAGS.Stooling },
+    { label: "Illness", value: TAGS.Illness },
   ],
 };

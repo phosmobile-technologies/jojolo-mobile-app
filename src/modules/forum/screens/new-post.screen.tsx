@@ -41,7 +41,6 @@ const CreatePostScreen = () => {
       ...data,
       posted_anonymously: postAnonymously,
     };
-    console.log(post);
   };
 
   return (

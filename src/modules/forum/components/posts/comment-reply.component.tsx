@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native";
 import AppActivityIndicator from "../../../common/components/activity-indicator.component";
 import { getComments } from "../../api/posts.api";
 import Comment from "../../models/comment.model";
-import CommentList from "./comment-list.component";
+import ReplyList from "./reply-list.component";
 
 interface stateShape {
   isLoading: boolean;
@@ -18,7 +18,7 @@ interface stateShape {
  * @returns
  */
 
-export const CommentFeed = (openBottomsheet: any) => {
+export const ReplyFeed = (openBottomsheet: any) => {
   const [state, setState] = useState<stateShape>({
     isLoading: true,
     loadingError: false,
@@ -54,15 +54,9 @@ export const CommentFeed = (openBottomsheet: any) => {
     fetchComments();
   }, []);
 
-  if (state.isLoading) {
-    return <AppActivityIndicator text={"loading comments.."} />;
-  }
   return (
     <SafeAreaView>
-      <CommentList
-        comments={state.comments}
-        openBottomsheet={openBottomsheet}
-      />
+      <ReplyList comments={state.comments} openBottomsheet={openBottomsheet} />
     </SafeAreaView>
   );
 };

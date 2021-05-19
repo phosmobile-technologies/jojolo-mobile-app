@@ -18,7 +18,13 @@ import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
 import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
 import { APP_STYLES } from "../../common/styles";
 import AppCheckboxInput from "../../common/components/forms/checkbox.component";
-import { CreatePostInput } from "../../../generated/graphql";
+import {
+  CreatePostInput,
+  useCreatePostMutation,
+} from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import { useToast } from "react-native-fast-toast";
+import Loader from "../../common/components/loader.component";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -39,10 +45,24 @@ const CreatePostScreen = () => {
     resolver: yupResolver(schema),
   });
 
-  let options = {
-    includeBase64: true,
-    mediaType: "photo",
-  };
+  const toast = useToast() as any;
+
+  /**
+   * Mutation for creating a new post
+   */
+  const { mutate, isLoading } = useCreatePostMutation(AppGraphQLClient, {
+    onSuccess: (response) => {
+      const { id } = response.CreatePost;
+    },
+
+    onError: (err) => {
+      toast.show("Failed to create your post. Please try again", {
+        type: "error",
+      });
+    },
+
+    onMutate: () => {},
+  });
 
   /**
    * Get camera permissions
@@ -103,11 +123,14 @@ const CreatePostScreen = () => {
       tags: [data.tags],
       user_id: 1,
     };
+
+    mutate({ input: post });
   };
 
   return (
     <View style={styles.container}>
       <ScrollView>
+        <Loader loading={isLoading} />
         <View style={styles.form__input__wrapper}>
           <ControlledAppTextInput
             name={"title"}

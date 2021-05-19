@@ -459,6 +459,29 @@ export type SignUpHealthCareProfessionalMutation = (
   ) }
 );
 
+export type CreatePostMutationVariables = Exact<{
+  input: CreatePostInput;
+}>;
+
+
+export type CreatePostMutation = (
+  { __typename?: 'Mutation' }
+  & { CreatePost: (
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'uuid' | 'posted_anonymously' | 'title' | 'content'>
+    & { tags: Array<Maybe<(
+      { __typename?: 'PostTag' }
+      & Pick<PostTag, 'id' | 'name'>
+    )>>, files: Array<Maybe<(
+      { __typename?: 'PostFileUpload' }
+      & Pick<PostFileUpload, 'id' | 'file_url'>
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
+);
+
 
 export const LoginDocument = `
     mutation Login($input: LoginInput!) {
@@ -559,5 +582,38 @@ export const useSignUpHealthCareProfessionalMutation = <
     ) => 
     useMutation<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>(
       (variables?: SignUpHealthCareProfessionalMutationVariables) => fetcher<SignUpHealthCareProfessionalMutation, SignUpHealthCareProfessionalMutationVariables>(client, SignUpHealthCareProfessionalDocument, variables)(),
+      options
+    );
+export const CreatePostDocument = `
+    mutation CreatePost($input: CreatePostInput!) {
+  CreatePost(input: $input) {
+    id
+    uuid
+    posted_anonymously
+    title
+    content
+    tags {
+      id
+      name
+    }
+    files {
+      id
+      file_url
+    }
+    user {
+      id
+    }
+  }
+}
+    `;
+export const useCreatePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<CreatePostMutation, TError, CreatePostMutationVariables, TContext>
+    ) => 
+    useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
+      (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
       options
     );

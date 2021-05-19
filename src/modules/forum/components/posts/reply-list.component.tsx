@@ -2,9 +2,9 @@ import React from "react";
 import { View, FlatList, Text } from "react-native";
 
 import Comment from "../../models/comment.model";
-import CommentComponent from "./comment.component";
+import ReplyComponent from "./reply.component";
 
-const CommentList = ({
+const ReplyList = ({
   comments,
   openBottomsheet,
 }: {
@@ -15,7 +15,7 @@ const CommentList = ({
     <FlatList
       data={comments}
       renderItem={({ item }) => (
-        <CommentComponent comment={item} openBottomsheet={openBottomsheet} />
+        <ReplyComponent comment={item} openBottomsheet={openBottomsheet} />
       )}
       keyExtractor={(item) => item.uuid}
       showsHorizontalScrollIndicator={false}
@@ -23,4 +23,4 @@ const CommentList = ({
   );
 };
 
-export default CommentList;
+export default ReplyList;

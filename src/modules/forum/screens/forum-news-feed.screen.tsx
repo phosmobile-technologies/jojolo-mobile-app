@@ -7,8 +7,8 @@ import { getNewsFeed } from "../api/posts.api";
 import Post from "../models/post.model";
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
 import { NAVIGATION_CONSTANTS } from "../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../contexts/forum-navigator.context";
 
 interface StateShape {
   isLoading: boolean;

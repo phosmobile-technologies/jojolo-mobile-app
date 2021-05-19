@@ -48,7 +48,8 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
       authContext.dispatch({ type: "SIGN_IN", token: access_token });
     },
 
-    onError: () => {
+    onError: (err) => {
+      console.log(err);
       authContext.dispatch({ type: "SIGN_OUT" });
       toast.show("Invalid email/password provided", {
         type: "error",

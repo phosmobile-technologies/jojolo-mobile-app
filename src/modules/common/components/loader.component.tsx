@@ -11,7 +11,7 @@ const Loader = (props: any) => {
       animationType={"none"}
       visible={loading}
       onRequestClose={() => {
-        console.log("close modal");
+        console.log("Attempted to close loading modal");
       }}
     >
       <View style={styles.modalBackground}>

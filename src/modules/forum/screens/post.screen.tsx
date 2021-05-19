@@ -7,8 +7,8 @@ import {
   Text,
   Keyboard,
 } from "react-native";
-import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
+import { BottomSheet } from "react-native-btr";
 
 import PostModel from "../models/post.model";
 import Post from "../components/posts/post-details.component";
@@ -18,9 +18,9 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
-import { createRef } from "react";
-import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
+import { createRef, useState } from "react";
 import { COLORS } from "../../../constants";
+import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
 const PostDetailsScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
@@ -29,103 +29,80 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
   const sheetRef = React.useRef(null);
   const fall = new Animated.Value(1);
 
-  const renderCommentBox = () => {
-    return (
-      <View
-        style={{
-          backgroundColor: "white",
-          padding: 10,
-          height: 150,
-        }}
+  const [visible, setVisible] = useState(false);
+
+  const toggleBottomSheet = () => {
+    setVisible(!visible);
+  };
+
+  return (
+    <>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.container}>
+            <Post
+              post={post}
+              isFullPage={true}
+              allowNavigationToPostDetails={false}
+            />
+            <View>
+              <AppText style={styles.text}>Comments(4)</AppText>
+            </View>
+            <View>
+              <CommentFeed openBottomsheet={toggleBottomSheet} />
+            </View>
+          </View>
+        </ScrollView>
+        <View
+          style={{
+            backgroundColor: COLORS.WHITE,
+            marginHorizontal: -10,
+            height: 70,
+            top: 11,
+          }}
+        >
+          <TouchableWithoutFeedback onPress={toggleBottomSheet}>
+            <View style={styles.textInput} />
+          </TouchableWithoutFeedback>
+        </View>
+      </View>
+      <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomSheet}
+        onBackdropPress={toggleBottomSheet}
       >
-        <View>
-          <AppText>
-            Commenting On{"  "}
-            <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
-              My Baby is Struggling
-            </Text>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                sheetRef.current.snapTo(1);
-              }}
-            >
+        <View style={styles.bottomSheetContainer}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <AppText style={styles.commenting__title}>
+              Commenting On{"  "}
+              <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
+                My Baby is Struggling
+              </Text>
+            </AppText>
+            <TouchableWithoutFeedback onPress={toggleBottomSheet}>
               <SvgIcon
                 iconName={SVG_ICONS.CLOSE_ICON}
                 style={{ paddingLeft: 50, top: 10 }}
               />
             </TouchableWithoutFeedback>
-          </AppText>
-        </View>
-        <View>
-          <TextInput
-            style={styles.textBox}
-            placeholder="Add a comment"
-            placeholderTextColor="#A0A4A8;"
-          />
-        </View>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textBox}
+              placeholder="Add a comment"
+              placeholderTextColor={COLORS.APP_GRAY_TEXT}
+            />
+          </View>
 
-        <View style={styles.reply}>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              sheetRef.current.snapTo(1);
-              Keyboard.dismiss();
-            }}
-          >
-            <AppText>Reply</AppText>
-          </TouchableWithoutFeedback>
-        </View>
-      </View>
-    );
-  };
-  return (
-    <>
-      <Animated.View
-        style={{
-          opacity: Animated.add(0.1, Animated.multiply(fall, 4.0)),
-          flex: 1,
-        }}
-      >
-        <View style={styles.container}>
-          <ScrollView>
-            <View style={styles.container}>
-              <Post
-                post={post}
-                isFullPage={true}
-                allowNavigationToPostDetails={false}
-              />
-              <View>
-                <AppText style={styles.text}>Comments(4)</AppText>
-              </View>
-              <View>
-                <CommentFeed />
-              </View>
-            </View>
-          </ScrollView>
-          <View
-            style={{
-              backgroundColor: COLORS.WHITE,
-              width: 500,
-              height: 70,
-              top: 11,
-              marginLeft: -20,
-            }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => sheetRef.current.snapTo(0)}
-            >
-              <View style={styles.textInput} />
+          <View style={styles.reply}>
+            <TouchableWithoutFeedback onPress={toggleBottomSheet}>
+              <AppText style={styles.reply__text}>Reply</AppText>
             </TouchableWithoutFeedback>
           </View>
         </View>
-      </Animated.View>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={[150, 0, 0]}
-        initialSnap={1}
-        borderRadius={10}
-        callbackNode={fall}
-        renderContent={renderCommentBox}
-      />
+      </BottomSheet>
     </>
   );
 };
@@ -136,14 +113,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
+  bottomSheetContainer: {
+    backgroundColor: COLORS.WHITE,
+    padding: 10,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
   textInput: {
     height: 48,
     margin: 12,
     borderRadius: 10,
-    width: 327,
+
     marginBottom: -1,
     backgroundColor: COLORS.APP_GRAY_BACKGROUND,
-    left: 10,
   },
   text: {
     fontSize: 19,
@@ -151,15 +133,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textBox: {
-    paddingVertical: 2,
+    marginVertical: 0,
+    paddingVertical: 10,
     fontSize: 15,
-    borderBottomColor: COLORS.APP_GRAY_BACKGROUND,
-    borderBottomWidth: 1,
-    height: 48,
   },
   reply: {
-    bottom: -10,
-    left: 300,
+    borderTopWidth: 1,
+    marginVertical: 50,
+    alignItems: "flex-end",
+    borderTopColor: COLORS.APP_LIGHT_GRAY_BACKGROUND,
+    marginHorizontal: -10,
+    paddingHorizontal: 30,
+  },
+  reply__text: {
+    fontSize: 20,
+    paddingTop: 10,
+    color: COLORS.APP_PRIMARY_COLOR,
+  },
+  commenting__title: {
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 

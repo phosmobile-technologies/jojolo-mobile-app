@@ -44,6 +44,9 @@ const CreatePostScreen = () => {
     mediaType: "photo",
   };
 
+  /**
+   * Get camera permissions
+   */
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -70,8 +73,6 @@ const CreatePostScreen = () => {
       quality: 1,
       allowsMultipleSelection: true,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setImages([...images, result.uri]);
@@ -102,7 +103,6 @@ const CreatePostScreen = () => {
       tags: [data.tags],
       user_id: 1,
     };
-    console.log(post);
   };
 
   return (

@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Text,
-  Keyboard,
-} from "react-native";
-import Animated from "react-native-reanimated";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { BottomSheet } from "react-native-btr";
 
 import PostModel from "../models/post.model";
@@ -18,16 +10,12 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
-import { createRef, useState } from "react";
+import { useState } from "react";
 import { COLORS } from "../../../constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 
 const PostDetailsScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
-
-  const bs = createRef();
-  const sheetRef = React.useRef(null);
-  const fall = new Animated.Value(1);
 
   const [visible, setVisible] = useState(false);
 

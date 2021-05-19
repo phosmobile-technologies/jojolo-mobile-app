@@ -5,8 +5,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppHeaderText from "../../common/components/typography/header-text.component";
-import { ForumNavigatorNavigationContext } from "../screens/forum.screen";
 import { COLORS } from "../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../contexts/forum-navigator.context";
 
 /**
  * The forum page header

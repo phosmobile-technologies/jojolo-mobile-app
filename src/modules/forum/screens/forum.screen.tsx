@@ -8,11 +8,9 @@ import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../contexts/forum-navigator.context";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
-
-// React context used to provide the navigation function to all children of the forum page
-export const ForumNavigatorNavigationContext = createContext([]);
 
 /**
  * The Main Forum screen which shows all the various forum related tabs like (Feed, My Posts, Saved Posts and tags)

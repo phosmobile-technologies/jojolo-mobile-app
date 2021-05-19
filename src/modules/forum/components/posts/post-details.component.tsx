@@ -6,9 +6,9 @@ import { useToast } from "react-native-fast-toast";
 import PostModel from "../../models/post.model";
 import PostHeader from "./post-header.component";
 import PostContent from "./post-content.component";
-import { ForumNavigatorNavigationContext } from "../../screens/forum.screen";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { NAVIGATION_CONSTANTS } from "../../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../../contexts/forum-navigator.context";
 
 const Post = ({
   post,

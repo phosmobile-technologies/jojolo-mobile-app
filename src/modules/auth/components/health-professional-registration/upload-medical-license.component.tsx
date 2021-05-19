@@ -1,10 +1,8 @@
 import React from "react";
-import { Platform, View, StyleSheet } from "react-native";
-import { launchImageLibrary } from "react-native-image-picker";
+import { View, StyleSheet } from "react-native";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../../constants";
 import AppButton from "../../../common/components/button.component";
 
-import AppText from "../../../common/components/typography/text.component";
 import UploadFile from "../../../common/components/upload-file.component";
 
 /**

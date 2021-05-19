@@ -1,7 +1,6 @@
 import { BirthTerm, BloodGroup, Genotype } from "./generated/graphql";
 
 export const APP_CONSTANTS = {
-  GRAPHQL_API_URL: "http://192.168.100.87:3100/graphql",
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 

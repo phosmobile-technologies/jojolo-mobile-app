@@ -18,12 +18,19 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
   const { post }: { post: PostModel } = route.params;
 
   const [visible, setVisible] = useState(false);
+  const [replyVisible, setReplyVisible] = useState(false);
+
+  const toggleReplyBottomSheet = () => {
+    setCommentReply("");
+    setReplyVisible(!replyVisible);
+  };
 
   const toggleBottomSheet = () => {
     setVisible(!visible);
   };
 
-  const [commentReply, setCommentReply] = useState("");
+  const [comment, setCommentReply] = useState("");
+  const [reply, setReply] = useState("");
 
   /**
    * Send new comment data to the api
@@ -31,14 +38,23 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
    * @todo add hook to get authenticated user and all multi select tag
    * @param data
    */
-  const onSubmit = () => {
+  const onCommentSubmit = () => {
     toggleBottomSheet();
     const Comment = {
       post_id: post.id,
       user_id: post.user.id,
-      user_reply: commentReply,
+      user_comment: comment,
     };
     console.log(Comment);
+  };
+
+  const onReplySubnmit = () => {
+    toggleReplyBottomSheet;
+    const Reply = {
+      post_id: post.id,
+      user_id: post.user.id,
+      user_reply: reply,
+    };
   };
 
   return (
@@ -55,7 +71,9 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               <AppText style={styles.text}>Comments(4)</AppText>
             </View>
             <View>
-              <CommentFeed openBottomsheet={toggleBottomSheet} />
+              <CommentFeed
+                openBottomsheet={() => setReplyVisible(!replyVisible)}
+              />
             </View>
           </View>
         </ScrollView>
@@ -100,11 +118,49 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               placeholder="Add a comment"
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
               onChangeText={(text) => setCommentReply(text)}
-              defaultValue={commentReply}
+              defaultValue={""}
             />
           </View>
           <View style={styles.reply}>
-            <TouchableWithoutFeedback onPress={onSubmit}>
+            <TouchableWithoutFeedback onPress={onCommentSubmit}>
+              <AppText style={styles.reply__text}>Reply</AppText>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </BottomSheet>
+      <BottomSheet
+        visible={replyVisible}
+        onBackButtonPress={toggleReplyBottomSheet}
+        onBackdropPress={toggleReplyBottomSheet}
+      >
+        <View style={styles.bottomSheetContainer}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <AppText style={styles.commenting__title}>
+              Replying To{"  "}
+              <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
+                Philip Omoigui
+              </Text>
+            </AppText>
+            <TouchableWithoutFeedback onPress={toggleReplyBottomSheet}>
+              <SvgIcon
+                iconName={SVG_ICONS.CLOSE_ICON}
+                style={{ paddingLeft: 50, top: 10 }}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textBox}
+              placeholder="Add a Reply"
+              placeholderTextColor={COLORS.APP_GRAY_TEXT}
+              onChangeText={(text) => setReply(text)}
+              defaultValue={""}
+            />
+          </View>
+          <View style={styles.reply}>
+            <TouchableWithoutFeedback onPress={onReplySubnmit}>
               <AppText style={styles.reply__text}>Reply</AppText>
             </TouchableWithoutFeedback>
           </View>

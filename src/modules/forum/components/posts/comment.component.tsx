@@ -7,6 +7,7 @@ import CommentHeader from "./comment-header.component";
 import ReplyComment from "./reply.component";
 import { ReplyFeed } from "./comment-reply.component";
 import { COLORS } from "../../../../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const postComment = ({
   comment,
@@ -22,7 +23,9 @@ const postComment = ({
         <CommentHeader user={user} />
         <AppText style={styles.comment}>{comment.content}</AppText>
         <View style={styles.share__and__like__container}>
-          <AppText style={styles.reply}>Reply</AppText>
+          <TouchableOpacity onPress={openBottomsheet}>
+            <AppText style={styles.reply}>Reply</AppText>
+          </TouchableOpacity>
         </View>
       </View>
       <View>

@@ -56,7 +56,10 @@ export const ReplyFeed = ({ openBottomsheet }, { openBottomsheet: any }) => {
 
   return (
     <SafeAreaView>
-      <ReplyList comments={state.comments} openBottomsheet={openBottomsheet} />
+      <ReplyList
+        comments={state.comments}
+        openBottomsheet={openBottomsheet as any}
+      />
     </SafeAreaView>
   );
 };

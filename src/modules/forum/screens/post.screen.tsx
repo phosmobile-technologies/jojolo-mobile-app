@@ -13,8 +13,27 @@ import {
 import { useState } from "react";
 import { COLORS } from "../../../constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useToast } from "react-native-fast-toast";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
+import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
 const PostDetailsScreen = ({ route }: { route: any }) => {
+  const navigation = useNavigation() as any;
+  const toast: any = useToast();
+
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
   const { post }: { post: PostModel } = route.params;
 
   const [visible, setVisible] = useState(false);
@@ -26,6 +45,7 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
   };
 
   const toggleBottomSheet = () => {
+    setReply("");
     setVisible(!visible);
   };
 
@@ -160,7 +180,10 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
             />
           </View>
           <View style={styles.reply}>
-            <TouchableWithoutFeedback onPress={onReplySubnmit}>
+            <TouchableWithoutFeedback
+              onPress={onReplySubnmit}
+              style={styles.reply__container}
+            >
               <AppText style={styles.reply__text}>Reply</AppText>
             </TouchableWithoutFeedback>
           </View>
@@ -216,6 +239,10 @@ const styles = StyleSheet.create({
   commenting__title: {
     textAlign: "center",
     marginTop: 10,
+  },
+  reply__container: {
+    backgroundColor: "red",
+    padding: 10,
   },
 });
 

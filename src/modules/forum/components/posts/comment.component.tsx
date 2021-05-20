@@ -20,7 +20,7 @@ const postComment = ({
   return (
     <View style={styles.container}>
       <View style={styles.comment__container}>
-        <CommentHeader user={user} />
+        <CommentHeader user={user} comment={comment.id} />
         <AppText style={styles.comment}>{comment.content}</AppText>
         <View style={styles.share__and__like__container}>
           <TouchableOpacity onPress={openBottomsheet}>

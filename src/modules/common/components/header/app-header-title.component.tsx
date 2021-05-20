@@ -16,7 +16,7 @@ const AppHeaderTitle = ({ text }: { text: string }) => {
         fontWeight: "700",
       }}
     >
-      Add Child
+      {text}
     </AppText>
   );
 };

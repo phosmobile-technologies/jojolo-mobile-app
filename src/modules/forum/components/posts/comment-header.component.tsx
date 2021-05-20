@@ -1,23 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Image,
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
-import { COLORS } from "../../../../constants";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useToast } from "react-native-fast-toast";
 
+import { COLORS } from "../../../../constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
 import { User } from "../../../common/models/user.model";
+import PostModel from "../../models/post.model";
 
 /**
  * tThe header for a comment
  */
 
-const CommentHeader = ({ user }: { user: User }) => {
+const CommentHeader = ({ user, comment }: { user: User; comment: any }) => {
+  const toast: any = useToast();
+  const { showActionSheetWithOptions } = useActionSheet();
+  const [action, setAction] = useState("");
+
+  const handleOpenActionSheet = () => {
+    const options = ["Report Comment", "Cancel"];
+    const cancelButtonIndex = 1;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          // Save the post
+          toast.show("Comment Reported successfully", { type: "success" });
+          /**
+           * Function For Getting Comment Actions For Api
+           */
+          setAction(options[buttonIndex]);
+          const Action = {
+            user_id: user.id, // This will change when User Authemtication as been carried out and user can be accessed Globally
+            post_id: comment.id,
+            action: action,
+          };
+          console.log(Action);
+        }
+      }
+    );
+  };
+
   return (
     <View style={styles.header}>
       <View style={styles.header__avatar_and_details}>
@@ -48,7 +83,7 @@ const CommentHeader = ({ user }: { user: User }) => {
           </View>
         </View>
       </View>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={handleOpenActionSheet}>
         <View style={styles.actions__icon}>
           <SvgIcon iconName={SVG_ICONS.THREE_DOTS_ICON} />
         </View>

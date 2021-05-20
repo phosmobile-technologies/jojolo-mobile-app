@@ -19,9 +19,11 @@ import ControlledAppDropdownInput from "../../common/components/forms/controlled
 import { APP_STYLES } from "../../common/styles";
 import AppCheckboxInput from "../../common/components/forms/checkbox.component";
 import { CreatePostInput } from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import { useToast } from "react-native-fast-toast";
+import Loader from "../../common/components/loader.component";
 import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
 import { useNavigation } from "@react-navigation/native";
-import { useToast } from "react-native-fast-toast";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 

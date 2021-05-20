@@ -53,8 +53,6 @@ const PostContent = ({
    * @param post
    */
   const goToPostPage = (post: PostModel) => {
-    console.log("herr");
-    console.log(post);
     navigation.navigate(
       NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
       {
@@ -113,22 +111,40 @@ const PostContent = ({
               </>
             ) : (
               <>
-                <SvgIcon iconName={SVG_ICONS.LIKE_ICON} color="red" />
+                <SvgIcon
+                  iconName={SVG_ICONS.LIKE_ICON}
+                  color={COLORS.APP_PRIMARY_COLOR}
+                />
               </>
             )}
           </TouchableOpacity>
           <AppText style={styles.social_icon_group__text}>{post.likes}</AppText>
         </View>
-
-        <View style={styles.social_icon_group}>
-          <SvgIcon
-            iconName={SVG_ICONS.COMMENTS_ICON}
-            color={COLORS.APP_BLACK_ICON}
-          />
-          <AppText style={styles.social_icon_group__text}>
-            {post.comments.length}
-          </AppText>
-        </View>
+        {isFullPage ? (
+          <>
+            <View style={styles.social_icon_group}>
+              <SvgIcon
+                iconName={SVG_ICONS.COMMENTS_ICON}
+                color={COLORS.APP_BLACK_ICON}
+              />
+              <AppText style={styles.social_icon_group__text}>
+                {post.comments.length}
+              </AppText>
+            </View>
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => goToPostPage(post)}>
+            <View style={styles.social_icon_group}>
+              <SvgIcon
+                iconName={SVG_ICONS.COMMENTS_ICON}
+                color={COLORS.APP_BLACK_ICON}
+              />
+              <AppText style={styles.social_icon_group__text}>
+                {post.comments.length}
+              </AppText>
+            </View>
+          </TouchableOpacity>
+        )}
 
         <View style={styles.social_icon_group}>
           <SvgIcon

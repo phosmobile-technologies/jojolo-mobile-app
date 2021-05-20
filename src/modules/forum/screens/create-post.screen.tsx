@@ -20,6 +20,10 @@ import { APP_STYLES } from "../../common/styles";
 import AppCheckboxInput from "../../common/components/forms/checkbox.component";
 import { CreatePostInput } from "../../../generated/graphql";
 import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
+import { useNavigation } from "@react-navigation/native";
+import { useToast } from "react-native-fast-toast";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
+import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -31,7 +35,24 @@ const schema = yup.object().shape({
  *
  * @returns
  */
+
 const CreatePostScreen = () => {
+  const navigation = useNavigation() as any;
+  const toast: any = useToast();
+
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"New Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
+
   const {
     control,
     handleSubmit,

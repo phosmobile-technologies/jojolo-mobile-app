@@ -7,9 +7,26 @@ import AppText from "../../common/components/typography/text.component";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../../constants";
-import { UserType } from "../../../generated/graphql";
+import { useNavigation } from "@react-navigation/native";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
+import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
 const SearchScreen = () => {
+  const navigation = useNavigation() as any;
+
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"Search Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchAction = (text: string) => {
@@ -27,7 +44,7 @@ const SearchScreen = () => {
         {/* @TODO Change this to use controlled input */}
         <Searchbar
           style={styles.input}
-          placeholder={"search for post using keyword"}
+          placeholder={"search for a post using keyword"}
           onChangeText={(text) => searchAction(text)}
           value={searchQuery}
         />
@@ -75,13 +92,13 @@ const styles = StyleSheet.create({
     top: 30,
   },
   noPost: {
-    marginHorizontal: MarginProportions,
+    marginHorizontal: 159,
     marginVertical: 10,
-    left: 130,
   },
   keyword: {
     marginHorizontal: 50,
     marginVertical: 5,
+    alignContent: "center",
   },
 });
 

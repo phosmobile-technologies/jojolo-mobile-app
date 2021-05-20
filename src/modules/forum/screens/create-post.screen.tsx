@@ -25,6 +25,10 @@ import {
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import { useToast } from "react-native-fast-toast";
 import Loader from "../../common/components/loader.component";
+import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
+import { useNavigation } from "@react-navigation/native";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
+import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -36,7 +40,24 @@ const schema = yup.object().shape({
  *
  * @returns
  */
+
 const CreatePostScreen = () => {
+  const navigation = useNavigation() as any;
+  const toast: any = useToast();
+
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"New Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
+
   const {
     control,
     handleSubmit,
@@ -44,8 +65,6 @@ const CreatePostScreen = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const toast = useToast() as any;
 
   /**
    * Mutation for creating a new post
@@ -139,7 +158,7 @@ const CreatePostScreen = () => {
             control={control}
             error={errors.title}
           />
-          <ControlledAppTextInput
+          <ControlledMultilineAppTextInput
             name={"content"}
             label={"Content Of Post"}
             defaultValue={""}

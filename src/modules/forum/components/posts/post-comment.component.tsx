@@ -18,7 +18,7 @@ interface stateShape {
  * @returns
  */
 
-export const CommentFeed = (openBottomsheet: any) => {
+export const CommentFeed = ({ openBottomsheet }, { openBottomsheet: any }) => {
   const [state, setState] = useState<stateShape>({
     isLoading: true,
     loadingError: false,

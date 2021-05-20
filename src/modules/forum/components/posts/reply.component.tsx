@@ -21,10 +21,13 @@ const ReplyComment = ({
   const { user } = comment;
   return (
     <View style={styles.container}>
-      <CommentHeader user={user} />
+      <CommentHeader user={user} comment={comment} />
       <AppText style={styles.comment}>{comment.content}</AppText>
       <View style={styles.share__and__like__container}>
-        <TouchableOpacity onPress={openBottomsheet}>
+        <TouchableOpacity
+          onPress={openBottomsheet as any}
+          style={styles.reply__wrapper}
+        >
           <AppText style={styles.reply}>Reply</AppText>
         </TouchableOpacity>
         <View style={styles.social__item}>
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
+  reply__wrapper: {},
 });
 
 export default ReplyComment;

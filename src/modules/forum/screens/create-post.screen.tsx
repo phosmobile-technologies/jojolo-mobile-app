@@ -19,6 +19,7 @@ import ControlledAppDropdownInput from "../../common/components/forms/controlled
 import { APP_STYLES } from "../../common/styles";
 import AppCheckboxInput from "../../common/components/forms/checkbox.component";
 import { CreatePostInput } from "../../../generated/graphql";
+import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -116,7 +117,7 @@ const CreatePostScreen = () => {
             control={control}
             error={errors.title}
           />
-          <ControlledAppTextInput
+          <ControlledMultilineAppTextInput
             name={"content"}
             label={"Content Of Post"}
             defaultValue={""}

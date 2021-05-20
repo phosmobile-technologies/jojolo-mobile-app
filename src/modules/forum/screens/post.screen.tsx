@@ -23,6 +23,24 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
     setVisible(!visible);
   };
 
+  const [commentReply, setCommentReply] = useState("");
+
+  /**
+   * Send new comment data to the api
+   *
+   * @todo add hook to get authenticated user and all multi select tag
+   * @param data
+   */
+  const onSubmit = () => {
+    toggleBottomSheet();
+    const Comment = {
+      post_id: post.id,
+      user_id: post.user.id,
+      user_reply: commentReply,
+    };
+    console.log(Comment);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -81,11 +99,12 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               style={styles.textBox}
               placeholder="Add a comment"
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
+              onChangeText={(text) => setCommentReply(text)}
+              defaultValue={commentReply}
             />
           </View>
-
           <View style={styles.reply}>
-            <TouchableWithoutFeedback onPress={toggleBottomSheet}>
+            <TouchableWithoutFeedback onPress={onSubmit}>
               <AppText style={styles.reply__text}>Reply</AppText>
             </TouchableWithoutFeedback>
           </View>

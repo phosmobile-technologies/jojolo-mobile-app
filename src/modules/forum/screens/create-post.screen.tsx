@@ -27,6 +27,7 @@ import { useNavigation } from "@react-navigation/native";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
+
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
   content: yup.string().required("Please provide a title"),
@@ -63,10 +64,24 @@ const CreatePostScreen = () => {
     resolver: yupResolver(schema),
   });
 
-  let options = {
-    includeBase64: true,
-    mediaType: "photo",
-  };
+  const toast = useToast() as any;
+
+  /**
+   * Mutation for creating a new post
+   */
+  const { mutate, isLoading } = useCreatePostMutation(AppGraphQLClient, {
+    onSuccess: (response) => {
+      const { id } = response.CreatePost;
+    },
+
+    onError: (err) => {
+      toast.show("Failed to create your post. Please try again", {
+        type: "error",
+      });
+    },
+
+    onMutate: () => {},
+  });
 
   /**
    * Get camera permissions
@@ -127,11 +142,14 @@ const CreatePostScreen = () => {
       tags: [data.tags],
       user_id: 1,
     };
+
+    mutate({ input: post });
   };
 
   return (
     <View style={styles.container}>
       <ScrollView>
+        <Loader loading={isLoading} />
         <View style={styles.form__input__wrapper}>
           <ControlledAppTextInput
             name={"title"}

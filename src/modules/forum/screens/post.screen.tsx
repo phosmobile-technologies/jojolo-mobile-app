@@ -241,7 +241,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   reply__container: {
-    backgroundColor: "red",
     padding: 10,
   },
 });

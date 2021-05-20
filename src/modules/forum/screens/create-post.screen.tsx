@@ -18,7 +18,10 @@ import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
 import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
 import { APP_STYLES } from "../../common/styles";
 import AppCheckboxInput from "../../common/components/forms/checkbox.component";
-import { CreatePostInput } from "../../../generated/graphql";
+import {
+  CreatePostInput,
+  useCreatePostMutation,
+} from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import { useToast } from "react-native-fast-toast";
 import Loader from "../../common/components/loader.component";
@@ -26,7 +29,6 @@ import ControlledMultilineAppTextInput from "../../common/components/forms/contr
 import { useNavigation } from "@react-navigation/native";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
-
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -63,8 +65,6 @@ const CreatePostScreen = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const toast = useToast() as any;
 
   /**
    * Mutation for creating a new post

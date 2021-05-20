@@ -1,6 +1,6 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { COLORS } from "../../../../constants";
+import React, { useContext, useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../../constants";
 
 import SvgIcon, {
   SVG_ICONS,
@@ -8,6 +8,8 @@ import SvgIcon, {
 import AppText from "../../../common/components/typography/text.component";
 import Post from "../../models/post.model";
 import TagModel from "../../models/tag.model";
+import PostModel from "../../models/post.model";
+import { ForumNavigatorNavigationContext } from "../../../../contexts/forum-navigator.context";
 
 /**
  * Component used to display tags in a post
@@ -33,9 +35,10 @@ const PostContent = ({
   post,
   isFullPage = false,
 }: {
-  post: Post;
+  post: PostModel;
   isFullPage?: boolean;
 }) => {
+  const navigation: any = useContext(ForumNavigatorNavigationContext);
   const postContent = isFullPage
     ? post.content
     : post.content.length > 200
@@ -44,10 +47,48 @@ const PostContent = ({
   const titleStyle = isFullPage
     ? [styles.post__body__title, styles.post__body__title_large]
     : [styles.post__body__title];
+
+  /**
+   * Function for navigating to a particular post
+   * @param post
+   */
+  const goToPostPage = (post: PostModel) => {
+    console.log("herr");
+    console.log(post);
+    navigation.navigate(
+      NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
+      {
+        post,
+      }
+    );
+  };
+
+  const [liked, setLiked] = useState(false);
+
+  const onLiked = () => {
+    setLiked(!liked);
+    const LikedPost = {
+      post_id: post.id,
+      liked: liked,
+    };
+    console.log(LikedPost);
+  };
   return (
     <View>
-      <AppText style={titleStyle}>{post.title}</AppText>
-      <AppText>{postContent}</AppText>
+      {isFullPage ? (
+        <>
+          <AppText style={titleStyle}>{post.title}</AppText>
+          <AppText>{postContent}</AppText>
+        </>
+      ) : (
+        <>
+          <TouchableOpacity onPress={() => goToPostPage(post)}>
+            <AppText style={titleStyle}>{post.title}</AppText>
+            <AppText>{postContent}</AppText>
+          </TouchableOpacity>
+        </>
+      )}
+
       <View style={styles.tags__wrapper}>
         {post.tags &&
           post.tags.map((tag, index) => (
@@ -62,10 +103,20 @@ const PostContent = ({
       {/* Social interaction */}
       <View style={styles.social_icons_container}>
         <View style={styles.social_icon_group}>
-          <SvgIcon
-            iconName={SVG_ICONS.LIKE_ICON}
-            color={COLORS.APP_BLACK_ICON}
-          />
+          <TouchableOpacity onPress={() => onLiked()}>
+            {liked ? (
+              <>
+                <SvgIcon
+                  iconName={SVG_ICONS.LIKE_ICON}
+                  color={COLORS.APP_BLACK_ICON}
+                />
+              </>
+            ) : (
+              <>
+                <SvgIcon iconName={SVG_ICONS.LIKE_ICON} color="red" />
+              </>
+            )}
+          </TouchableOpacity>
           <AppText style={styles.social_icon_group__text}>{post.likes}</AppText>
         </View>
 

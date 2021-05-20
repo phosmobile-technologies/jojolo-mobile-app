@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { useToast } from "react-native-fast-toast";
@@ -24,6 +24,7 @@ const Post = ({
   const { showActionSheetWithOptions } = useActionSheet();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
 
+  const [action, setAction] = useState("");
   /**
    * Open the action sheet for saving / reporting posts
    */
@@ -42,6 +43,16 @@ const Post = ({
         if (buttonIndex === 0) {
           // Save the post
           toast.show("Post saved successfully", { type: "success" });
+          /**
+           * Function For Getting Post Actions For Api
+           */
+          setAction(options[buttonIndex]);
+          const Action = {
+            user_id: post.user.id, // This will change when User Authemtication as been carried out and user can be accessed Globally
+            post_id: post.id,
+            action: action,
+          };
+          console.log(Action);
         }
 
         if (buttonIndex === 1) {
@@ -49,6 +60,17 @@ const Post = ({
           toast.show("Post has been reported", {
             type: "danger",
           });
+          setAction(options[buttonIndex]);
+
+          /**
+           * Function For Getting Post Actions For Api
+           */
+          const Action = {
+            user_id: post.user.id, // This will change when User Authemtication as been carried out and user can be accessed Globally
+            post_id: post.id,
+            action: action,
+          };
+          console.log(Action);
         }
       }
     );
@@ -77,9 +99,7 @@ const Post = ({
         handleOpenPostActionSheet={handleOpenActionSheet}
         isFullPage={isFullPage}
       />
-      <TouchableWithoutFeedback onPress={() => goToPostPage(post)}>
-        <PostContent post={post} isFullPage={isFullPage} />
-      </TouchableWithoutFeedback>
+      <PostContent post={post} isFullPage={isFullPage} />
     </View>
   );
 };

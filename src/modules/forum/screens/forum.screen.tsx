@@ -21,6 +21,7 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
   const { showActionSheetWithOptions } = useActionSheet();
   //@TODO Replace Feed with actual my posts on all tabs
   const toast: any = useToast();
+  const [action, setAction] = useState("");
   const handleOpenActionSheet = () => {
     const options = ["Latest", "Popular", "Cancel"];
     const destructiveButtonIndex = 1;
@@ -34,6 +35,18 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
         if (buttonIndex === 0) {
           //Filter The Post By The Latest
           toast.show("Latest Posts", { type: "success" });
+
+          setAction(options[buttonIndex]);
+
+          /**
+           * Function For Getting Filter Options For Api
+           */
+          const Action = {
+            user_id: "user.id", // This will change when User Authemtication as been carried out and user can be accessed Globally
+
+            action: action,
+          };
+          console.log(Action);
         }
 
         if (buttonIndex === 1) {
@@ -41,6 +54,18 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
           toast.show("Top Posts", {
             type: "success",
           });
+
+          setAction(options[buttonIndex]);
+
+          /**
+           * Function For Getting Filter Options For Api
+           */
+          const Action = {
+            user_id: "user.id", // This will change when User Authemtication as been carried out and user can be accessed Globally
+
+            action: action,
+          };
+          console.log(Action);
         }
       }
     );

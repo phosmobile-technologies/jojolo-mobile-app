@@ -8,7 +8,7 @@ import PostHeader from "./post-header.component";
 import PostContent from "./post-content.component";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { NAVIGATION_CONSTANTS } from "../../../../constants";
-import { ForumNavigatorNavigationContext } from "../../../../contexts/forum-navigator.context";
+import { ForumNavigatorNavigationContext } from "../../../../providers/forum-navigator.context";
 
 const Post = ({
   post,

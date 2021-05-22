@@ -8,7 +8,11 @@ import Post from "../models/post.model";
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { NAVIGATION_CONSTANTS } from "../../../constants";
-import { ForumNavigatorNavigationContext } from "../../../contexts/forum-navigator.context";
+import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
+import { useGetPostsFeedQuery } from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import Loader from "../../common/components/loader.component";
+import { useToast } from "react-native-fast-toast";
 
 interface StateShape {
   isLoading: boolean;
@@ -22,50 +26,26 @@ interface StateShape {
  * @returns
  */
 export const ForumNewsFeedPage = () => {
-  const [state, setState] = useState<StateShape>({
-    isLoading: true,
-    loadingError: false,
-    posts: [],
-  });
-
+  const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
 
   /**
-   * Get the posts from the API
+   * query for getting post feed
    */
-  const fetchNewsFeed = async () => {
-    setState({
-      ...state,
-      isLoading: true,
-    });
+  const { data, error, isLoading, isError } =
+    useGetPostsFeedQuery(AppGraphQLClient);
 
-    try {
-      const posts = await getNewsFeed();
-      setState({
-        ...state,
-        posts,
-        isLoading: false,
-      });
-    } catch (error) {
-      setState({
-        ...state,
-        loadingError: true,
-        isLoading: false,
-      });
-    }
-  };
+  if (error) {
+    toast?.show("An error occured while loading the posts feed");
+  }
 
-  useEffect(() => {
-    fetchNewsFeed();
-  }, []);
-
-  if (state.isLoading) {
-    return <AppActivityIndicator text={"Loading News Feed ..."} />;
+  if (isLoading) {
+    return <Loader loading={isLoading} />;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <PostsList posts={state.posts} />
+    <View style={styles.container}>
+      <PostsList posts={data?.GetPostsFeed} />
       <View style={styles.touchableOpacityStyle}>
         <TouchableOpacity
           onPress={() => {
@@ -77,7 +57,7 @@ export const ForumNewsFeedPage = () => {
           <SvgIcon iconName={SVG_ICONS.POST_ICON} />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

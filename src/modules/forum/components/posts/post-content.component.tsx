@@ -9,7 +9,7 @@ import AppText from "../../../common/components/typography/text.component";
 import Post from "../../models/post.model";
 import TagModel from "../../models/tag.model";
 import PostModel from "../../models/post.model";
-import { ForumNavigatorNavigationContext } from "../../../../contexts/forum-navigator.context";
+import { ForumNavigatorNavigationContext } from "../../../../providers/forum-navigator.context";
 
 /**
  * Component used to display tags in a post

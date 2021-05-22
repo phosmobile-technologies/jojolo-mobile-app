@@ -130,3 +130,7 @@ export const DROPDOWN_OPTIONS = {
     { label: "Illness", value: TAGS.Illness },
   ],
 };
+
+export const ASYNC_STORAGE_ITEMS = {
+  USER_TOKEN: "@jojolo_user_token",
+};

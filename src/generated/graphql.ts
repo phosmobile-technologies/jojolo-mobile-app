@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import { useMutation, UseMutationOptions } from 'react-query';
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -17,6 +17,15 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+};
+
+/** Response returned after saving a post */
+export type ApiResponse = {
+  __typename?: 'ApiResponse';
+  /** A message indicating the success / error that occurs when saving a post */
+  message: Scalars['String'];
+  /** Indicates if the operation was successful or not */
+  success: Scalars['Boolean'];
 };
 
 /** The birth term of a child */
@@ -194,6 +203,19 @@ export type CreatePostInput = {
 };
 
 
+/** Input for filtering the list of posts */
+export type FilterPostsInput = {
+  /** The filter type to filter posts by */
+  filter_type: FilterType;
+};
+
+/** Enum for filtering records */
+export enum FilterType {
+  Latest = 'LATEST',
+  MostPopular = 'MOST_POPULAR',
+  Oldest = 'OLDEST'
+}
+
 /** Input for finding a user based on unique values */
 export type FindUserInput = {
   email?: Maybe<Scalars['String']>;
@@ -264,6 +286,14 @@ export enum HealthCareProfessionalVerificationFileType {
   ValidId = 'VALID_ID'
 }
 
+/** Input for liking a post */
+export type LikePostInput = {
+  /** The id of the post the user wants to like */
+  post_id: Scalars['Int'];
+  /** The id of the user who wants to like the post */
+  user_id: Scalars['Int'];
+};
+
 /** Input used in logging in a user account */
 export type LoginInput = {
   /** The email */
@@ -277,16 +307,28 @@ export type LoginResponse = {
   __typename?: 'LoginResponse';
   /** The jwt access token */
   access_token: Scalars['String'];
+  /** The authenticated user */
+  user: User;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create a post */
   CreatePost: Post;
+  /** Create a post comment */
+  CreatePostComment: PostComment;
+  /** Create a post comment reply */
+  CreatePostCommentReply: PostCommentReply;
   /** Create a post tag */
   CreatePostTag: PostTag;
+  /** Like a post */
+  LikePost: ApiResponse;
   /** Login a user */
   Login: LoginResponse;
+  /** Report a post */
+  ReportPost: ApiResponse;
+  /** Save a post */
+  SavePost: ApiResponse;
   /** Create a user account for a caregiver */
   SignUpCareGiver: User;
   /** Create a user account for a health care professional */
@@ -299,13 +341,38 @@ export type MutationCreatePostArgs = {
 };
 
 
+export type MutationCreatePostCommentArgs = {
+  input: PostCommentInput;
+};
+
+
+export type MutationCreatePostCommentReplyArgs = {
+  input: PostCommentReplyInput;
+};
+
+
 export type MutationCreatePostTagArgs = {
   input: PostTagInput;
 };
 
 
+export type MutationLikePostArgs = {
+  input: LikePostInput;
+};
+
+
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationReportPostArgs = {
+  input: ReportPostInput;
+};
+
+
+export type MutationSavePostArgs = {
+  input: SavePostInput;
 };
 
 
@@ -321,22 +388,76 @@ export type MutationSignUpHealthCareProfessionalArgs = {
 /** Model for a post */
 export type Post = {
   __typename?: 'Post';
+  /** The post's comments */
+  comments: Array<Maybe<PostComment>>;
   /** The post content */
   content: Scalars['String'];
+  /** The date and time when the post was created */
+  created_at: Scalars['DateTime'];
   /** The files uploaded to the post */
   files: Array<Maybe<PostFileUpload>>;
   /** The post id */
   id: Scalars['Int'];
+  /** The number of likes the post has */
+  likes: Scalars['Int'];
   /** Indicates if the post was posted anonymously or not */
   posted_anonymously: Scalars['Boolean'];
   /** The post's tags */
   tags: Array<Maybe<PostTag>>;
   /** The post title */
   title: Scalars['String'];
+  /** The date and time when the post was last updated */
+  updated_at: Scalars['DateTime'];
   /** The user who created the post */
   user: User;
   /** The post id */
   uuid: Scalars['String'];
+};
+
+/** Model for a comment made on a post */
+export type PostComment = {
+  __typename?: 'PostComment';
+  /** The comments content */
+  content: Scalars['String'];
+  /** The comment id */
+  id: Scalars['Int'];
+  /** The post that was commented on */
+  post: Post;
+  /** The user who made the comment */
+  user: User;
+};
+
+/** Input for for working with post comments */
+export type PostCommentInput = {
+  /** The comment made */
+  content: Scalars['String'];
+  /** The id of the post that was commented on */
+  post_id: Scalars['Int'];
+  /** The id of the user that made the comment */
+  user_id: Scalars['Int'];
+};
+
+/** Model for a reply made on a comment */
+export type PostCommentReply = {
+  __typename?: 'PostCommentReply';
+  /** The post comment that was replied */
+  comment: Post;
+  /** The comment reply content */
+  content: Scalars['String'];
+  /** The comment reply id */
+  id: Scalars['Int'];
+  /** The user who made the comment reply */
+  user: User;
+};
+
+/** Input for for working with post comment replies */
+export type PostCommentReplyInput = {
+  /** The id of the post comment that was replied */
+  comment_id: Scalars['Int'];
+  /** The comment reply made */
+  content: Scalars['String'];
+  /** The id of the user that made the comment reply */
+  user_id: Scalars['Int'];
 };
 
 /** Model for files uploaded to a post */
@@ -365,13 +486,53 @@ export type PostTagInput = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Filter posts by creation date or popularity */
+  FilterPosts: Array<Maybe<Post>>;
   /** Find a user by their unique values like id, uuid or email */
   FindUser: User;
+  /** Get the posts feed */
+  GetPostsFeed: Array<Maybe<Post>>;
+  /** Search for posts by title or content */
+  SearchPosts: Array<Maybe<Post>>;
+};
+
+
+export type QueryFilterPostsArgs = {
+  input: FilterPostsInput;
 };
 
 
 export type QueryFindUserArgs = {
   input: FindUserInput;
+};
+
+
+export type QuerySearchPostsArgs = {
+  input: SearchPostsInput;
+};
+
+/** Input for reporting a post */
+export type ReportPostInput = {
+  /** The id of the post the user wants to report */
+  post_id: Scalars['Int'];
+  /** The reason the user is reporting the post */
+  reason: Scalars['String'];
+  /** The id of the user who wants to report the post */
+  user_id: Scalars['Int'];
+};
+
+/** Input for saving a post */
+export type SavePostInput = {
+  /** The id of the post the user wants to save */
+  post_id: Scalars['Int'];
+  /** The id of the user who wants to save the post */
+  user_id: Scalars['Int'];
+};
+
+/** Input for searching for posts */
+export type SearchPostsInput = {
+  /** The search query to search posts by */
+  search_query: Scalars['String'];
 };
 
 export type User = {
@@ -414,6 +575,17 @@ export type LoginMutation = (
   & { Login: (
     { __typename?: 'LoginResponse' }
     & Pick<LoginResponse, 'access_token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'uuid' | 'full_name' | 'email' | 'phone_number' | 'user_type'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'id' | 'uuid' | 'address' | 'city' | 'country' | 'state' | 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
+      )> }
+    ) }
   ) }
 );
 
@@ -482,11 +654,57 @@ export type CreatePostMutation = (
   ) }
 );
 
+export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPostsFeedQuery = (
+  { __typename?: 'Query' }
+  & { GetPostsFeed: Array<Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
+    & { comments: Array<Maybe<(
+      { __typename?: 'PostComment' }
+      & Pick<PostComment, 'id'>
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'id' | 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
+      )> }
+    ) }
+  )>> }
+);
+
 
 export const LoginDocument = `
     mutation Login($input: LoginInput!) {
   Login(input: $input) {
     access_token
+    user {
+      id
+      uuid
+      full_name
+      email
+      phone_number
+      user_type
+      care_giver_profile {
+        id
+        uuid
+        address
+        city
+        country
+        state
+        role
+      }
+      health_care_professional_profile {
+        id
+        years_of_experience
+      }
+    }
   }
 }
     `;
@@ -615,5 +833,48 @@ export const useCreatePostMutation = <
     ) => 
     useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
       (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
+      options
+    );
+export const GetPostsFeedDocument = `
+    query GetPostsFeed {
+  GetPostsFeed {
+    id
+    uuid
+    title
+    likes
+    content
+    comments {
+      id
+    }
+    user {
+      id
+      full_name
+      phone_number
+      email
+      user_type
+      care_giver_profile {
+        id
+        role
+      }
+      health_care_professional_profile {
+        id
+        years_of_experience
+      }
+    }
+    created_at
+  }
+}
+    `;
+export const useGetPostsFeedQuery = <
+      TData = GetPostsFeedQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient, 
+      variables?: GetPostsFeedQueryVariables, 
+      options?: UseQueryOptions<GetPostsFeedQuery, TError, TData>
+    ) => 
+    useQuery<GetPostsFeedQuery, TError, TData>(
+      ['GetPostsFeed', variables],
+      fetcher<GetPostsFeedQuery, GetPostsFeedQueryVariables>(client, GetPostsFeedDocument, variables),
       options
     );

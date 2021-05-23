@@ -243,6 +243,8 @@ export type HealthCareProfessionalProfile = {
   created_at: Scalars['DateTime'];
   /** The health professional's profile id */
   id: Scalars['Int'];
+  /** The healthcare professional's role */
+  role: HealthCareProfessionalRole;
   /** The date and time when the health professional's profile was last updated */
   updated_at: Scalars['DateTime'];
   /** The health professional's user account */
@@ -551,6 +553,8 @@ export type User = {
   id: Scalars['Int'];
   /** The user's phone number */
   phone_number: Scalars['String'];
+  /** The user's profile image url */
+  profile_image: Scalars['String'];
   /** The date and time when the user account was last updated */
   updated_at: Scalars['DateTime'];
   /** The user's type */
@@ -577,7 +581,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'access_token'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'uuid' | 'full_name' | 'email' | 'phone_number' | 'user_type'>
+      & Pick<User, 'id' | 'uuid' | 'full_name' | 'email' | 'phone_number' | 'user_type' | 'profile_image'>
       & { care_giver_profile?: Maybe<(
         { __typename?: 'CareGiverProfile' }
         & Pick<CareGiverProfile, 'id' | 'uuid' | 'address' | 'city' | 'country' | 'state' | 'role'>
@@ -654,6 +658,32 @@ export type CreatePostMutation = (
   ) }
 );
 
+export type ReportPostMutationVariables = Exact<{
+  input: ReportPostInput;
+}>;
+
+
+export type ReportPostMutation = (
+  { __typename?: 'Mutation' }
+  & { ReportPost: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'success' | 'message'>
+  ) }
+);
+
+export type SavePostMutationVariables = Exact<{
+  input: SavePostInput;
+}>;
+
+
+export type SavePostMutation = (
+  { __typename?: 'Mutation' }
+  & { SavePost: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'success' | 'message'>
+  ) }
+);
+
 export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -665,15 +695,18 @@ export type GetPostsFeedQuery = (
     & { comments: Array<Maybe<(
       { __typename?: 'PostComment' }
       & Pick<PostComment, 'id'>
+    )>>, tags: Array<Maybe<(
+      { __typename?: 'PostTag' }
+      & Pick<PostTag, 'id' | 'name'>
     )>>, user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type'>
+      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
       & { care_giver_profile?: Maybe<(
         { __typename?: 'CareGiverProfile' }
         & Pick<CareGiverProfile, 'id' | 'role'>
       )>, health_care_professional_profile?: Maybe<(
         { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
+        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
       )> }
     ) }
   )>> }
@@ -691,6 +724,7 @@ export const LoginDocument = `
       email
       phone_number
       user_type
+      profile_image
       care_giver_profile {
         id
         uuid
@@ -835,6 +869,44 @@ export const useCreatePostMutation = <
       (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
       options
     );
+export const ReportPostDocument = `
+    mutation ReportPost($input: ReportPostInput!) {
+  ReportPost(input: $input) {
+    success
+    message
+  }
+}
+    `;
+export const useReportPostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<ReportPostMutation, TError, ReportPostMutationVariables, TContext>
+    ) => 
+    useMutation<ReportPostMutation, TError, ReportPostMutationVariables, TContext>(
+      (variables?: ReportPostMutationVariables) => fetcher<ReportPostMutation, ReportPostMutationVariables>(client, ReportPostDocument, variables)(),
+      options
+    );
+export const SavePostDocument = `
+    mutation SavePost($input: SavePostInput!) {
+  SavePost(input: $input) {
+    success
+    message
+  }
+}
+    `;
+export const useSavePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<SavePostMutation, TError, SavePostMutationVariables, TContext>
+    ) => 
+    useMutation<SavePostMutation, TError, SavePostMutationVariables, TContext>(
+      (variables?: SavePostMutationVariables) => fetcher<SavePostMutation, SavePostMutationVariables>(client, SavePostDocument, variables)(),
+      options
+    );
 export const GetPostsFeedDocument = `
     query GetPostsFeed {
   GetPostsFeed {
@@ -846,18 +918,24 @@ export const GetPostsFeedDocument = `
     comments {
       id
     }
+    tags {
+      id
+      name
+    }
     user {
       id
       full_name
       phone_number
       email
       user_type
+      profile_image
       care_giver_profile {
         id
         role
       }
       health_care_professional_profile {
         id
+        role
         years_of_experience
       }
     }

@@ -1,0 +1,6 @@
+mutation ReportPost($input: ReportPostInput!) {
+  ReportPost(input: $input) {
+    success
+    message
+  }
+}

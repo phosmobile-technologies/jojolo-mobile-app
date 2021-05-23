@@ -1514,6 +1514,22 @@
             "deprecationReason": null
           },
           {
+            "name": "role",
+            "description": "The healthcare professional's role",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "HealthCareProfessionalRole",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updated_at",
             "description": "The date and time when the health professional's profile was last updated",
             "args": [],
@@ -3203,6 +3219,22 @@
           {
             "name": "phone_number",
             "description": "The user's phone number",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "profile_image",
+            "description": "The user's profile image url",
             "args": [],
             "type": {
               "kind": "NON_NULL",

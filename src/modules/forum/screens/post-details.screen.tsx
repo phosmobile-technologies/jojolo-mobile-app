@@ -1,23 +1,28 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TextInput, Text } from "react-native";
 import { BottomSheet } from "react-native-btr";
-
-import PostModel from "../models/post.model";
-import Post from "../components/posts/post-details.component";
-import AppText from "../../common/components/typography/text.component";
-import { CommentFeed } from "../components/posts/post-comment.component";
+import { useNavigation } from "@react-navigation/native";
+import { useToast } from "react-native-fast-toast";
 import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
-import { useState } from "react";
+
+import PostModel from "../models/post.model";
+import Post from "../components/posts/post.component";
+import AppText from "../../common/components/typography/text.component";
+import { CommentFeed } from "../components/posts/post-comment.component";
 import { COLORS } from "../../../constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useToast } from "react-native-fast-toast";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 
+/**
+ * Screen that shows the full details for a post including comments and replies
+ *
+ * @param param0
+ * @returns
+ */
 const PostDetailsScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation() as any;
   const toast: any = useToast();

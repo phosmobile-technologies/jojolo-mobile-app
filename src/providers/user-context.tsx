@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import * as SecureStore from "expo-secure-store";
+import { User } from "../generated/graphql";
 
 export type UserProviderState = {
   authToken: string | null;
-  authenticatedUser: object | null;
+  authenticatedUser: User | null;
   signIn: Function;
   signOut: Function;
   restoreUser: Function;
@@ -23,7 +24,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     useState<object | null>(null);
 
   // Signin the user by setting the global user and auth_token. Also save the user and auth_token in secure storage
-  const signIn = async (authToken: string, user: object) => {
+  const signIn = async (authToken: string, user: User) => {
     setAuthToken(authToken);
     setAuthenticatedUser(user);
     await SecureStore.setItemAsync(

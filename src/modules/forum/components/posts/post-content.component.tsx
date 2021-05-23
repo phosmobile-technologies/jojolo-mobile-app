@@ -7,9 +7,10 @@ import SvgIcon, {
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
 import Post from "../../models/post.model";
-import TagModel from "../../models/tag.model";
+
 import PostModel from "../../models/post.model";
 import { ForumNavigatorNavigationContext } from "../../../../providers/forum-navigator.context";
+import { PostTag } from "../../../../generated/graphql";
 
 /**
  * Component used to display tags in a post
@@ -17,11 +18,11 @@ import { ForumNavigatorNavigationContext } from "../../../../providers/forum-nav
  * @param param0
  * @returns
  */
-const Tag = ({ tag, style }: { tag: TagModel; style?: object }) => {
+const Tag = ({ tag, style }: { tag: PostTag; style?: object }) => {
   return (
     <View style={[tagStyles.container, style]}>
       <SvgIcon iconName={SVG_ICONS.TAG_ICON} />
-      <AppText style={tagStyles.text}>{tag.text}</AppText>
+      <AppText style={tagStyles.text}>{tag.name}</AppText>
     </View>
   );
 };
@@ -52,7 +53,7 @@ const PostContent = ({
    * Function for navigating to a particular post
    * @param post
    */
-  const goToPostPage = (post: PostModel) => {
+  const goToPostDetailsPage = (post: PostModel) => {
     navigation.navigate(
       NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
       {
@@ -80,7 +81,7 @@ const PostContent = ({
         </>
       ) : (
         <>
-          <TouchableOpacity onPress={() => goToPostPage(post)}>
+          <TouchableOpacity onPress={() => goToPostDetailsPage(post)}>
             <AppText style={titleStyle}>{post.title}</AppText>
             <AppText>{postContent}</AppText>
           </TouchableOpacity>
@@ -90,11 +91,7 @@ const PostContent = ({
       <View style={styles.tags__wrapper}>
         {post.tags &&
           post.tags.map((tag, index) => (
-            <Tag
-              tag={tag}
-              key={tag.uuid}
-              style={index % 2 !== 0 ? {} : tagStyles.addMarginRight}
-            />
+            <Tag tag={tag} key={tag.id} style={tagStyles.addMarginRight} />
           ))}
       </View>
 
@@ -133,7 +130,7 @@ const PostContent = ({
             </View>
           </>
         ) : (
-          <TouchableOpacity onPress={() => goToPostPage(post)}>
+          <TouchableOpacity onPress={() => goToPostDetailsPage(post)}>
             <View style={styles.social_icon_group}>
               <SvgIcon
                 iconName={SVG_ICONS.COMMENTS_ICON}

@@ -12,6 +12,7 @@ import { useGetUserPostsQuery } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
 import { useAuthenticatedUser } from "../../../providers/user-context";
+import { useQueryClient } from "react-query";
 
 /**
  * The user's posts
@@ -22,6 +23,19 @@ export const MyPostsPage = () => {
   const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
   const { authenticatedUser } = useAuthenticatedUser();
+  const [refreshing, setRefreshing] = useState(false);
+  const queryClient = useQueryClient();
+
+  /**
+   * Reload the news feed when the user pulls down to refresh
+   */
+  const onRefresh = () => {
+    setRefreshing(true);
+    const queryKey = useGetUserPostsQuery.getKey({
+      input: { user_id: authenticatedUser?.id },
+    });
+    queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
+  };
 
   /**
    * query for getting post feed
@@ -41,7 +55,11 @@ export const MyPostsPage = () => {
 
   return (
     <View style={styles.container}>
-      <PostsList posts={data?.GetUserPosts} />
+      <PostsList
+        posts={data?.GetUserPosts}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
 
       <FloatingAction
         color={COLORS.APP_PRIMARY_COLOR}

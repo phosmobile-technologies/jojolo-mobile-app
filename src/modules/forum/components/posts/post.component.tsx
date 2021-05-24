@@ -5,6 +5,8 @@ import { useToast } from "react-native-fast-toast";
 
 import {
   Post as PostModel,
+  useGetUserPostsQuery,
+  useGetUserSavedPostsQuery,
   useReportPostMutation,
   useSavePostMutation,
 } from "../../../../generated/graphql";
@@ -14,6 +16,8 @@ import { useAuthenticatedUser } from "../../../../providers/user-context";
 import { AppGraphQLClient } from "../../../common/api/graphql-client";
 import Loader from "../../../common/components/loader.component";
 import AppModal from "../../../common/components/modal.component";
+import { useQueryClient } from "react-query";
+import { queryClient } from "../../../../providers/query-client.context";
 
 const Post = ({
   post,
@@ -26,6 +30,7 @@ const Post = ({
   const toast: any = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
   const [confirmReportPost, setConfirmReportPost] = useState(false);
+  const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
 
   // Mutation for saving posts
@@ -62,6 +67,13 @@ const Post = ({
           toast.show(message, {
             type: "success",
           });
+
+          // @TODO remove if not in use for automatic updates
+          queryClient.invalidateQueries(
+            useGetUserSavedPostsQuery.getKey({
+              input: { user_id: authenticatedUser?.id },
+            })
+          );
         } else {
           toast.show(message, {
             type: "error",

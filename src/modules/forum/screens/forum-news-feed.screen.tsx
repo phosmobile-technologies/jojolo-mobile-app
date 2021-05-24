@@ -8,10 +8,14 @@ import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
-import { useGetPostsFeedQuery } from "../../../generated/graphql";
+import {
+  useGetPostsFeedQuery,
+  useGetUserSavedPostsQuery,
+} from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
 import { queryClient } from "../../../providers/query-client.context";
+import { useAuthenticatedUser } from "../../../providers/user-context";
 
 /**
  * The forum news feed page
@@ -23,6 +27,7 @@ export const ForumNewsFeedPage = () => {
   const navigation: any = useContext(ForumNavigatorNavigationContext);
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
+  const { authenticatedUser } = useAuthenticatedUser();
 
   /**
    * query for getting post feed
@@ -38,6 +43,11 @@ export const ForumNewsFeedPage = () => {
     const queryKey = useGetPostsFeedQuery.getKey();
     queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
   };
+
+  // prefetch the data for my posts and saved posts
+  useGetUserSavedPostsQuery(AppGraphQLClient, {
+    input: { user_id: authenticatedUser?.id },
+  });
 
   if (error) {
     toast?.show("An error occured while loading the posts feed");

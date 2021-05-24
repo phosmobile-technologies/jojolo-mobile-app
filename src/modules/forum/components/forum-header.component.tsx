@@ -2,10 +2,11 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppHeaderText from "../../common/components/typography/header-text.component";
-import { COLORS } from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 
 /**
  * The forum page header
@@ -13,17 +14,23 @@ import { COLORS } from "../../../constants";
  * @returns
  */
 export const ForumHeader = ({
-  HandleNavigation,
   handleOpenActionSheet,
 }: {
-  HandleNavigation: any;
   handleOpenActionSheet: any;
 }) => {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
       <View style={styles.header__icons}>
-        <TouchableOpacity onPress={HandleNavigation}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate(
+              NAVIGATION_CONSTANTS.SCREENS.FORUM.SEARCH_POSTS_SCREEN
+            )
+          }
+        >
           <SvgIcon
             style={styles.header__icon}
             iconName={SVG_ICONS.SEARCH_ICON}

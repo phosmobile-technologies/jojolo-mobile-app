@@ -743,6 +743,19 @@ export type CreatePostMutation = (
   ) }
 );
 
+export type LikePostMutationVariables = Exact<{
+  input: LikePostInput;
+}>;
+
+
+export type LikePostMutation = (
+  { __typename?: 'Mutation' }
+  & { LikePost: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'success' | 'message'>
+  ) }
+);
+
 export type ReportPostMutationVariables = Exact<{
   input: ReportPostInput;
 }>;
@@ -1133,6 +1146,25 @@ export const useCreatePostMutation = <
     ) => 
     useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
       (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
+      options
+    );
+export const LikePostDocument = `
+    mutation LikePost($input: LikePostInput!) {
+  LikePost(input: $input) {
+    success
+    message
+  }
+}
+    `;
+export const useLikePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<LikePostMutation, TError, LikePostMutationVariables, TContext>
+    ) => 
+    useMutation<LikePostMutation, TError, LikePostMutationVariables, TContext>(
+      (variables?: LikePostMutationVariables) => fetcher<LikePostMutation, LikePostMutationVariables>(client, LikePostDocument, variables)(),
       options
     );
 export const ReportPostDocument = `

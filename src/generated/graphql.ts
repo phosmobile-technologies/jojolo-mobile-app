@@ -898,6 +898,36 @@ export type GetUserSavedPostsQuery = (
   )>> }
 );
 
+export type SearchPostsQueryVariables = Exact<{
+  input: SearchPostsInput;
+}>;
+
+
+export type SearchPostsQuery = (
+  { __typename?: 'Query' }
+  & { SearchPosts: Array<Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
+    & { comments: Array<Maybe<(
+      { __typename?: 'PostComment' }
+      & Pick<PostComment, 'id'>
+    )>>, tags: Array<Maybe<(
+      { __typename?: 'PostTag' }
+      & Pick<PostTag, 'id' | 'name'>
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'id' | 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
+      )> }
+    ) }
+  )>> }
+);
+
 
 export const LoginDocument = `
     mutation Login($input: LoginInput!) {
@@ -1351,3 +1381,54 @@ export const useGetUserSavedPostsQuery = <
       options
     );
 useGetUserSavedPostsQuery.getKey = (variables: GetUserSavedPostsQueryVariables) => ['GetUserSavedPosts', variables];
+
+export const SearchPostsDocument = `
+    query SearchPosts($input: SearchPostsInput!) {
+  SearchPosts(input: $input) {
+    id
+    uuid
+    title
+    likes
+    content
+    comments {
+      id
+    }
+    tags {
+      id
+      name
+    }
+    user {
+      id
+      full_name
+      phone_number
+      email
+      user_type
+      profile_image
+      care_giver_profile {
+        id
+        role
+      }
+      health_care_professional_profile {
+        id
+        role
+        years_of_experience
+      }
+    }
+    created_at
+  }
+}
+    `;
+export const useSearchPostsQuery = <
+      TData = SearchPostsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient, 
+      variables: SearchPostsQueryVariables, 
+      options?: UseQueryOptions<SearchPostsQuery, TError, TData>
+    ) => 
+    useQuery<SearchPostsQuery, TError, TData>(
+      ['SearchPosts', variables],
+      fetcher<SearchPostsQuery, SearchPostsQueryVariables>(client, SearchPostsDocument, variables),
+      options
+    );
+useSearchPostsQuery.getKey = (variables: SearchPostsQueryVariables) => ['SearchPosts', variables];

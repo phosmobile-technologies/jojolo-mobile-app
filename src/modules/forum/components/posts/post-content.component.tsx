@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../../constants";
 
@@ -7,8 +7,8 @@ import SvgIcon, {
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
 import PostModel from "../../models/post.model";
-import { ForumNavigatorNavigationContext } from "../../../../providers/forum-navigator.context";
 import { Post, PostTag } from "../../../../generated/graphql";
+import { useNavigation } from "@react-navigation/native";
 
 /**
  * Component used to display tags in a post
@@ -38,7 +38,7 @@ const PostContent = ({
   post: Post;
   isFullPage?: boolean;
 }) => {
-  const navigation: any = useContext(ForumNavigatorNavigationContext);
+  const navigation: any = useNavigation();
   const postContent = isFullPage
     ? post.content
     : post.content.length > 200

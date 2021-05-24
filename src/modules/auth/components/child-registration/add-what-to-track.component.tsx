@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import * as yup from "yup";
 
-import AppText from "../../../common/components/typography/text.component";
 import { APP_STYLES } from "../../../common/styles";
 import AppButton from "../../../common/components/button.component";
 import { COLORS } from "../../../../constants";

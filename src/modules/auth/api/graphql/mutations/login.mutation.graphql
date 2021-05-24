@@ -1,5 +1,27 @@
 mutation Login($input: LoginInput!) {
   Login(input: $input) {
     access_token
+    user {
+      id
+      uuid
+      full_name
+      email
+      phone_number
+      user_type
+      profile_image
+      care_giver_profile {
+        id
+        uuid
+        address
+        city
+        country
+        state
+        role
+      }
+      health_care_professional_profile {
+        id
+        years_of_experience
+      }
+    }
   }
 }

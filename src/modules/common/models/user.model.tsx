@@ -22,3 +22,12 @@ export enum HealthProfessionalRole {
   THERAPIST = "THERAPIST",
   NUTRITIONIST = "NUTRITIONIST",
 }
+
+export enum Tags {
+  General = "General",
+  Breastfeeding = "Breastfeeding",
+  Teething = "Teething",
+  Feeding = "Feeding",
+  Stooling = "Stooling",
+  Illness = "Illness",
+}

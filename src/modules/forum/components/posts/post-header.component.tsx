@@ -5,13 +5,15 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+
 import { COLORS } from "../../../../constants";
+import { Post, User, UserType } from "../../../../generated/graphql";
+import { formatDistance, subDays } from "date-fns";
 
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import { User } from "../../../common/models/user.model";
 
 /**
  * The header for a post
@@ -20,20 +22,23 @@ import { User } from "../../../common/models/user.model";
  * @returns
  */
 const PostHeader = ({
-  user,
+  post,
   handleOpenPostActionSheet,
   isFullPage = false,
 }: {
-  user: User;
+  post: Post;
   handleOpenPostActionSheet: Function;
   isFullPage?: boolean;
 }) => {
+  const { user } = post;
+
   const fullNameStyle = isFullPage
     ? [styles.user__details__username__Large]
     : [styles.user__details__username];
   const userNameAndUserBadgeStyle = isFullPage
     ? [styles.user__details__username__and_badge_large]
     : [styles.user__details__username__and_badge];
+
   return (
     <View style={styles.header}>
       <View style={styles.header__avatar_and_details}>
@@ -48,7 +53,9 @@ const PostHeader = ({
           </View>
           <View style={styles.user__details__info}>
             <AppText style={styles.user__details__info__user_role}>
-              {`Mother`}
+              {user.user_type === UserType.CareGiver
+                ? user.care_giver_profile?.role
+                : user.health_care_professional_profile?.role}
             </AppText>
             <View style={styles.user__details__info__user_rating}>
               <SvgIcon iconName={SVG_ICONS.GOLD_STAR_ICON} />
@@ -57,7 +64,7 @@ const PostHeader = ({
               </AppText>
             </View>
             <AppText style={styles.user__details__info__last_seen}>
-              5 hrs ago
+              {formatDistance(new Date(post.created_at), new Date())} ago
             </AppText>
           </View>
         </View>
@@ -105,6 +112,7 @@ const styles = StyleSheet.create({
   user__details__username: {
     marginRight: 10,
     fontWeight: "700",
+    textTransform: "capitalize",
   },
 
   user__details__username__and_badge: {
@@ -119,6 +127,7 @@ const styles = StyleSheet.create({
   user__details__info__user_role: {
     marginRight: 15,
     fontSize: 12,
+    textTransform: "capitalize",
   },
 
   user__details__info__user_rating: {

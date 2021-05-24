@@ -8,11 +8,11 @@ import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
+import MyPostsPage from "./my-posts-screen";
+import SavedPostsPage from "./saved-posts.screen";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
-
-// React context used to provide the navigation function to all children of the forum page
-export const ForumNavigatorNavigationContext = createContext([]);
 
 /**
  * The Main Forum screen which shows all the various forum related tabs like (Feed, My Posts, Saved Posts and tags)
@@ -21,25 +21,26 @@ export const ForumNavigatorNavigationContext = createContext([]);
  */
 const ForumScreen = ({ navigation }: { navigation: any }) => {
   const { showActionSheetWithOptions } = useActionSheet();
-  //@TODO Replace Feed with actual my posts on all tabs
   const toast: any = useToast();
+
+  // Handle opening of action sheet for sorting posts
   const handleOpenActionSheet = () => {
     const options = ["Latest", "Popular", "Cancel"];
-    const destructiveButtonIndex = 1;
     const cancelButtonIndex = 2;
+
     showActionSheetWithOptions(
       {
         options,
         cancelButtonIndex,
       },
       (buttonIndex) => {
+        //Filter The Post By The Latest
         if (buttonIndex === 0) {
-          //Filter The Post By The Latest
           toast.show("Latest Posts", { type: "success" });
         }
 
+        // Filter The Post By the Most Popular
         if (buttonIndex === 1) {
-          // FIlter The Post By the Most Popular
           toast.show("Top Posts", {
             type: "success",
           });
@@ -48,16 +49,10 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
     );
   };
 
-  const HandleNavigation = () => {
-    navigation.navigate(NAVIGATION_CONSTANTS.SCREENS.FORUM.SEARCH_POSTS_SCREEN);
-  };
   return (
     <ForumNavigatorNavigationContext.Provider value={navigation}>
       <View style={styles.container}>
-        <ForumHeader
-          HandleNavigation={HandleNavigation}
-          handleOpenActionSheet={handleOpenActionSheet}
-        />
+        <ForumHeader handleOpenActionSheet={handleOpenActionSheet} />
         <ForumPageTabNavigationStack.Navigator
           initialRouteName={NAVIGATION_CONSTANTS.SCREENS.FORUM.FEED_SCREEN}
           tabBarOptions={tabBarOptions}
@@ -68,11 +63,11 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.MY_POSTS_SCREEN}
-            component={ForumNewsFeedPage}
+            component={MyPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.SAVED_POSTS_SCREEN}
-            component={ForumNewsFeedPage}
+            component={SavedPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.TAGS_SCREEN}

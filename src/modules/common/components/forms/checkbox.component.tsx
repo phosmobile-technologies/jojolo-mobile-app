@@ -15,28 +15,31 @@ const AppCheckboxInput = ({
   setValue,
   label,
   textStyle = {},
+  style = {},
+  size = 25,
   ...otherProps
 }: {
   value: boolean;
   setValue: Function;
   label: string;
+  size?: number;
   textStyle?: object;
+  style?: object;
 }) => {
   return (
     <View>
       <BouncyCheckbox
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 16, ...style }}
+        size={size}
         isChecked={value}
         text={label}
         disableBuiltInState
         onPress={() => setValue(!value)}
         fillColor={COLORS.APP_TAG_ORANGE}
-        textStyle={[
-          {
-            textDecorationLine: "none",
-          },
-          textStyle,
-        ]}
+        textStyle={{
+          textDecorationLine: "none",
+          ...textStyle,
+        }}
         {...otherProps}
       />
     </View>

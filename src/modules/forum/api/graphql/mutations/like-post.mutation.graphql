@@ -1,0 +1,6 @@
+mutation LikePost($input: LikePostInput!) {
+  LikePost(input: $input) {
+    success
+    message
+  }
+}

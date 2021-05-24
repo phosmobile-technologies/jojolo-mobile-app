@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://192.168.100.3:3100/graphql"
+schema: "${API_GRAPHQL_URL}"
 documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.ts:
@@ -9,6 +9,7 @@ generates:
       - "typescript-react-query"
     config:
       fetcher: graphql-request
+      exposeQueryKeys: true
   ./graphql.schema.json:
     plugins:
       - "introspection"

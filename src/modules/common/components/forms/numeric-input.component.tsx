@@ -33,7 +33,6 @@ const AppNumericInput = ({
       <NumericInput
         value={value}
         onChange={(value) => onChangeValue(value)}
-        onLimitReached={(isMax, msg) => console.log(isMax, msg)}
         totalWidth={200}
         totalHeight={40}
         iconSize={25}

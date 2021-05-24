@@ -1,7 +1,6 @@
 import { BirthTerm, BloodGroup, Genotype } from "./generated/graphql";
 
 export const APP_CONSTANTS = {
-  GRAPHQL_API_URL: "http://192.168.100.3:3100/graphql",
   MOCK_TIME_DELAY_IN_MILLISECONDS: 3000,
 };
 
@@ -37,7 +36,9 @@ export const NAVIGATION_CONSTANTS = {
     },
 
     PRIVATE_CHAT: {
-      PRIVATE_CHAT_SCREEN: "Private Chat",
+      GET_DOCTOR_FOR_CHAT_SCREEN: "Private Chat",
+      DOCTOR_PROFILE_SCREEN: "Doctor Profile",
+      CHAT_SCREEN: "Chat",
     },
 
     BOOKING: {
@@ -54,7 +55,8 @@ export const NAVIGATION_CONSTANTS = {
   },
 
   NAVIGATORS: {
-    FORUM_NAVIGATOR: "FORUM_NAVIGATOR",
+    FORUM_NAVIGATOR: "Forum",
+    PRIVATE_CHAT_NAVIGATOR: "Private Chat",
     MODULE_TABS_STACK: "MODULE_TABS_STACK",
   },
 };
@@ -75,6 +77,26 @@ export const COLORS = {
   APP_ERROR_RED: "#E5251D",
   APP_GREEN: "#2AC769",
   TRANSPARENT: "transparent",
+  APP_LIGHT_GREEN: "#B2E9ED",
+};
+
+export const DOCTOR_TYPES = [
+  "Dentist",
+  "Dermatologist",
+  "General Practitioner",
+  "Lactationist",
+  "Nutritionist",
+  "Pediatrician",
+  "Therapist",
+];
+
+export const TAGS = {
+  General: 1,
+  Breastfeeding: 2,
+  Teething: 3,
+  Feeding: 4,
+  Stooling: 5,
+  Illness: 6,
 };
 
 export const DROPDOWN_OPTIONS = {
@@ -98,4 +120,23 @@ export const DROPDOWN_OPTIONS = {
     { label: "SS", value: Genotype.Ss },
     { label: "AC", value: Genotype.Ac },
   ],
+
+  // POST_TAGS: [
+  //   { label: "General", value: TAGS.General },
+  //   { label: "Breastfeeding", value: TAGS.Breastfeeding },
+  //   { label: "Teething", value: TAGS.Teething },
+  //   { label: "Feeding", value: TAGS.Feeding },
+  //   { label: "Stooling", value: TAGS.Stooling },
+  //   { label: "Illness", value: TAGS.Illness },
+  // ],
+
+  POST_TAGS: [
+    { label: "Test Tag 1", value: TAGS.General },
+    { label: "Test Tag 2", value: TAGS.Breastfeeding },
+    { label: "Test Tag 3", value: TAGS.Teething },
+  ],
+};
+
+export const ASYNC_STORAGE_ITEMS = {
+  USER_TOKEN: "@jojolo_user_token",
 };

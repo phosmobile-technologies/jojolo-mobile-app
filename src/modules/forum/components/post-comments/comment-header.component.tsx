@@ -7,20 +7,26 @@ import {
 } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { useToast } from "react-native-fast-toast";
+import { formatDistance } from "date-fns";
 
 import { COLORS } from "../../../../constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import { User } from "../../../common/models/user.model";
-import PostModel from "../../models/post.model";
+import { PostComment, User, UserType } from "../../../../generated/graphql";
 
 /**
  * tThe header for a comment
  */
 
-const CommentHeader = ({ user, comment }: { user: User; comment: any }) => {
+const CommentHeader = ({
+  user,
+  comment,
+}: {
+  user: User;
+  comment: PostComment;
+}) => {
   const toast: any = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
   const [action, setAction] = useState("");
@@ -38,6 +44,7 @@ const CommentHeader = ({ user, comment }: { user: User; comment: any }) => {
         if (buttonIndex === 0) {
           // Save the post
           toast.show("Comment Reported successfully", { type: "success" });
+
           /**
            * Function For Getting Comment Actions For Api
            */
@@ -69,7 +76,9 @@ const CommentHeader = ({ user, comment }: { user: User; comment: any }) => {
           </View>
           <View style={styles.user__details__info}>
             <AppText style={styles.user__details__info__user_role}>
-              {`Mother`}
+              {user.user_type === UserType.CareGiver
+                ? user.care_giver_profile?.role
+                : user.health_care_professional_profile?.role}
             </AppText>
             <View style={styles.user__details__info__user_rating}>
               <SvgIcon iconName={SVG_ICONS.GOLD_STAR_ICON} />
@@ -78,7 +87,7 @@ const CommentHeader = ({ user, comment }: { user: User; comment: any }) => {
               </AppText>
             </View>
             <AppText style={styles.user__details__info__last_seen}>
-              5 hrs ago
+              {formatDistance(new Date(comment.created_at), new Date())} ago
             </AppText>
           </View>
         </View>
@@ -127,6 +136,7 @@ const styles = StyleSheet.create({
   user__details__username: {
     marginRight: 10,
     fontWeight: "700",
+    textTransform: "capitalize",
   },
 
   user__details__username__and_badge: {
@@ -141,6 +151,7 @@ const styles = StyleSheet.create({
   user__details__info__user_role: {
     marginRight: 15,
     fontSize: 12,
+    textTransform: "capitalize",
   },
 
   user__details__info__user_rating: {

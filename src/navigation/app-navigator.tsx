@@ -21,11 +21,12 @@ const AppNavigator = () => {
     <AppTabNavigationStack.Navigator
       initialRouteName={NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR}
       screenOptions={screenOptions}
-      tabBarOptions={tabBarOptions}
+      tabBarOptions={{ ...tabBarOptions }}
     >
       <AppTabNavigationStack.Screen
         name={NAVIGATION_CONSTANTS.NAVIGATORS.FORUM_NAVIGATOR}
         component={ForumNavigator}
+        options={{}}
       />
       <AppTabNavigationStack.Screen
         name={NAVIGATION_CONSTANTS.NAVIGATORS.PRIVATE_CHAT_NAVIGATOR}
@@ -62,6 +63,7 @@ const tabBarOptions = {
   iconStyle: {
     marginTop: 10,
   },
+  keyboardHidesTabBar: true,
 };
 
 /**

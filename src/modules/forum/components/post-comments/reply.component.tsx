@@ -1,41 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
-
 import AppText from "../../../common/components/typography/text.component";
 import { COLORS } from "../../../../constants";
+import { PostCommentReply } from "../../../../generated/graphql";
+import CommentReplyHeader from "./comment-reply-header.component";
 
-import Comment from "../../models/comment.model";
-import CommentHeader from "./comment-header.component";
-
-const ReplyComment = ({
-  comment,
+/**
+ * Component for displaying a single reply for a post comment
+ *
+ * @param param0
+ * @returns
+ */
+const CommentReply = ({
+  reply,
   openBottomsheet,
 }: {
-  comment: Comment;
+  reply: PostCommentReply;
   openBottomsheet: any;
 }) => {
-  const { user } = comment;
+  const { user } = reply;
+
+  const [liked, setLiked] = useState(false);
+  const onLiked = () => {
+    setLiked(!liked);
+    const LikedCommentReply = {
+      post_id: reply.id,
+      liked: liked,
+    };
+    console.log(LikedCommentReply);
+  };
+
   return (
     <View style={styles.container}>
-      <CommentHeader user={user} comment={comment} />
-      <AppText style={styles.comment}>{comment.content}</AppText>
+      <CommentReplyHeader user={user} reply={reply} />
+      <AppText style={styles.comment}>{reply.content}</AppText>
       <View style={styles.share__and__like__container}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={openBottomsheet as any}
           style={styles.reply__wrapper}
         >
           <AppText style={styles.reply}>Reply</AppText>
-        </TouchableOpacity>
-        <View style={styles.social__item}>
+        </TouchableOpacity> */}
+        {/* <View style={styles.social__item}>
           <SvgIcon
             iconName={SVG_ICONS.COMMENTS_ICON}
             color={COLORS.APP_BLACK_ICON}
           />
           <AppText>50</AppText>
+        </View> */}
+        <View style={styles.social_icon_group}>
+          <TouchableOpacity onPress={() => onLiked()}>
+            {liked ? (
+              <>
+                <SvgIcon
+                  iconName={SVG_ICONS.LIKE_ICON}
+                  color={COLORS.APP_BLACK_ICON}
+                />
+              </>
+            ) : (
+              <>
+                <SvgIcon
+                  iconName={SVG_ICONS.LIKE_ICON}
+                  color={COLORS.APP_PRIMARY_COLOR}
+                />
+              </>
+            )}
+          </TouchableOpacity>
+          <AppText style={styles.social_icon_group__text}>{0}</AppText>
         </View>
         <View style={styles.social__item}>
           <SvgIcon
@@ -77,7 +113,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
+  social_icon_group: {
+    flexDirection: "row",
+  },
+
+  social_icon_group__text: {
+    marginLeft: 5,
+    fontSize: 12,
+  },
   reply__wrapper: {},
 });
 
-export default ReplyComment;
+export default CommentReply;

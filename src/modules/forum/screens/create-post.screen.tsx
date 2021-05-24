@@ -21,6 +21,7 @@ import AppCheckboxInput from "../../common/components/forms/checkbox.component";
 import {
   CreatePostInput,
   useCreatePostMutation,
+  useGetPostsFeedQuery,
 } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import { useToast } from "react-native-fast-toast";
@@ -29,6 +30,8 @@ import ControlledMultilineAppTextInput from "../../common/components/forms/contr
 import { useNavigation } from "@react-navigation/native";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
+import { useAuthenticatedUser } from "../../../providers/user-context";
+import { useQueryClient } from "react-query";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -44,6 +47,19 @@ const schema = yup.object().shape({
 const CreatePostScreen = () => {
   const navigation = useNavigation() as any;
   const toast: any = useToast();
+  const queryClient = useQueryClient();
+  const [postAnonymously, setPostAnonymously] = useState(false);
+  const [images, setImages] = useState([] as Array<string>);
+  const { authenticatedUser } = useAuthenticatedUser();
+
+  // Form validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   /**
    * Customize the navigation header components for the screen
@@ -58,30 +74,34 @@ const CreatePostScreen = () => {
     });
   }, [navigation]);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
   /**
    * Mutation for creating a new post
    */
-  const { mutate, isLoading } = useCreatePostMutation(AppGraphQLClient, {
-    onSuccess: (response) => {
-      const { id } = response.CreatePost;
-    },
+  const { mutate: createPost, isLoading } = useCreatePostMutation(
+    AppGraphQLClient,
+    {
+      onSuccess: (response) => {
+        const { id } = response.CreatePost;
 
-    onError: (err) => {
-      toast.show("Failed to create your post. Please try again", {
-        type: "error",
-      });
-    },
+        toast.show("Post created successfully", {
+          type: "success",
+        });
 
-    onMutate: () => {},
-  });
+        const queryKey = useGetPostsFeedQuery.getKey();
+        queryClient.invalidateQueries(queryKey);
+
+        navigation.goBack();
+      },
+
+      onError: (err) => {
+        toast.show("Failed to create your post. Please try again", {
+          type: "error",
+        });
+      },
+
+      onMutate: () => {},
+    }
+  );
 
   /**
    * Get camera permissions
@@ -97,9 +117,6 @@ const CreatePostScreen = () => {
       }
     })();
   }, []);
-
-  const [postAnonymously, setPostAnonymously] = useState(false);
-  const [images, setImages] = useState([] as Array<string>);
 
   /**
    * Callback called by the ImagePicker library when adding images to a new post
@@ -140,10 +157,10 @@ const CreatePostScreen = () => {
       posted_anonymously: postAnonymously,
       images,
       tags: [data.tags],
-      user_id: 1,
+      user_id: authenticatedUser?.id,
     };
 
-    mutate({ input: post });
+    createPost({ input: post });
   };
 
   return (
@@ -177,7 +194,11 @@ const CreatePostScreen = () => {
               style={styles.add__image}
               onPress={handleChoosePhoto}
             >
-              <SvgIcon iconName={SVG_ICONS.ADD_PHOTO_ICON} />
+              <SvgIcon
+                iconName={SVG_ICONS.ADD_PHOTO_ICON}
+                style={{ fontSize: 14 }}
+                height={20}
+              />
               <AppText style={styles.add__image__text}>Add Image</AppText>
             </TouchableOpacity>
             <TouchableOpacity style={styles.post__anonymously}>
@@ -185,11 +206,14 @@ const CreatePostScreen = () => {
                 label={""}
                 value={postAnonymously}
                 setValue={setPostAnonymously}
-                textStyle={{
-                  color: COLORS.APP_BLACK_ICON,
-                }}
+                textStyle={{ color: COLORS.APP_BLACK_TEXT, fontSize: 14 }}
+                size={20}
+                fillColor={COLORS.APP_PRIMARY_COLOR}
+                iconStyle={{ borderColor: COLORS.APP_PRIMARY_COLOR }}
               />
-              <AppText style={{ fontSize: 18 }}>Post Anonymously?</AppText>
+              <AppText style={{ fontSize: 14, marginLeft: -10 }}>
+                Post Anonymously?
+              </AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -211,14 +235,14 @@ const CreatePostScreen = () => {
             ))}
           </View>
         )}
+        <View style={APP_STYLES.screen__bottom__bar__button}>
+          <AppButton
+            type="submit"
+            title="Send Post"
+            onPress={handleSubmit(onSubmit)}
+          />
+        </View>
       </ScrollView>
-      <View style={APP_STYLES.screen__bottom__bar__button}>
-        <AppButton
-          type="submit"
-          title="Send Post"
-          onPress={handleSubmit(onSubmit)}
-        />
-      </View>
     </View>
   );
 };
@@ -231,13 +255,12 @@ const styles = StyleSheet.create({
 
   add__image: {
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
     flexDirection: "row",
   },
 
   add__image__text: {
-    fontSize: 18,
-    marginLeft: 10,
+    fontSize: 14,
   },
 
   form__input__wrapper: {
@@ -268,10 +291,10 @@ const styles = StyleSheet.create({
   },
 
   add__image__and__post__anonymously__container: {
-    marginVertical: 50,
+    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 
   bottomBar: {

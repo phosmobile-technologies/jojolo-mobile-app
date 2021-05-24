@@ -237,6 +237,12 @@ export enum Genotype {
   Ss = 'SS'
 }
 
+/** Input for getting a post's comments */
+export type GetPostCommentsInput = {
+  /** The id of the post whose comments are needed */
+  post_id: Scalars['Int'];
+};
+
 export type HealthCareProfessionalProfile = {
   __typename?: 'HealthCareProfessionalProfile';
   /** The date and time when the health professional's profile was created */
@@ -421,15 +427,19 @@ export type PostComment = {
   __typename?: 'PostComment';
   /** The comments content */
   content: Scalars['String'];
+  /** The date and time when the comment was created */
+  created_at: Scalars['DateTime'];
   /** The comment id */
   id: Scalars['Int'];
   /** The post that was commented on */
-  post: Post;
+  post?: Maybe<Post>;
+  /** The replies to the post comment */
+  replies: Array<Maybe<PostCommentReply>>;
   /** The user who made the comment */
   user: User;
 };
 
-/** Input for for working with post comments */
+/** Input for working with post comments */
 export type PostCommentInput = {
   /** The comment made */
   content: Scalars['String'];
@@ -446,6 +456,8 @@ export type PostCommentReply = {
   comment: Post;
   /** The comment reply content */
   content: Scalars['String'];
+  /** The date and time when the comment replay was posted */
+  created_at: Scalars['DateTime'];
   /** The comment reply id */
   id: Scalars['Int'];
   /** The user who made the comment reply */
@@ -492,6 +504,8 @@ export type Query = {
   FilterPosts: Array<Maybe<Post>>;
   /** Find a user by their unique values like id, uuid or email */
   FindUser: User;
+  /** Get the comments on a post */
+  GetPostComments: Array<PostComment>;
   /** Get the posts feed */
   GetPostsFeed: Array<Maybe<Post>>;
   /** Search for posts by title or content */
@@ -506,6 +520,11 @@ export type QueryFilterPostsArgs = {
 
 export type QueryFindUserArgs = {
   input: FindUserInput;
+};
+
+
+export type QueryGetPostCommentsArgs = {
+  input: GetPostCommentsInput;
 };
 
 
@@ -635,6 +654,46 @@ export type SignUpHealthCareProfessionalMutation = (
   ) }
 );
 
+export type CreatePostCommentReplyMutationVariables = Exact<{
+  input: PostCommentReplyInput;
+}>;
+
+
+export type CreatePostCommentReplyMutation = (
+  { __typename?: 'Mutation' }
+  & { CreatePostCommentReply: (
+    { __typename?: 'PostCommentReply' }
+    & Pick<PostCommentReply, 'id' | 'content'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), comment: (
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+    ) }
+  ) }
+);
+
+export type CreatePostCommentMutationVariables = Exact<{
+  input: PostCommentInput;
+}>;
+
+
+export type CreatePostCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { CreatePostComment: (
+    { __typename?: 'PostComment' }
+    & Pick<PostComment, 'id' | 'content'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+    )> }
+  ) }
+);
+
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostInput;
 }>;
@@ -682,6 +741,47 @@ export type SavePostMutation = (
     { __typename?: 'ApiResponse' }
     & Pick<ApiResponse, 'success' | 'message'>
   ) }
+);
+
+export type GetPostCommentsQueryVariables = Exact<{
+  input: GetPostCommentsInput;
+}>;
+
+
+export type GetPostCommentsQuery = (
+  { __typename?: 'Query' }
+  & { GetPostComments: Array<(
+    { __typename?: 'PostComment' }
+    & Pick<PostComment, 'id' | 'content' | 'created_at'>
+    & { replies: Array<Maybe<(
+      { __typename?: 'PostCommentReply' }
+      & Pick<PostCommentReply, 'id' | 'content' | 'created_at'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'full_name' | 'user_type' | 'profile_image'>
+        & { care_giver_profile?: Maybe<(
+          { __typename?: 'CareGiverProfile' }
+          & Pick<CareGiverProfile, 'role'>
+        )>, health_care_professional_profile?: Maybe<(
+          { __typename?: 'HealthCareProfessionalProfile' }
+          & Pick<HealthCareProfessionalProfile, 'role'>
+        )> }
+      ) }
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'full_name' | 'user_type' | 'profile_image'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'role'>
+      )> }
+    ), post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+    )> }
+  )> }
 );
 
 export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
@@ -836,6 +936,56 @@ export const useSignUpHealthCareProfessionalMutation = <
       (variables?: SignUpHealthCareProfessionalMutationVariables) => fetcher<SignUpHealthCareProfessionalMutation, SignUpHealthCareProfessionalMutationVariables>(client, SignUpHealthCareProfessionalDocument, variables)(),
       options
     );
+export const CreatePostCommentReplyDocument = `
+    mutation CreatePostCommentReply($input: PostCommentReplyInput!) {
+  CreatePostCommentReply(input: $input) {
+    id
+    content
+    user {
+      id
+    }
+    comment {
+      id
+    }
+  }
+}
+    `;
+export const useCreatePostCommentReplyMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>
+    ) => 
+    useMutation<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>(
+      (variables?: CreatePostCommentReplyMutationVariables) => fetcher<CreatePostCommentReplyMutation, CreatePostCommentReplyMutationVariables>(client, CreatePostCommentReplyDocument, variables)(),
+      options
+    );
+export const CreatePostCommentDocument = `
+    mutation CreatePostComment($input: PostCommentInput!) {
+  CreatePostComment(input: $input) {
+    id
+    content
+    user {
+      id
+    }
+    post {
+      id
+    }
+  }
+}
+    `;
+export const useCreatePostCommentMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>
+    ) => 
+    useMutation<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>(
+      (variables?: CreatePostCommentMutationVariables) => fetcher<CreatePostCommentMutation, CreatePostCommentMutationVariables>(client, CreatePostCommentDocument, variables)(),
+      options
+    );
 export const CreatePostDocument = `
     mutation CreatePost($input: CreatePostInput!) {
   CreatePost(input: $input) {
@@ -907,6 +1057,62 @@ export const useSavePostMutation = <
       (variables?: SavePostMutationVariables) => fetcher<SavePostMutation, SavePostMutationVariables>(client, SavePostDocument, variables)(),
       options
     );
+export const GetPostCommentsDocument = `
+    query GetPostComments($input: GetPostCommentsInput!) {
+  GetPostComments(input: $input) {
+    id
+    content
+    created_at
+    replies {
+      id
+      content
+      created_at
+      user {
+        id
+        full_name
+        user_type
+        profile_image
+        care_giver_profile {
+          role
+        }
+        health_care_professional_profile {
+          role
+        }
+      }
+    }
+    user {
+      id
+      full_name
+      user_type
+      profile_image
+      care_giver_profile {
+        role
+      }
+      health_care_professional_profile {
+        role
+      }
+    }
+    post {
+      id
+    }
+  }
+}
+    `;
+export const useGetPostCommentsQuery = <
+      TData = GetPostCommentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient, 
+      variables: GetPostCommentsQueryVariables, 
+      options?: UseQueryOptions<GetPostCommentsQuery, TError, TData>
+    ) => 
+    useQuery<GetPostCommentsQuery, TError, TData>(
+      ['GetPostComments', variables],
+      fetcher<GetPostCommentsQuery, GetPostCommentsQueryVariables>(client, GetPostCommentsDocument, variables),
+      options
+    );
+useGetPostCommentsQuery.getKey = (variables: GetPostCommentsQueryVariables) => ['GetPostComments', variables];
+
 export const GetPostsFeedDocument = `
     query GetPostsFeed {
   GetPostsFeed {
@@ -956,3 +1162,4 @@ export const useGetPostsFeedQuery = <
       fetcher<GetPostsFeedQuery, GetPostsFeedQueryVariables>(client, GetPostsFeedDocument, variables),
       options
     );
+useGetPostsFeedQuery.getKey = (variables?: GetPostsFeedQueryVariables) => ['GetPostsFeed', variables];

@@ -6,11 +6,9 @@ import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import Post from "../../models/post.model";
-
 import PostModel from "../../models/post.model";
 import { ForumNavigatorNavigationContext } from "../../../../providers/forum-navigator.context";
-import { PostTag } from "../../../../generated/graphql";
+import { Post, PostTag } from "../../../../generated/graphql";
 
 /**
  * Component used to display tags in a post
@@ -29,6 +27,7 @@ const Tag = ({ tag, style }: { tag: PostTag; style?: object }) => {
 
 /**
  * Component displaying the content in a post
+ *
  * @param param0
  * @returns
  */
@@ -36,7 +35,7 @@ const PostContent = ({
   post,
   isFullPage = false,
 }: {
-  post: PostModel;
+  post: Post;
   isFullPage?: boolean;
 }) => {
   const navigation: any = useContext(ForumNavigatorNavigationContext);

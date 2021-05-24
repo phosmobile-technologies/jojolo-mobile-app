@@ -1,21 +1,36 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { BottomSheet } from "react-native-btr";
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "react-native-fast-toast";
-import {
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
+import { useQueryClient } from "react-query";
 
-import PostModel from "../models/post.model";
-import Post from "../components/posts/post.component";
+import PostComponent from "../components/posts/post.component";
 import AppText from "../../common/components/typography/text.component";
-import { CommentFeed } from "../components/posts/post-comment.component";
+import { PostComments } from "../components/posts/post-comment.component";
 import { COLORS } from "../../../constants";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
+import {
+  Post,
+  PostComment,
+  PostCommentReply,
+  useCreatePostCommentMutation,
+  useCreatePostCommentReplyMutation,
+  useGetPostCommentsQuery,
+} from "../../../generated/graphql";
+import AppTextLink from "../../common/components/typography/text-link.component";
+import { useAuthenticatedUser } from "../../../providers/user-context";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import Loader from "../../common/components/loader.component";
 
 /**
  * Screen that shows the full details for a post including comments and replies
@@ -24,8 +39,11 @@ import AppHeaderTitle from "../../common/components/header/app-header-title.comp
  * @returns
  */
 const PostDetailsScreen = ({ route }: { route: any }) => {
+  const { post }: { post: Post } = route.params;
   const navigation = useNavigation() as any;
   const toast: any = useToast();
+  const { authenticatedUser } = useAuthenticatedUser();
+  const queryClient = useQueryClient();
 
   /**
    * Customize the navigation header components for the screen
@@ -35,69 +53,127 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
       headerLeft: () => (
         <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
       ),
-      headerTitle: () => <AppHeaderTitle text={"Post"} />,
+      headerTitle: () => <AppHeaderTitle text={""} />,
       headerRight: () => <></>,
     });
   }, [navigation]);
-  const { post }: { post: PostModel } = route.params;
 
   const [visible, setVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
+  const [comment, setComment] = useState("");
+  const [reply, setReply] = useState("");
+  const [activeComment, setActiveComment] = useState({} as PostComment);
 
   const toggleReplyBottomSheet = () => {
-    setCommentReply("");
-    setReplyVisible(!replyVisible);
+    setReply("");
+    setReplyVisible((replyVisible) => !replyVisible);
   };
 
   const toggleBottomSheet = () => {
-    setReply("");
-    setVisible(!visible);
+    setComment("");
+    setVisible((visible) => !visible);
   };
 
-  const [comment, setCommentReply] = useState("");
-  const [reply, setReply] = useState("");
+  // GraphQL mutation for saving a comment
+  const { mutate: saveComment, isLoading: isSavingComment } =
+    useCreatePostCommentMutation(AppGraphQLClient, {
+      onSuccess: (response) => {
+        toast.show("Comment added successfully", {
+          type: "success",
+        });
+
+        const queryKey = useGetPostCommentsQuery.getKey({
+          input: { post_id: post.id },
+        });
+        queryClient.invalidateQueries(queryKey);
+
+        post.comments.push(response?.CreatePostComment);
+        setVisible(false);
+      },
+
+      onError: (error) => {
+        toast.show("Failed to add your comment. Please try again", {
+          type: "error",
+        });
+      },
+    });
+
+  // GraphQL mutation for saving a comment reply
+  const { mutate: saveCommentReply, isLoading: isSavingCommentReply } =
+    useCreatePostCommentReplyMutation(AppGraphQLClient, {
+      onSuccess: (response) => {
+        toast.show("Comment reply added successfully", {
+          type: "success",
+        });
+
+        const queryKey = useGetPostCommentsQuery.getKey({
+          input: { post_id: post.id },
+        });
+        queryClient.invalidateQueries(queryKey);
+
+        setReplyVisible(false);
+      },
+
+      onError: (error) => {
+        toast.show("Failed to add your comment reply. Please try again", {
+          type: "error",
+        });
+      },
+    });
 
   /**
    * Send new comment data to the api
    *
-   * @todo add hook to get authenticated user and all multi select tag
-   * @param data
    */
   const onCommentSubmit = () => {
-    toggleBottomSheet();
-    const Comment = {
-      post_id: post.id,
-      user_id: post.user.id,
-      user_comment: comment,
-    };
-    console.log(Comment);
+    saveComment({
+      input: {
+        post_id: post.id,
+        user_id: authenticatedUser?.id,
+        content: comment,
+      },
+    });
   };
 
+  /**
+   * Send new comment reply to the API
+   */
   const onReplySubnmit = () => {
-    toggleReplyBottomSheet;
-    const Reply = {
-      post_id: post.id,
-      user_id: post.user.id,
-      user_reply: reply,
-    };
+    saveCommentReply({
+      input: {
+        content: reply,
+        comment_id: activeComment?.id,
+        user_id: authenticatedUser?.id,
+      },
+    });
   };
 
   return (
     <>
       <View style={styles.container}>
+        <Loader loading={isSavingComment} />
         <ScrollView>
           <View style={styles.container}>
-            <Post
+            <PostComponent
               post={post}
               isFullPage={true}
               allowNavigationToPostDetails={false}
             />
             <View>
-              <AppText style={styles.text}>Comments(4)</AppText>
+              <AppText style={styles.text}>
+                Comments ({post.comments.length})
+              </AppText>
             </View>
             <View>
-              <CommentFeed
-                openBottomsheet={() => setReplyVisible(!replyVisible)}
+              <PostComments
+                post={post}
+                openBottomsheet={() => {
+                  setVisible(!visible);
+                }}
+                openCommentRepliesBottomSheet={(comment: PostComment) => {
+                  setActiveComment(comment);
+                  setReplyVisible(!replyVisible);
+                }}
               />
             </View>
           </View>
@@ -111,10 +187,16 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
           }}
         >
           <TouchableWithoutFeedback onPress={toggleBottomSheet}>
-            <View style={styles.textInput} />
+            <View style={styles.textInput}>
+              <AppText style={{ color: COLORS.APP_GRAY_TEXT }}>
+                Add a comment
+              </AppText>
+            </View>
           </TouchableWithoutFeedback>
         </View>
       </View>
+
+      {/* Bottom sheet for adding a comment to a post */}
       <BottomSheet
         visible={visible}
         onBackButtonPress={toggleBottomSheet}
@@ -125,16 +207,13 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <AppText style={styles.commenting__title}>
-              Commenting On{"  "}
+              Commenting On:{" "}
               <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
-                My Baby is Struggling
+                {post.title}
               </Text>
             </AppText>
             <TouchableWithoutFeedback onPress={toggleBottomSheet}>
-              <SvgIcon
-                iconName={SVG_ICONS.CLOSE_ICON}
-                style={{ paddingLeft: 50, top: 10 }}
-              />
+              <SvgIcon iconName={SVG_ICONS.CLOSE_ICON} />
             </TouchableWithoutFeedback>
           </View>
           <View>
@@ -142,17 +221,21 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               style={styles.textBox}
               placeholder="Add a comment"
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
-              onChangeText={(text) => setCommentReply(text)}
+              onChangeText={(text) => setComment(text)}
               defaultValue={""}
+              multiline={true}
+              numberOfLines={3}
             />
           </View>
           <View style={styles.reply}>
-            <TouchableWithoutFeedback onPress={onCommentSubmit}>
-              <AppText style={styles.reply__text}>Reply</AppText>
-            </TouchableWithoutFeedback>
+            <AppTextLink style={styles.reply__text} onPress={onCommentSubmit}>
+              REPLY
+            </AppTextLink>
           </View>
         </View>
       </BottomSheet>
+
+      {/* Bottom sheet for replying to a comment */}
       <BottomSheet
         visible={replyVisible}
         onBackButtonPress={toggleReplyBottomSheet}
@@ -163,16 +246,18 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <AppText style={styles.commenting__title}>
-              Replying To{"  "}
-              <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
-                Philip Omoigui
+              Replying To:{" "}
+              <Text
+                style={{
+                  color: COLORS.APP_PRIMARY_COLOR,
+                  textTransform: "capitalize",
+                }}
+              >
+                {activeComment?.user?.full_name}
               </Text>
             </AppText>
             <TouchableWithoutFeedback onPress={toggleReplyBottomSheet}>
-              <SvgIcon
-                iconName={SVG_ICONS.CLOSE_ICON}
-                style={{ paddingLeft: 50, top: 10 }}
-              />
+              <SvgIcon iconName={SVG_ICONS.CLOSE_ICON} />
             </TouchableWithoutFeedback>
           </View>
           <View>
@@ -182,15 +267,14 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
               onChangeText={(text) => setReply(text)}
               defaultValue={""}
+              multiline={true}
+              numberOfLines={3}
             />
           </View>
           <View style={styles.reply}>
-            <TouchableWithoutFeedback
-              onPress={onReplySubnmit}
-              style={styles.reply__container}
-            >
-              <AppText style={styles.reply__text}>Reply</AppText>
-            </TouchableWithoutFeedback>
+            <AppTextLink style={styles.reply__text} onPress={onReplySubnmit}>
+              REPLY
+            </AppTextLink>
           </View>
         </View>
       </BottomSheet>
@@ -214,14 +298,16 @@ const styles = StyleSheet.create({
     height: 48,
     margin: 12,
     borderRadius: 10,
-
     marginBottom: -1,
     backgroundColor: COLORS.APP_GRAY_BACKGROUND,
+    justifyContent: "center",
+    paddingLeft: 20,
   },
   text: {
-    fontSize: 19,
+    fontSize: 16,
     fontWeight: "600",
-    marginBottom: 10,
+    marginBottom: 15,
+    marginTop: 20,
   },
   textBox: {
     marginVertical: 0,
@@ -230,7 +316,7 @@ const styles = StyleSheet.create({
   },
   reply: {
     borderTopWidth: 1,
-    marginVertical: 50,
+    marginTop: 50,
     alignItems: "flex-end",
     borderTopColor: COLORS.APP_LIGHT_GRAY_BACKGROUND,
     marginHorizontal: -10,
@@ -239,6 +325,8 @@ const styles = StyleSheet.create({
   reply__text: {
     fontSize: 20,
     paddingTop: 10,
+    paddingBottom: 20,
+    paddingLeft: 20,
     color: COLORS.APP_PRIMARY_COLOR,
   },
   commenting__title: {

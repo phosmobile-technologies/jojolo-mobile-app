@@ -6,7 +6,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppHeaderText from "../../common/components/typography/header-text.component";
 import { COLORS } from "../../../constants";
-import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 
 /**
  * The forum page header
@@ -20,7 +19,6 @@ export const ForumHeader = ({
   HandleNavigation: any;
   handleOpenActionSheet: any;
 }) => {
-  const navigation: any = React.useContext(ForumNavigatorNavigationContext);
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>

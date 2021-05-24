@@ -1,24 +1,16 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { StyleSheet, SafeAreaView, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { FloatingAction } from "react-native-floating-action";
+import { useToast } from "react-native-fast-toast";
 
-import AppActivityIndicator from "../../common/components/activity-indicator.component";
-import { getNewsFeed } from "../api/posts.api";
-import Post from "../models/post.model";
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { NAVIGATION_CONSTANTS } from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import { useGetPostsFeedQuery } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
-import { useToast } from "react-native-fast-toast";
-
-interface StateShape {
-  isLoading: boolean;
-  loadingError: boolean;
-  posts: Post[];
-}
 
 /**
  * The forum news feed page
@@ -46,36 +38,27 @@ export const ForumNewsFeedPage = () => {
   return (
     <View style={styles.container}>
       <PostsList posts={data?.GetPostsFeed} />
-      <View style={styles.touchableOpacityStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN
-            );
-          }}
-        >
-          <SvgIcon iconName={SVG_ICONS.POST_ICON} />
-        </TouchableOpacity>
-      </View>
+
+      <FloatingAction
+        color={COLORS.APP_PRIMARY_COLOR}
+        floatingIcon={<SvgIcon iconName={SVG_ICONS.POST_ICON} />}
+        buttonSize={60}
+        showBackground={false}
+        onPressMain={() => {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN
+          );
+        }}
+      />
     </View>
   );
 };
 
-const HeightProportions = "85%";
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 15,
     paddingTop: 20,
-  },
-  touchableOpacityStyle: {
-    position: "absolute",
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    right: 30,
-    top: HeightProportions,
   },
 });
 

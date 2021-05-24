@@ -13,6 +13,7 @@ const SvgIcon = ({
   iconName,
   color,
   style,
+  ...otherProps
 }: {
   iconName: string;
   color?: string;
@@ -144,7 +145,12 @@ const SvgIcon = ({
   }
 
   Icon = () => (
-    <SvgXml xml={iconXml} color={color} style={[styles.svgIcon, style]} />
+    <SvgXml
+      xml={iconXml}
+      color={color}
+      style={[styles.svgIcon, style]}
+      {...otherProps}
+    />
   );
 
   return <Icon />;

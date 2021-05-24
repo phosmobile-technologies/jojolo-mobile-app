@@ -1,27 +1,34 @@
-mutation Login($input: LoginInput!) {
-  Login(input: $input) {
-    access_token
+query GetUserPosts($input: GetUserPostsInput!) {
+  GetUserPosts(input: $input) {
+    id
+    uuid
+    title
+    likes
+    content
+    comments {
+      id
+    }
+    tags {
+      id
+      name
+    }
     user {
       id
-      uuid
       full_name
-      email
       phone_number
+      email
       user_type
       profile_image
       care_giver_profile {
         id
-        uuid
-        address
-        city
-        country
-        state
         role
       }
       health_care_professional_profile {
         id
+        role
         years_of_experience
       }
     }
+    created_at
   }
 }

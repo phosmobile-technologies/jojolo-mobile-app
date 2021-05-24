@@ -121,12 +121,22 @@ export const DROPDOWN_OPTIONS = {
     { label: "AC", value: Genotype.Ac },
   ],
 
+  // POST_TAGS: [
+  //   { label: "General", value: TAGS.General },
+  //   { label: "Breastfeeding", value: TAGS.Breastfeeding },
+  //   { label: "Teething", value: TAGS.Teething },
+  //   { label: "Feeding", value: TAGS.Feeding },
+  //   { label: "Stooling", value: TAGS.Stooling },
+  //   { label: "Illness", value: TAGS.Illness },
+  // ],
+
   POST_TAGS: [
-    { label: "General", value: TAGS.General },
-    { label: "Breastfeeding", value: TAGS.Breastfeeding },
-    { label: "Teething", value: TAGS.Teething },
-    { label: "Feeding", value: TAGS.Feeding },
-    { label: "Stooling", value: TAGS.Stooling },
-    { label: "Illness", value: TAGS.Illness },
+    { label: "Test Tag 1", value: TAGS.General },
+    { label: "Test Tag 2", value: TAGS.Breastfeeding },
+    { label: "Test Tag 3", value: TAGS.Teething },
   ],
+};
+
+export const ASYNC_STORAGE_ITEMS = {
+  USER_TOKEN: "@jojolo_user_token",
 };

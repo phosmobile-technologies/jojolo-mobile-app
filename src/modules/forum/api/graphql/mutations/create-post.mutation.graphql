@@ -1,0 +1,20 @@
+mutation CreatePost($input: CreatePostInput!) {
+  CreatePost(input: $input) {
+    id
+    uuid
+    posted_anonymously
+    title
+    content
+    tags {
+      id
+      name
+    }
+    files {
+      id
+      file_url
+    }
+    user {
+      id
+    }
+  }
+}

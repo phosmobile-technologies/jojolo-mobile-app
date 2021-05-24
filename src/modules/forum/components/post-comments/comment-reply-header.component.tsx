@@ -1,43 +1,31 @@
-import React from "react";
-import {
-  View,
-  Image,
-  TouchableWithoutFeedback,
-  StyleSheet,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet } from "react-native";
+import { useToast } from "react-native-fast-toast";
+import { formatDistance } from "date-fns";
 
 import { COLORS } from "../../../../constants";
-import { Post, User, UserType } from "../../../../generated/graphql";
-import { formatDistance, subDays } from "date-fns";
-
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
+import {
+  PostCommentReply,
+  User,
+  UserType,
+} from "../../../../generated/graphql";
 
 /**
- * The header for a post
- *
- * @param param0
- * @returns
+ * The header for a comment reply
  */
-const PostHeader = ({
-  post,
-  handleOpenPostActionSheet,
-  isFullPage = false,
-}: {
-  post: Post;
-  handleOpenPostActionSheet: Function;
-  isFullPage?: boolean;
-}) => {
-  const { user } = post;
 
-  const fullNameStyle = isFullPage
-    ? [styles.user__details__username__Large]
-    : [styles.user__details__username];
-  const userNameAndUserBadgeStyle = isFullPage
-    ? [styles.user__details__username__and_badge_large]
-    : [styles.user__details__username__and_badge];
+const CommentReplyHeader = ({
+  user,
+  reply,
+}: {
+  user: User;
+  reply: PostCommentReply;
+}) => {
+  const toast: any = useToast();
 
   return (
     <View style={styles.header}>
@@ -47,8 +35,10 @@ const PostHeader = ({
           style={styles.header__avatar}
         />
         <View>
-          <View style={userNameAndUserBadgeStyle}>
-            <AppText style={fullNameStyle}>{`${user.full_name}`}</AppText>
+          <View style={styles.user__details__username__and_badge}>
+            <AppText
+              style={styles.user__details__username}
+            >{`${user.full_name}`}</AppText>
             <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
           </View>
           <View style={styles.user__details__info}>
@@ -64,16 +54,11 @@ const PostHeader = ({
               </AppText>
             </View>
             <AppText style={styles.user__details__info__last_seen}>
-              {formatDistance(new Date(post.created_at), new Date())} ago
+              {formatDistance(new Date(reply.created_at), new Date())} ago
             </AppText>
           </View>
         </View>
       </View>
-      <TouchableWithoutFeedback onPress={() => handleOpenPostActionSheet()}>
-        <View style={styles.actions__icon}>
-          <SvgIcon iconName={SVG_ICONS.THREE_DOTS_ICON} />
-        </View>
-      </TouchableWithoutFeedback>
     </View>
   );
 };
@@ -87,6 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderBottomColor: COLORS.APP_GRAY_BACKGROUND,
     borderBottomWidth: 1,
+    paddingTop: 9,
   },
   user__details__username__Large: {
     fontSize: 20,
@@ -154,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostHeader;
+export default CommentReplyHeader;

@@ -1,0 +1,12 @@
+mutation CreatePostCommentReply($input: PostCommentReplyInput!) {
+  CreatePostCommentReply(input: $input) {
+    id
+    content
+    user {
+      id
+    }
+    comment {
+      id
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ForumScreen from "../modules/forum/screens/forum.screen";
-import PostScreen from "../modules/forum/screens/post.screen";
+import PostScreen from "../modules/forum/screens/post-details.screen";
 import NewPostScreen from "../modules/forum/screens/create-post.screen";
 import SearchPostsScreen from "../modules/forum/screens/search-screen.component";
 import { NAVIGATION_CONSTANTS } from "../constants";

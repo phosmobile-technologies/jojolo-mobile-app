@@ -2,18 +2,19 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useToast } from "react-native-fast-toast";
+import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import AppButton from "../../common/components/button.component";
 import Loader from "../../common/components/loader.component";
 import AppTextLink from "../../common/components/typography/text-link.component";
 import AppText from "../../common/components/typography/text.component";
-import { useToast } from "react-native-fast-toast";
-import { useForm } from "react-hook-form";
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import { AuthenticationContext } from "../../../contexts/authentication.context";
 import { LoginInput, useLoginMutation } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
+import { useAuthenticatedUser } from "../../../providers/user-context";
 
 const schema = yup.object().shape({
   username: yup.string().required("Please provide your username"),
@@ -26,10 +27,10 @@ const schema = yup.object().shape({
  * @param props
  * @returns
  */
-const SignInScreen = ({ navigation }: { navigation: any }) => {
-  const authContext: any = React.useContext(AuthenticationContext);
+const SignInScreen = () => {
   const toast: any = useToast();
-  const [isAuthenticating, setIsAuthenticating] = React.useState(false);
+  const { navigate } = useNavigation();
+  const { signIn, signOut } = useAuthenticatedUser();
 
   const {
     control,
@@ -44,13 +45,12 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
    */
   const { mutate, isLoading } = useLoginMutation(AppGraphQLClient, {
     onSuccess: (response) => {
-      const { access_token } = response.Login;
-      authContext.dispatch({ type: "SIGN_IN", token: access_token });
+      const { access_token, user } = response.Login;
+      signIn(access_token, user);
     },
 
     onError: (err) => {
-      console.log(err);
-      authContext.dispatch({ type: "SIGN_OUT" });
+      signOut();
       toast.show("Invalid email/password provided", {
         type: "error",
       });
@@ -82,9 +82,7 @@ const SignInScreen = ({ navigation }: { navigation: any }) => {
         <AppTextLink
           style={styles.header__text}
           onPress={() =>
-            navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_UP_SCREEN
-            )
+            navigate(NAVIGATION_CONSTANTS.SCREENS.AUTH.SIGN_UP_SCREEN)
           }
         >
           Sign Up

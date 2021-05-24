@@ -1,0 +1,39 @@
+query GetPostComments($input: GetPostCommentsInput!) {
+  GetPostComments(input: $input) {
+    id
+    content
+    created_at
+    replies {
+      id
+      content
+      created_at
+      user {
+        id
+        full_name
+        user_type
+        profile_image
+        care_giver_profile {
+          role
+        }
+        health_care_professional_profile {
+          role
+        }
+      }
+    }
+    user {
+      id
+      full_name
+      user_type
+      profile_image
+      care_giver_profile {
+        role
+      }
+      health_care_professional_profile {
+        role
+      }
+    }
+    post {
+      id
+    }
+  }
+}

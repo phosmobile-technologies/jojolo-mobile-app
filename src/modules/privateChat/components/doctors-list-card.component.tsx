@@ -71,8 +71,17 @@ const DoctorsListCardItem = () => {
         </View>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={() => {}}>
-        <SvgIcon iconName={SVG_ICONS.PRIVATE_CHAT_MESSAGE_DOCTOR_ICON} />
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.DOCTOR_PROFILE_SCREEN,
+            { user }
+          );
+        }}
+      >
+        <View>
+          <SvgIcon iconName={SVG_ICONS.PRIVATE_CHAT_MESSAGE_DOCTOR_ICON} />
+        </View>
       </TouchableWithoutFeedback>
     </View>
   );

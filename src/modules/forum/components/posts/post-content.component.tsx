@@ -53,7 +53,6 @@ const PostContent = ({
    * @param post
    */
   const goToPostPage = (post: PostModel) => {
-    console.log("herr");
     console.log(post);
     navigation.navigate(
       NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,

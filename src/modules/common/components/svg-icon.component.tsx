@@ -138,6 +138,10 @@ const SvgIcon = ({
       iconXml = BLACK_CANCEL_ICON;
       break;
 
+    case SVG_ICONS.SEND_CHAT:
+      iconXml = SEND_CHAT;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -179,6 +183,7 @@ export const SVG_ICONS = {
   PRIVATE_CHAT_MESSAGE_DOCTOR_ICON_OVAL:
     "PRIVATE_CHAT_MESSAGE_DOCTOR_ICON_OVAL",
   BLACK_CANCEL_ICON: "BLACK_CANCEL_ICON",
+  SEND_CHAT: "SEND_CHAT",
 };
 
 const styles = StyleSheet.create({
@@ -520,6 +525,20 @@ const BLACK_CANCEL_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill=
 <circle cx="12" cy="12" r="12" fill="#52575C"/>
 <path d="M16 7.99988L8.00002 15.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8.00002 7.99988L16 15.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const SEND_CHAT = `<svg width="48" height="49" viewBox="0 0 48 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="0.814453" width="48" height="48" rx="10" fill="#19A5B0"/>
+<g clip-path="url(#clip0)">
+<path d="M35.1422 24.8143L19.5858 24.8143" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M35.1421 24.8143L16.0503 34.0066L19.5858 24.8143L16.0503 15.6219L35.1421 24.8143Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0">
+<rect width="24" height="24" fill="white" transform="translate(21 7.84375) rotate(45)"/>
+</clipPath>
+</defs>
 </svg>
 `;
 export default SvgIcon;

@@ -243,6 +243,18 @@ export type GetPostCommentsInput = {
   post_id: Scalars['Int'];
 };
 
+/** Input for getting a users posts */
+export type GetUserPostsInput = {
+  /** The id of the user whose posts we are retrieving */
+  user_id: Scalars['Int'];
+};
+
+/** Input for getting a users saved posts */
+export type GetUserSavedPostsInput = {
+  /** The id of the user whose saved posts we are retrieving */
+  user_id: Scalars['Int'];
+};
+
 export type HealthCareProfessionalProfile = {
   __typename?: 'HealthCareProfessionalProfile';
   /** The date and time when the health professional's profile was created */
@@ -508,6 +520,10 @@ export type Query = {
   GetPostComments: Array<PostComment>;
   /** Get the posts feed */
   GetPostsFeed: Array<Maybe<Post>>;
+  /** Get the posts created by a user */
+  GetUserPosts: Array<Maybe<Post>>;
+  /** Get the posts saved by a user */
+  GetUserSavedPosts: Array<Maybe<Post>>;
   /** Search for posts by title or content */
   SearchPosts: Array<Maybe<Post>>;
 };
@@ -525,6 +541,16 @@ export type QueryFindUserArgs = {
 
 export type QueryGetPostCommentsArgs = {
   input: GetPostCommentsInput;
+};
+
+
+export type QueryGetUserPostsArgs = {
+  input: GetUserPostsInput;
+};
+
+
+export type QueryGetUserSavedPostsArgs = {
+  input: GetUserSavedPostsInput;
 };
 
 
@@ -790,6 +816,66 @@ export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetPostsFeedQuery = (
   { __typename?: 'Query' }
   & { GetPostsFeed: Array<Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
+    & { comments: Array<Maybe<(
+      { __typename?: 'PostComment' }
+      & Pick<PostComment, 'id'>
+    )>>, tags: Array<Maybe<(
+      { __typename?: 'PostTag' }
+      & Pick<PostTag, 'id' | 'name'>
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'id' | 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
+      )> }
+    ) }
+  )>> }
+);
+
+export type GetUserPostsQueryVariables = Exact<{
+  input: GetUserPostsInput;
+}>;
+
+
+export type GetUserPostsQuery = (
+  { __typename?: 'Query' }
+  & { GetUserPosts: Array<Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
+    & { comments: Array<Maybe<(
+      { __typename?: 'PostComment' }
+      & Pick<PostComment, 'id'>
+    )>>, tags: Array<Maybe<(
+      { __typename?: 'PostTag' }
+      & Pick<PostTag, 'id' | 'name'>
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
+      & { care_giver_profile?: Maybe<(
+        { __typename?: 'CareGiverProfile' }
+        & Pick<CareGiverProfile, 'id' | 'role'>
+      )>, health_care_professional_profile?: Maybe<(
+        { __typename?: 'HealthCareProfessionalProfile' }
+        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
+      )> }
+    ) }
+  )>> }
+);
+
+export type GetUserSavedPostsQueryVariables = Exact<{
+  input: GetUserSavedPostsInput;
+}>;
+
+
+export type GetUserSavedPostsQuery = (
+  { __typename?: 'Query' }
+  & { GetUserSavedPosts: Array<Maybe<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
     & { comments: Array<Maybe<(
@@ -1163,3 +1249,105 @@ export const useGetPostsFeedQuery = <
       options
     );
 useGetPostsFeedQuery.getKey = (variables?: GetPostsFeedQueryVariables) => ['GetPostsFeed', variables];
+
+export const GetUserPostsDocument = `
+    query GetUserPosts($input: GetUserPostsInput!) {
+  GetUserPosts(input: $input) {
+    id
+    uuid
+    title
+    likes
+    content
+    comments {
+      id
+    }
+    tags {
+      id
+      name
+    }
+    user {
+      id
+      full_name
+      phone_number
+      email
+      user_type
+      profile_image
+      care_giver_profile {
+        id
+        role
+      }
+      health_care_professional_profile {
+        id
+        role
+        years_of_experience
+      }
+    }
+    created_at
+  }
+}
+    `;
+export const useGetUserPostsQuery = <
+      TData = GetUserPostsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient, 
+      variables: GetUserPostsQueryVariables, 
+      options?: UseQueryOptions<GetUserPostsQuery, TError, TData>
+    ) => 
+    useQuery<GetUserPostsQuery, TError, TData>(
+      ['GetUserPosts', variables],
+      fetcher<GetUserPostsQuery, GetUserPostsQueryVariables>(client, GetUserPostsDocument, variables),
+      options
+    );
+useGetUserPostsQuery.getKey = (variables: GetUserPostsQueryVariables) => ['GetUserPosts', variables];
+
+export const GetUserSavedPostsDocument = `
+    query GetUserSavedPosts($input: GetUserSavedPostsInput!) {
+  GetUserSavedPosts(input: $input) {
+    id
+    uuid
+    title
+    likes
+    content
+    comments {
+      id
+    }
+    tags {
+      id
+      name
+    }
+    user {
+      id
+      full_name
+      phone_number
+      email
+      user_type
+      profile_image
+      care_giver_profile {
+        id
+        role
+      }
+      health_care_professional_profile {
+        id
+        role
+        years_of_experience
+      }
+    }
+    created_at
+  }
+}
+    `;
+export const useGetUserSavedPostsQuery = <
+      TData = GetUserSavedPostsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient, 
+      variables: GetUserSavedPostsQueryVariables, 
+      options?: UseQueryOptions<GetUserSavedPostsQuery, TError, TData>
+    ) => 
+    useQuery<GetUserSavedPostsQuery, TError, TData>(
+      ['GetUserSavedPosts', variables],
+      fetcher<GetUserSavedPostsQuery, GetUserSavedPostsQueryVariables>(client, GetUserSavedPostsDocument, variables),
+      options
+    );
+useGetUserSavedPostsQuery.getKey = (variables: GetUserSavedPostsQueryVariables) => ['GetUserSavedPosts', variables];

@@ -9,6 +9,8 @@ import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
+import MyPostsPage from "./my-posts-screen";
+import SavedPostsPage from "./saved-posts.screen";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
@@ -91,11 +93,11 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.MY_POSTS_SCREEN}
-            component={ForumNewsFeedPage}
+            component={MyPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.SAVED_POSTS_SCREEN}
-            component={ForumNewsFeedPage}
+            component={SavedPostsPage}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.TAGS_SCREEN}

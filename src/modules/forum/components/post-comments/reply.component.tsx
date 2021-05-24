@@ -89,9 +89,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     padding: 10,
+    marginTop: 20,
     marginBottom: 20,
-    left: 1,
+    marginLeft: 5,
+    borderColor: COLORS.APP_GRAY_TEXT,
     borderLeftWidth: 1,
+    borderStyle: "dashed",
   },
   comment: {
     fontWeight: "200",

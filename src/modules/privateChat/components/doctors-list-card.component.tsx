@@ -74,7 +74,7 @@ const DoctorsListCardItem = () => {
       <TouchableWithoutFeedback
         onPress={() => {
           navigation.navigate(
-            NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.DOCTOR_PROFILE_SCREEN,
+            NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.CHAT_SCREEN,
             { user }
           );
         }}

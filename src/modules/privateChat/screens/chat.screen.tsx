@@ -1,24 +1,98 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Image, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  TextInput,
+  StyleSheet,
+  Platform,
+  Text,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {
+  Actions,
+  ActionsProps,
   Bubble,
   GiftedChat,
   InputToolbar,
+  MessageImage,
   Send,
 } from "react-native-gifted-chat";
 import { COLORS } from "../../../constants";
+import * as ImagePicker from "expo-image-picker";
 
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
-import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppText from "../../common/components/typography/text.component";
 
+/**
+ * Function Handling the Display of the chatscreen with Medical Personnel
+ *
+ *
+ *
+ *
+ * TODO: Fix ability to send messages without text feature.
+ * @returns
+ *
+ */
 const ChatScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
   const { user }: { user: any } = route.params;
+
+  const [images, setImages] = useState("");
+  const [messages, setMessages] = useState([] as any);
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: "Yo",
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: "React Native",
+          avatar: user.profile_image,
+        },
+      },
+    ]);
+  }, []);
+
+  /**
+   * Get camera permissions
+   */
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
+  /**
+   * Callback called by the ImagePicker library when sending images as messages
+   */
+  const handleChoosePhoto = async () => {
+    let result: any = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [16, 4],
+      quality: 1,
+      allowsMultipleSelection: true,
+    });
+
+    if (!result.cancelled) {
+      setImages(result.uri);
+    }
+
+    if (!messages) {
+      setMessages("Image Upload");
+    }
+  };
 
   /**
    *
@@ -43,7 +117,6 @@ const ChatScreen = () => {
       headerRight: () => <></>,
     });
   }, [navigation]);
-  const [messages, setMessages] = useState([] as any);
 
   /**
    * Function To customize Text Input for message composer that will then be passed down to gifted child props
@@ -58,23 +131,6 @@ const ChatScreen = () => {
       </>
     );
   };
-
-  // const renderActions = (props: Readonly<ActionsProps>) => {
-  //   return (
-  //     <View>
-  //       <Actions
-  //         {...props}
-  //         options={{
-  //           ["Send Image"]: () => {},
-  //         }}
-  //         icon={() => (
-  //           <SvgIcon iconName={SVG_ICONS.SEND_CHAT} style={styles.send__icon} />
-  //         )}
-  //         onSend={(args: any) => console.log(args)}
-  //       />
-  //     </View>
-  //   );
-  // };
 
   /**
    * Function to render send button for the input container of the chat screen
@@ -94,6 +150,54 @@ const ChatScreen = () => {
   };
 
   /**
+   * Function For Rendering Image Icon And Calling the Image Picker Function
+   * @param props
+   * @returns
+   */
+  function renderActions(props: Readonly<ActionsProps>) {
+    return (
+      <Actions
+        {...props}
+        options={{
+          ["Open Gallery"]: handleChoosePhoto,
+          ["Open Camera"]: () => {
+            console.log("no camera yet");
+          },
+        }}
+        icon={() => (
+          <TouchableOpacity>
+            <SvgIcon
+              iconName={SVG_ICONS.SEND_IMAGE_IN_CHAT}
+              style={styles.send__icon}
+            />
+          </TouchableOpacity>
+        )}
+        onSend={() => console.log(images)}
+      />
+    );
+  }
+
+  /**
+   * Function For Rendering image container
+   * @param props
+   * @returns
+   */
+  const renderMessageImage = (props: any) => {
+    return (
+      <MessageImage
+        {...props}
+        imageStyle={{
+          width: 250,
+          height: 200,
+          borderRadius: 13,
+          margin: 3,
+          resizeMode: "cover",
+        }}
+      />
+    );
+  };
+
+  /**
    * Function to render Message container for the chat page
    * @param props
    * @returns
@@ -105,11 +209,9 @@ const ChatScreen = () => {
         wrapperStyle={{
           right: {
             backgroundColor: COLORS.APP_PRIMARY_COLOR,
-            paddingEnd: 25,
           },
           left: {
             backgroundColor: COLORS.APP_PRIMARY_COLOR_LIGHT,
-            paddingEnd: 25,
           },
         }}
         textStyle={{
@@ -126,31 +228,26 @@ const ChatScreen = () => {
     );
   };
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Yo",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: user.profile_image,
-        },
-      },
-    ]);
-  }, []);
-
-  const onSend = useCallback((messages = []) => {
+  /**
+   *
+   */
+  const onSend = useCallback((messages = [], image?) => {
+    !messages[0].text && setMessages((messages[0].text = "Images"));
+    const msg = {
+      ...messages[0],
+      image,
+    };
     setMessages((previousMessages: any) =>
-      GiftedChat.append(previousMessages, messages)
+      GiftedChat.append(previousMessages, msg)
     );
+    setImages("");
+    console.log(messages);
   }, []);
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={(messages) => onSend(messages)}
+      onSend={(messages) => onSend(messages, images)}
       user={{
         _id: 1,
       }}
@@ -160,6 +257,9 @@ const ChatScreen = () => {
       renderSend={renderSend}
       renderChatFooter={() => <View style={{ height: 30 }} />}
       renderAvatar={() => <></>}
+      renderActions={renderActions}
+      bottomOffset={80}
+      renderMessageImage={renderMessageImage}
     />
   );
 };
@@ -188,7 +288,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   send__icon: {
-    height: 70,
+    marginBottom: 7,
   },
 });
 

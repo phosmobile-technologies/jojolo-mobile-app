@@ -248,10 +248,9 @@ const ChatScreen = () => {
       renderBubble={renderBubble}
       renderInputToolbar={renderInput}
       renderSend={renderSend}
-      renderChatFooter={() => <View style={{ height: 30 }} />}
+      renderChatFooter={() => <View style={{ height: 10 }} />}
       renderAvatar={() => <></>}
       renderActions={renderActions}
-      bottomOffset={80}
       renderMessageImage={renderMessageImage}
     />
   );

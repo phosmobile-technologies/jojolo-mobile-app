@@ -222,7 +222,7 @@ const ChatScreen = () => {
   };
 
   /**
-   *
+   * Function To Handle Sending Images in chat
    */
   const onSend = useCallback((messages = [], image?) => {
     !messages[0].text && setMessages((messages[0].text = "Images"));

@@ -1,8 +1,11 @@
 import Post from "../models/post.model";
-import { getFakeComments, getFakePosts, getFakeTags } from "../mock/posts.mock";
-import { MOCK_TIME_DELAY_IN_MILLISECONDS } from "../../common/constants";
+import { getFakeComments, getFakePosts, getFakeTags } from "./mock/posts.mock";
 import Tag from "../models/tag.model";
 import Comment from "../models/comment.model";
+import { APP_CONSTANTS } from "../../../constants";
+
+const MOCK_TIME_DELAY_IN_MILLISECONDS =
+  APP_CONSTANTS.MOCK_TIME_DELAY_IN_MILLISECONDS;
 
 /**
  * Get the news feed.

@@ -1,0 +1,6 @@
+mutation SavePost($input: SavePostInput!) {
+  SavePost(input: $input) {
+    success
+    message
+  }
+}

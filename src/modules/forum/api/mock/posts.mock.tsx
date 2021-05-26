@@ -1,7 +1,7 @@
-import Post from "../models/post.model";
-import Comment from "../models/comment.model";
+import Post from "../../models/post.model";
+import Comment from "../../models/comment.model";
 import * as faker from "faker";
-import { User, UserRole } from "../../common/models/user.model";
+import { User, UserRole } from "../../../common/models/user.model";
 
 /**
  * Get fake posts

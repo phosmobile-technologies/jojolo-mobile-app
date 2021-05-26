@@ -1,20 +1,21 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
-import { StyleSheet, SafeAreaView, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState, useContext } from "react";
+import { StyleSheet, View } from "react-native";
+import { FloatingAction } from "react-native-floating-action";
+import { useToast } from "react-native-fast-toast";
+import { useQueryClient } from "react-query";
 
-import AppActivityIndicator from "../../common/components/activity-indicator.component";
-import { getNewsFeed } from "../api/posts.api";
-import Post from "../models/post.model";
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { NAVIGATION_CONSTANTS } from "../../../constants";
-import { ForumNavigatorNavigationContext } from "../../../contexts/forum-navigator.context";
-
-interface StateShape {
-  isLoading: boolean;
-  loadingError: boolean;
-  posts: Post[];
-}
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
+import {
+  useGetPostsFeedQuery,
+  useGetUserSavedPostsQuery,
+} from "../../../generated/graphql";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import Loader from "../../common/components/loader.component";
+import { queryClient } from "../../../providers/query-client.context";
+import { useAuthenticatedUser } from "../../../providers/user-context";
 
 /**
  * The forum news feed page
@@ -22,80 +23,68 @@ interface StateShape {
  * @returns
  */
 export const ForumNewsFeedPage = () => {
-  const [state, setState] = useState<StateShape>({
-    isLoading: true,
-    loadingError: false,
-    posts: [],
-  });
-
+  const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
+  const queryClient = useQueryClient();
+  const [refreshing, setRefreshing] = useState(false);
+  const { authenticatedUser } = useAuthenticatedUser();
 
   /**
-   * Get the posts from the API
+   * query for getting post feed
    */
-  const fetchNewsFeed = async () => {
-    setState({
-      ...state,
-      isLoading: true,
-    });
+  const { data, error, isLoading, isError } =
+    useGetPostsFeedQuery(AppGraphQLClient);
 
-    try {
-      const posts = await getNewsFeed();
-      setState({
-        ...state,
-        posts,
-        isLoading: false,
-      });
-    } catch (error) {
-      setState({
-        ...state,
-        loadingError: true,
-        isLoading: false,
-      });
-    }
+  /**
+   * Reload the news feed when the user pulls down to refresh
+   */
+  const onRefresh = () => {
+    setRefreshing(true);
+    const queryKey = useGetPostsFeedQuery.getKey();
+    queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
   };
 
-  useEffect(() => {
-    fetchNewsFeed();
-  }, []);
+  // prefetch the data for my posts and saved posts
+  useGetUserSavedPostsQuery(AppGraphQLClient, {
+    input: { user_id: authenticatedUser?.id },
+  });
 
-  if (state.isLoading) {
-    return <AppActivityIndicator text={"Loading News Feed ..."} />;
+  if (error) {
+    toast?.show("An error occured while loading the posts feed");
+  }
+
+  if (isLoading) {
+    return <Loader loading={isLoading} />;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <PostsList posts={state.posts} />
-      <View style={styles.touchableOpacityStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(
-              NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN
-            );
-          }}
-        >
-          <SvgIcon iconName={SVG_ICONS.POST_ICON} />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <PostsList
+        posts={data?.GetPostsFeed}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
+
+      <FloatingAction
+        color={COLORS.APP_PRIMARY_COLOR}
+        floatingIcon={<SvgIcon iconName={SVG_ICONS.POST_ICON} />}
+        buttonSize={60}
+        showBackground={false}
+        onPressMain={() => {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN
+          );
+        }}
+      />
+    </View>
   );
 };
 
-const HeightProportions = "85%";
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 15,
     paddingTop: 20,
-  },
-  touchableOpacityStyle: {
-    position: "absolute",
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    right: 30,
-    top: HeightProportions,
   },
 });
 

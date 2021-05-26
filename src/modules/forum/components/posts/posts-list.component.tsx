@@ -1,16 +1,33 @@
 import React from "react";
-import { View, FlatList, Text } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 
-import Post from "../../models/post.model";
-import PostComponent from "./post-details.component";
+import { Post } from "../../../../generated/graphql";
+import PostComponent from "./post.component";
 
-const PostsList = ({ posts }: { posts: Post[] }) => {
+/**
+ * Component showing a list of posts
+ *
+ * @param param0
+ * @returns
+ */
+const PostsList = ({
+  posts,
+  refreshing = false,
+  onRefresh = () => {},
+}: {
+  posts: Post[];
+  refreshing?: boolean;
+  onRefresh?: Function;
+}) => {
   return (
     <FlatList
       data={posts}
       renderItem={({ item }) => <PostComponent post={item} />}
       keyExtractor={(item) => item.uuid}
       showsHorizontalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+      }
     />
   );
 };

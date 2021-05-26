@@ -1,23 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Image,
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
-import { COLORS } from "../../../../constants";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useToast } from "react-native-fast-toast";
+import { formatDistance } from "date-fns";
 
+import { COLORS } from "../../../../constants";
 import SvgIcon, {
   SVG_ICONS,
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
-import { User } from "../../../common/models/user.model";
+import { PostComment, User, UserType } from "../../../../generated/graphql";
 
 /**
  * tThe header for a comment
  */
 
-const CommentHeader = ({ user }: { user: User }) => {
+const CommentHeader = ({
+  user,
+  comment,
+}: {
+  user: User;
+  comment: PostComment;
+}) => {
+  const toast: any = useToast();
+  const { showActionSheetWithOptions } = useActionSheet();
+  const [action, setAction] = useState("");
+
+  const handleOpenActionSheet = () => {
+    const options = ["Report Comment", "Cancel"];
+    const cancelButtonIndex = 1;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          // Save the post
+          toast.show("Comment Reported successfully", { type: "success" });
+
+          /**
+           * Function For Getting Comment Actions For Api
+           */
+          setAction(options[buttonIndex]);
+          const Action = {
+            user_id: user.id, // This will change when User Authemtication as been carried out and user can be accessed Globally
+            post_id: comment.id,
+            action: action,
+          };
+          console.log(Action);
+        }
+      }
+    );
+  };
+
   return (
     <View style={styles.header}>
       <View style={styles.header__avatar_and_details}>
@@ -34,7 +76,9 @@ const CommentHeader = ({ user }: { user: User }) => {
           </View>
           <View style={styles.user__details__info}>
             <AppText style={styles.user__details__info__user_role}>
-              {`Mother`}
+              {user.user_type === UserType.CareGiver
+                ? user.care_giver_profile?.role
+                : user.health_care_professional_profile?.role}
             </AppText>
             <View style={styles.user__details__info__user_rating}>
               <SvgIcon iconName={SVG_ICONS.GOLD_STAR_ICON} />
@@ -43,12 +87,12 @@ const CommentHeader = ({ user }: { user: User }) => {
               </AppText>
             </View>
             <AppText style={styles.user__details__info__last_seen}>
-              5 hrs ago
+              {formatDistance(new Date(comment.created_at), new Date())} ago
             </AppText>
           </View>
         </View>
       </View>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={handleOpenActionSheet}>
         <View style={styles.actions__icon}>
           <SvgIcon iconName={SVG_ICONS.THREE_DOTS_ICON} />
         </View>
@@ -92,6 +136,7 @@ const styles = StyleSheet.create({
   user__details__username: {
     marginRight: 10,
     fontWeight: "700",
+    textTransform: "capitalize",
   },
 
   user__details__username__and_badge: {
@@ -106,6 +151,7 @@ const styles = StyleSheet.create({
   user__details__info__user_role: {
     marginRight: 15,
     fontSize: 12,
+    textTransform: "capitalize",
   },
 
   user__details__info__user_rating: {

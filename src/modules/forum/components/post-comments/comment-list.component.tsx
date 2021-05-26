@@ -1,7 +1,7 @@
 import React from "react";
 import { View, FlatList, Text } from "react-native";
+import { PostComment } from "../../../../generated/graphql";
 
-import Comment from "../../models/comment.model";
 import CommentComponent from "./comment.component";
 
 /**
@@ -13,17 +13,23 @@ import CommentComponent from "./comment.component";
 const CommentList = ({
   comments,
   openBottomsheet,
+  openCommentRepliesBottomSheet,
 }: {
-  comments: Comment[];
-  openBottomsheet: any;
+  comments: PostComment[];
+  openBottomsheet: Function;
+  openCommentRepliesBottomSheet: Function;
 }) => {
   return (
     <FlatList
       data={comments}
       renderItem={({ item }) => (
-        <CommentComponent comment={item} openBottomsheet={openBottomsheet} />
+        <CommentComponent
+          comment={item}
+          openBottomsheet={openBottomsheet}
+          openCommentRepliesBottomSheet={openCommentRepliesBottomSheet}
+        />
       )}
-      keyExtractor={(item) => item.uuid}
+      keyExtractor={(item) => item.id.toString()}
       showsHorizontalScrollIndicator={false}
     />
   );

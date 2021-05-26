@@ -139,6 +139,14 @@ const SvgIcon = ({
       iconXml = BLACK_CANCEL_ICON;
       break;
 
+    case SVG_ICONS.SEND_CHAT:
+      iconXml = SEND_CHAT;
+      break;
+
+    case SVG_ICONS.SEND_IMAGE_IN_CHAT:
+      iconXml = SEND_IMAGE_IN_CHAT;
+      break;
+
     default:
       iconXml = ACCOUNT_ICON;
       break;
@@ -185,6 +193,8 @@ export const SVG_ICONS = {
   PRIVATE_CHAT_MESSAGE_DOCTOR_ICON_OVAL:
     "PRIVATE_CHAT_MESSAGE_DOCTOR_ICON_OVAL",
   BLACK_CANCEL_ICON: "BLACK_CANCEL_ICON",
+  SEND_CHAT: "SEND_CHAT",
+  SEND_IMAGE_IN_CHAT: "SEND_IMAGE_IN_CHAT",
 };
 
 const styles = StyleSheet.create({
@@ -526,6 +536,27 @@ const BLACK_CANCEL_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill=
 <circle cx="12" cy="12" r="12" fill="#52575C"/>
 <path d="M16 7.99988L8.00002 15.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8.00002 7.99988L16 15.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const SEND_CHAT = `<svg width="48" height="32" viewBox="0 0 48 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="0.814453" width="48" height="48" rx="10" fill="#19A5B0"/>
+<g clip-path="url(#clip0)">
+<path d="M35.1422 24.8143L19.5858 24.8143" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M35.1421 24.8143L16.0503 34.0066L19.5858 24.8143L16.0503 15.6219L35.1421 24.8143Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0">
+<rect width="24" height="24" fill="white" transform="translate(21 7.84375) rotate(45)"/>
+</clipPath>
+</defs>
+</svg>
+`;
+
+const SEND_IMAGE_IN_CHAT = `<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 3.81445H5C3.89543 3.81445 3 4.70988 3 5.81445V19.8145C3 20.919 3.89543 21.8145 5 21.8145H19C20.1046 21.8145 21 20.919 21 19.8145V5.81445C21 4.70988 20.1046 3.81445 19 3.81445Z" stroke="#52575C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 10.8145C9.32843 10.8145 10 10.1429 10 9.31445C10 8.48603 9.32843 7.81445 8.5 7.81445C7.67157 7.81445 7 8.48603 7 9.31445C7 10.1429 7.67157 10.8145 8.5 10.8145Z" stroke="#52575C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21 15.8145L16 10.8145L5 21.8145" stroke="#52575C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 export default SvgIcon;

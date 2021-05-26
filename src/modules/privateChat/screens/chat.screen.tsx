@@ -1,13 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  View,
-  Image,
-  TextInput,
-  StyleSheet,
-  Platform,
-  Text,
-} from "react-native";
+import { View, Image, StyleSheet, Platform } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {
   Actions,
@@ -31,7 +24,7 @@ import AppText from "../../common/components/typography/text.component";
  *
  *
  *
- * TODO: Fix ability to send messages without text feature.
+ * @todo: Fix ability to send messages without text feature.
  * @returns
  *
  */

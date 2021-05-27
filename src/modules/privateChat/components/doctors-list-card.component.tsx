@@ -21,15 +21,15 @@ interface DoctorsListCardProps {
  * @param param0
  * @returns
  */
-const DoctorsListCardItem = () => {
+const DoctorsListCardItem = (doctor: any) => {
   const navigation = useNavigation() as any;
-  let user = {
-    profile_image: "https://i.pravatar.cc/200",
-    full_name: "Doctor Raji Mike",
-    role: "Pediatrician",
-    rating: 4,
-    points: 5,
-  };
+  // let user = {
+  //   profile_image: "https://i.pravatar.cc/200",
+  //   full_name: "Doctor Raji Mike",
+  //   role: "Pediatrician",
+  //   rating: 4,
+  //   points: 5,
+  // };
 
   return (
     <View style={styles.header}>
@@ -37,20 +37,20 @@ const DoctorsListCardItem = () => {
         onPress={() => {
           navigation.navigate(
             NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.DOCTOR_PROFILE_SCREEN,
-            { user }
+            { doctor }
           );
         }}
       >
         <View style={styles.header__avatar_and_details}>
           <Image
-            source={{ uri: user.profile_image }}
+            source={{ uri: doctor.doctor.profile_image }}
             style={styles.header__avatar}
           />
           <View>
             <View style={styles.user__details__username__and_badge}>
               <AppText
                 style={styles.user__details__username}
-              >{`${user.full_name}`}</AppText>
+              >{`${doctor.doctor.full_name}`}</AppText>
               <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
             </View>
             <View style={styles.user__details__info}>
@@ -75,7 +75,7 @@ const DoctorsListCardItem = () => {
         onPress={() => {
           navigation.navigate(
             NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT.CHAT_SCREEN,
-            { user }
+            { doctor }
           );
         }}
       >

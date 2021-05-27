@@ -31,7 +31,7 @@ import AppText from "../../common/components/typography/text.component";
 const ChatScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
-  const { user }: { user: any } = route.params;
+  const { doctor }: { doctor: any } = route.params;
 
   const [images, setImages] = useState("");
   const [messages, setMessages] = useState([] as any);
@@ -39,13 +39,10 @@ const ChatScreen = () => {
   useEffect(() => {
     setMessages([
       {
-        _id: 1,
-        text: "Yo",
-        createdAt: new Date(),
         user: {
           _id: 2,
           name: "React Native",
-          avatar: user.profile_image,
+          avatar: doctor.profile_image,
         },
       },
     ]);
@@ -100,10 +97,12 @@ const ChatScreen = () => {
         <>
           <View style={styles.header}>
             <Image
-              source={{ uri: user.profile_image }}
+              source={{ uri: doctor.doctor.profile_image }}
               style={styles.header__avatar}
             />
-            <AppText style={styles.header__title}>{user.full_name}</AppText>
+            <AppText style={styles.header__title}>
+              {doctor.doctor.full_name}
+            </AppText>
           </View>
         </>
       ),

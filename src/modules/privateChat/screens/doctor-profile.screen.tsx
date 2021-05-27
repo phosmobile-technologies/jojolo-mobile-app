@@ -19,7 +19,7 @@ import AppHeaderGoBackButton from "../../common/components/header/app-header-go-
 const DoctorProfileInPrivateChat = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
-  const { doctor }: { doctor: any } = route.params;
+  const { doctor }: { doctor: User } = route.params;
 
   /**
    *
@@ -38,14 +38,14 @@ const DoctorProfileInPrivateChat = () => {
     <ScrollView style={styles.container}>
       <View style={styles.header__avatar_and_details}>
         <Image
-          source={{ uri: doctor.doctor.profile_image }}
+          source={{ uri: doctor.profile_image }}
           style={styles.header__avatar}
         />
         <View>
           <View style={styles.user__details__username__and_badge}>
             <AppText
               style={styles.user__details__username}
-            >{`${doctor.doctor.full_name}`}</AppText>
+            >{`${doctor.full_name}`}</AppText>
             <SvgIcon iconName={SVG_ICONS.GOLD_BADGE_ICON} />
           </View>
           <View style={styles.user__details__info}>

@@ -21,7 +21,7 @@ const PostsList = ({
   refreshing?: boolean;
   onRefresh?: Function;
 }) => {
-  return !posts ? (
+  return !posts || !posts.length ? (
     <>
       <View style={Styles.container}>
         <AppText style={Styles.no__post}>No Posts Available</AppText>

@@ -17,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppText from "../../common/components/typography/text.component";
+import { User } from "../../../generated/graphql";
 
 /**
  * Function Handling the Display of the chatscreen with Medical Personnel
@@ -31,7 +32,7 @@ import AppText from "../../common/components/typography/text.component";
 const ChatScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
-  const { doctor }: { doctor: any } = route.params;
+  const { doctor }: { doctor: User } = route.params;
 
   const [images, setImages] = useState("");
   const [messages, setMessages] = useState([] as any);
@@ -97,12 +98,10 @@ const ChatScreen = () => {
         <>
           <View style={styles.header}>
             <Image
-              source={{ uri: doctor.doctor.profile_image }}
+              source={{ uri: doctor.profile_image }}
               style={styles.header__avatar}
             />
-            <AppText style={styles.header__title}>
-              {doctor.doctor.full_name}
-            </AppText>
+            <AppText style={styles.header__title}>{doctor.full_name}</AppText>
           </View>
         </>
       ),

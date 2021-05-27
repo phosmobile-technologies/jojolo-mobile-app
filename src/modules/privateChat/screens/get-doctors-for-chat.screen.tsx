@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import DoctorsListCardItem from "../components/doctors-list-card.component";
 import FilterDoctors from "../components/filter-doctors.component";
-import { HealthCareProfessionalRole } from "../../../generated/graphql";
+import { HealthCareProfessionalRole, User } from "../../../generated/graphql";
 
 /**
  * The Main Private Chat screen which shows all the various private chat related functionality

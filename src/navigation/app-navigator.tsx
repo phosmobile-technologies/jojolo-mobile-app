@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import PrivateChatScreen from "../modules/privateChat/screens/get-doctor-for-chat.screen";
+import PrivateChatScreen from "../modules/privateChat/screens/get-doctors-for-chat.screen";
 import SvgIcon, {
   SVG_ICONS,
 } from "../modules/common/components/svg-icon.component";

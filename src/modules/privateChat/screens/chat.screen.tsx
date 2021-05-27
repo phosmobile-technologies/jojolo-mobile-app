@@ -17,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppText from "../../common/components/typography/text.component";
+import { User } from "../../../generated/graphql";
 
 /**
  * Function Handling the Display of the chatscreen with Medical Personnel
@@ -31,24 +32,13 @@ import AppText from "../../common/components/typography/text.component";
 const ChatScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
-  const { user }: { user: any } = route.params;
+  const { doctor }: { doctor: User } = route.params;
 
   const [images, setImages] = useState("");
   const [messages, setMessages] = useState([] as any);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Yo",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: user.profile_image,
-        },
-      },
-    ]);
+    setMessages([{}]);
   }, []);
 
   /**
@@ -100,10 +90,10 @@ const ChatScreen = () => {
         <>
           <View style={styles.header}>
             <Image
-              source={{ uri: user.profile_image }}
+              source={{ uri: doctor.profile_image }}
               style={styles.header__avatar}
             />
-            <AppText style={styles.header__title}>{user.full_name}</AppText>
+            <AppText style={styles.header__title}>{doctor.full_name}</AppText>
           </View>
         </>
       ),
@@ -222,7 +212,7 @@ const ChatScreen = () => {
   };
 
   /**
-   *
+   * Function To Handle Sending Images in chat
    */
   const onSend = useCallback((messages = [], image?) => {
     !messages[0].text && setMessages((messages[0].text = "Images"));
@@ -248,10 +238,9 @@ const ChatScreen = () => {
       renderBubble={renderBubble}
       renderInputToolbar={renderInput}
       renderSend={renderSend}
-      renderChatFooter={() => <View style={{ height: 30 }} />}
+      renderChatFooter={() => <View style={{ height: 10 }} />}
       renderAvatar={() => <></>}
       renderActions={renderActions}
-      bottomOffset={80}
       renderMessageImage={renderMessageImage}
     />
   );

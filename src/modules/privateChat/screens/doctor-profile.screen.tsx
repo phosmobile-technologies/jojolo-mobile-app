@@ -86,7 +86,15 @@ const DoctorProfileInPrivateChat = () => {
         <View
           style={[styles.action__link__card, styles.first__action__link_card]}
         >
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate(
+                NAVIGATION_CONSTANTS.SCREENS.PRIVATE_CHAT
+                  .BOOK_A_CONSULTAION_SCREEN,
+                { doctor }
+              )
+            }
+          >
             <SvgIcon
               style={styles.action__link__card__Icon}
               iconName={SVG_ICONS.VIDEO_CALL_ICON}

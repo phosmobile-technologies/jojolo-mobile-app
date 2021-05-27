@@ -31,6 +31,7 @@ const BookAConsultationScreen = () => {
   const [selectedDate, setSelectedDate] = useState({
     selectedDate: null,
   });
+  const [activeTime, setActiveTime] = useState("");
 
   /**
    * Function for handling Date on Change and Adding date to state
@@ -40,10 +41,7 @@ const BookAConsultationScreen = () => {
     setSelectedDate({
       selectedDate: date,
     });
-    console.log(date);
   };
-
-  const [activeTime, setActiveTime] = useState("");
 
   /**
    *

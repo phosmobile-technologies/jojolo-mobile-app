@@ -38,15 +38,7 @@ const ChatScreen = () => {
   const [messages, setMessages] = useState([] as any);
 
   useEffect(() => {
-    setMessages([
-      {
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: doctor.profile_image,
-        },
-      },
-    ]);
+    setMessages([{}]);
   }, []);
 
   /**

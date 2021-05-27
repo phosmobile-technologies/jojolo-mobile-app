@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
+import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 
 /**
  * Screen To Display Doctor Profile Information.
@@ -19,6 +20,20 @@ const DoctorProfileInPrivateChat = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
   const { doctor }: { doctor: any } = route.params;
+
+  /**
+   *
+   * Hook for customizing navigation header and title for chat sreen.
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <></>,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header__avatar_and_details}>
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: COLORS.WHITE,
   },
   header__avatar_and_details: {
     flexDirection: "row",

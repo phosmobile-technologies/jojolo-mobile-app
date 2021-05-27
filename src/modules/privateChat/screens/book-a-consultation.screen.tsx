@@ -2,8 +2,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Image, StyleSheet, Platform, ScrollView } from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
+import { useToast } from "react-native-fast-toast";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { COLORS } from "../../../constants";
 
 import { User } from "../../../generated/graphql";
@@ -27,9 +27,10 @@ const BookAConsultationScreen = () => {
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
   const { doctor }: { doctor: User } = route.params;
+  const toast: any = useToast();
 
   const [selectedDate, setSelectedDate] = useState({
-    selectedDate: null,
+    Date: null,
   });
   const [activeTime, setActiveTime] = useState("");
 
@@ -39,7 +40,7 @@ const BookAConsultationScreen = () => {
    */
   const onDateChange = (date: any) => {
     setSelectedDate({
-      selectedDate: date,
+      Date: date,
     });
   };
 
@@ -76,6 +77,19 @@ const BookAConsultationScreen = () => {
     "4:00 pm - 4:30 pm",
     "5:00 pm - 5:30 pm",
   ];
+
+  /**
+   * Function For Handling getting the data for Consultaion Time
+   *
+   */
+  const sendConsultationTime = () => {
+    const obj = {
+      selectedDate: selectedDate.Date,
+      selectedTime: activeTime,
+    };
+
+    console.log(obj);
+  };
 
   return (
     <ScrollView>
@@ -118,7 +132,23 @@ const BookAConsultationScreen = () => {
         <AppButton
           type="submit"
           title="Book Consultation"
-          onPress={() => console.log("pressed")}
+          onPress={() => {
+            selectedDate.Date !== null && activeTime.length
+              ? toast.show(
+                  "Virtual consultation has been booked successfully",
+                  {
+                    type: "success",
+                  }
+                )
+              : toast.show(
+                  "You can’t book this consultation because you haven't chosen a date or time.",
+                  {
+                    type: "error",
+                  }
+                );
+
+            sendConsultationTime();
+          }}
         />
       </View>
     </ScrollView>

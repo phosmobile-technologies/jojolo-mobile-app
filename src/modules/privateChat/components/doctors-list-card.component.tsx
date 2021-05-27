@@ -21,7 +21,7 @@ interface DoctorsListCardProps {
  * @param param0
  * @returns
  */
-const DoctorsListCardItem = ({ doctor }: { doctor: User }) => {
+const DoctorsListCardItem = ({ doctor }: { doctor: any }) => {
   const navigation = useNavigation() as any;
 
   return (

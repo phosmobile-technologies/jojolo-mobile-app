@@ -203,19 +203,6 @@ export type CreatePostInput = {
 };
 
 
-/** Input for filtering the list of posts */
-export type FilterPostsInput = {
-  /** The filter type to filter posts by */
-  filter_type: FilterType;
-};
-
-/** Enum for filtering records */
-export enum FilterType {
-  Latest = 'LATEST',
-  MostPopular = 'MOST_POPULAR',
-  Oldest = 'OLDEST'
-}
-
 /** Input for finding a user based on unique values */
 export type FindUserInput = {
   email?: Maybe<Scalars['String']>;
@@ -241,6 +228,12 @@ export enum Genotype {
 export type GetPostCommentsInput = {
   /** The id of the post whose comments are needed */
   post_id: Scalars['Int'];
+};
+
+/** Input for getting the forum news feed of posts */
+export type GetPostsFeedInput = {
+  /** The type of sorting to be done on the posts, either by popularity or by latest posts */
+  sortType?: Maybe<PostsSortType>;
 };
 
 /** Input for getting a users posts */
@@ -510,10 +503,15 @@ export type PostTagInput = {
   name: Scalars['String'];
 };
 
+/** Enum for sorting post records */
+export enum PostsSortType {
+  Latest = 'LATEST',
+  MostPopular = 'MOST_POPULAR',
+  Oldest = 'OLDEST'
+}
+
 export type Query = {
   __typename?: 'Query';
-  /** Filter posts by creation date or popularity */
-  FilterPosts: Array<Maybe<Post>>;
   /** Find a user by their unique values like id, uuid or email */
   FindUser: User;
   /** Get the comments on a post */
@@ -529,11 +527,6 @@ export type Query = {
 };
 
 
-export type QueryFilterPostsArgs = {
-  input: FilterPostsInput;
-};
-
-
 export type QueryFindUserArgs = {
   input: FindUserInput;
 };
@@ -541,6 +534,11 @@ export type QueryFindUserArgs = {
 
 export type QueryGetPostCommentsArgs = {
   input: GetPostCommentsInput;
+};
+
+
+export type QueryGetPostsFeedArgs = {
+  input?: Maybe<GetPostsFeedInput>;
 };
 
 

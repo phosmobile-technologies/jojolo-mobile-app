@@ -6,7 +6,11 @@ import { useQueryClient } from "react-query";
 
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import {
+  COLORS,
+  FORUM_POSTS_SORT_OPTIONS,
+  NAVIGATION_CONSTANTS,
+} from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import {
   useGetPostsFeedQuery,
@@ -17,12 +21,16 @@ import Loader from "../../common/components/loader.component";
 import { queryClient } from "../../../providers/query-client.context";
 import { useAuthenticatedUser } from "../../../providers/user-context";
 
+interface ForumNewsFeedScreenProps {
+  sortType: null | FORUM_POSTS_SORT_OPTIONS;
+}
+
 /**
  * The forum news feed page
  *
  * @returns
  */
-export const ForumNewsFeedPage = () => {
+export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
   const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
   const queryClient = useQueryClient();

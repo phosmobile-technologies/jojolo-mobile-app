@@ -7,10 +7,15 @@ import { useToast } from "react-native-fast-toast";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
-import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import {
+  COLORS,
+  FORUM_POSTS_SORT_OPTIONS,
+  NAVIGATION_CONSTANTS,
+} from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import MyPostsPage from "./my-posts-screen";
 import SavedPostsPage from "./saved-posts.screen";
+import { useNavigation } from "@react-navigation/native";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
@@ -19,9 +24,12 @@ const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
  *
  * @returns
  */
-const ForumScreen = ({ navigation }: { navigation: any }) => {
+const ForumScreen = () => {
+  const navigation = useNavigation();
   const { showActionSheetWithOptions } = useActionSheet();
   const toast: any = useToast();
+  const [sortType, setSortType] =
+    useState<FORUM_POSTS_SORT_OPTIONS | null>(null);
 
   // Handle opening of action sheet for sorting posts
   const handleOpenActionSheet = () => {
@@ -36,14 +44,12 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
       (buttonIndex) => {
         //Filter The Post By The Latest
         if (buttonIndex === 0) {
-          toast.show("Latest Posts", { type: "success" });
+          setSortType(FORUM_POSTS_SORT_OPTIONS.LATEST);
         }
 
         // Filter The Post By the Most Popular
         if (buttonIndex === 1) {
-          toast.show("Top Posts", {
-            type: "success",
-          });
+          setSortType(FORUM_POSTS_SORT_OPTIONS.MOST_POPULAR);
         }
       }
     );
@@ -59,7 +65,7 @@ const ForumScreen = ({ navigation }: { navigation: any }) => {
         >
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.FEED_SCREEN}
-            component={ForumNewsFeedPage}
+            children={() => <ForumNewsFeedPage sortType={sortType} />}
           />
           <ForumPageTabNavigationStack.Screen
             name={NAVIGATION_CONSTANTS.SCREENS.FORUM.MY_POSTS_SCREEN}

@@ -140,3 +140,9 @@ export const DROPDOWN_OPTIONS = {
 export const ASYNC_STORAGE_ITEMS = {
   USER_TOKEN: "@jojolo_user_token",
 };
+
+// Possible values for sorting posts in the forum module
+export enum FORUM_POSTS_SORT_OPTIONS {
+  LATEST,
+  MOST_POPULAR,
+}

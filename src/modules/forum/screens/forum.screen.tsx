@@ -16,6 +16,7 @@ import { ForumNavigatorNavigationContext } from "../../../providers/forum-naviga
 import MyPostsPage from "./my-posts-screen";
 import SavedPostsPage from "./saved-posts.screen";
 import { useNavigation } from "@react-navigation/native";
+import { PostsSortType } from "../../../generated/graphql";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
@@ -28,8 +29,7 @@ const ForumScreen = () => {
   const navigation = useNavigation();
   const { showActionSheetWithOptions } = useActionSheet();
   const toast: any = useToast();
-  const [sortType, setSortType] =
-    useState<FORUM_POSTS_SORT_OPTIONS | null>(null);
+  const [sortType, setSortType] = useState<PostsSortType>(PostsSortType.Latest);
 
   // Handle opening of action sheet for sorting posts
   const handleOpenActionSheet = () => {
@@ -44,12 +44,12 @@ const ForumScreen = () => {
       (buttonIndex) => {
         //Filter The Post By The Latest
         if (buttonIndex === 0) {
-          setSortType(FORUM_POSTS_SORT_OPTIONS.LATEST);
+          setSortType(PostsSortType.Latest);
         }
 
         // Filter The Post By the Most Popular
         if (buttonIndex === 1) {
-          setSortType(FORUM_POSTS_SORT_OPTIONS.MOST_POPULAR);
+          setSortType(PostsSortType.MostPopular);
         }
       }
     );

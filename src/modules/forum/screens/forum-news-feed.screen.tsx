@@ -6,15 +6,14 @@ import { useQueryClient } from "react-query";
 
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import {
-  COLORS,
-  FORUM_POSTS_SORT_OPTIONS,
-  NAVIGATION_CONSTANTS,
-} from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import {
+  PostsSortType,
   useGetPostsFeedQuery,
   useGetUserSavedPostsQuery,
+  Post,
+  GetPostsFeedInput,
 } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
@@ -22,11 +21,11 @@ import { queryClient } from "../../../providers/query-client.context";
 import { useAuthenticatedUser } from "../../../providers/user-context";
 
 interface ForumNewsFeedScreenProps {
-  sortType: null | FORUM_POSTS_SORT_OPTIONS;
+  sortType: PostsSortType;
 }
 
 /**
- * The forum news feed page
+ * The page for the post's feed in the forum
  *
  * @returns
  */
@@ -35,43 +34,45 @@ export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
   const navigation: any = useContext(ForumNavigatorNavigationContext);
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const { authenticatedUser } = useAuthenticatedUser();
 
   /**
-   * query for getting post feed
+   * Query for getting post's feed
    */
-  const { data, error, isLoading, isError } =
-    useGetPostsFeedQuery(AppGraphQLClient);
+  const { data, error, isLoading, isError } = useGetPostsFeedQuery(
+    AppGraphQLClient,
+    {
+      input: { sortType },
+    }
+  );
 
   /**
-   * Reload the news feed when the user pulls down to refresh
+   * Function for reloading the news feed when the user pulls down to refresh
    */
   const onRefresh = () => {
     setRefreshing(true);
-    const queryKey = useGetPostsFeedQuery.getKey();
+    const queryKey = useGetPostsFeedQuery.getKey({
+      input: { sortType },
+    });
     queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
   };
 
-  // prefetch the data for my posts and saved posts
-  useGetUserSavedPostsQuery(AppGraphQLClient, {
-    input: { user_id: authenticatedUser?.id },
-  });
-
   if (error) {
-    toast?.show("An error occured while loading the posts feed");
+    toast?.show("An error occured while loading the posts feed", {
+      type: "danger",
+    });
   }
 
   if (isLoading) {
     return <Loader loading={isLoading} />;
   }
 
+  let posts = data?.GetPostsFeed
+    ? (data.GetPostsFeed as Post[])
+    : ([] as Post[]);
+
   return (
     <View style={styles.container}>
-      <PostsList
-        posts={data?.GetPostsFeed}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      <PostsList posts={posts} refreshing={refreshing} onRefresh={onRefresh} />
 
       <FloatingAction
         color={COLORS.APP_PRIMARY_COLOR}

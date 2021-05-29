@@ -1,6 +1,5 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
-import { StyleSheet, SafeAreaView, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState, useContext } from "react";
+import { StyleSheet, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { useToast } from "react-native-fast-toast";
 

@@ -39,6 +39,7 @@ export const NAVIGATION_CONSTANTS = {
       GET_DOCTOR_FOR_CHAT_SCREEN: "Private Chat",
       DOCTOR_PROFILE_SCREEN: "Doctor Profile",
       CHAT_SCREEN: "Chat",
+      BOOK_A_CONSULTAION_SCREEN: "Book A Consultation",
     },
 
     BOOKING: {

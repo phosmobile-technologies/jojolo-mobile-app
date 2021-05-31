@@ -46,7 +46,7 @@ const BookAConsultationScreen = () => {
 
   /**
    *
-   * Hook for customizing navigation header and title for chat sreen.
+   * Hook for customizing navigation header and title for Consultation sreen.
    */
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -79,6 +79,16 @@ const BookAConsultationScreen = () => {
   ];
 
   /**
+   * @Todo the unavailable array would be gottem from The graphQl Api
+   */
+  const UNAVAILBLE_DATES_ARRAY = [
+    new Date("2021/05/31"),
+    new Date("2021/05/24"),
+    new Date("2021/05/23"),
+  ];
+  const UnavailableDates = UNAVAILBLE_DATES_ARRAY.map((date) => date);
+
+  /**
    * Function For Handling getting the data for Consultaion Time
    *
    */
@@ -102,6 +112,7 @@ const BookAConsultationScreen = () => {
             onDateChange={onDateChange}
             width={350}
             selectedDayStyle={{ backgroundColor: COLORS.APP_PRIMARY_COLOR }}
+            disabledDates={UnavailableDates}
           />
         </View>
         <AppText style={Styles.available__date}>Available Time Slots</AppText>

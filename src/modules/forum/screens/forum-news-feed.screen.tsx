@@ -73,7 +73,6 @@ export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
   return (
     <View style={styles.container}>
       <PostsList posts={posts} refreshing={refreshing} onRefresh={onRefresh} />
-
       <FloatingAction
         color={COLORS.APP_PRIMARY_COLOR}
         floatingIcon={<SvgIcon iconName={SVG_ICONS.POST_ICON} />}

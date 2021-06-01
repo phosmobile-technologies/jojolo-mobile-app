@@ -17,6 +17,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 /** Response returned after saving a post */
@@ -190,8 +192,8 @@ export type CreateHealthCareProfessionalVerificationFilesInput = {
 export type CreatePostInput = {
   /** The post content */
   content: Scalars['String'];
-  /** An array of base64 encoded strings of images added to the post */
-  images: Array<Maybe<Scalars['String']>>;
+  /** An array of images added to the post */
+  images?: Maybe<Array<Maybe<Scalars['Upload']>>>;
   /** Indicates if the user wants to make the post anonymous */
   posted_anonymously: Scalars['Boolean'];
   /** An array of ids for the tags added to the post */
@@ -346,6 +348,7 @@ export type Mutation = {
   SignUpCareGiver: User;
   /** Create a user account for a health care professional */
   SignUpHealthCareProfessional: User;
+  testFileUpload: ApiResponse;
 };
 
 
@@ -396,6 +399,11 @@ export type MutationSignUpCareGiverArgs = {
 
 export type MutationSignUpHealthCareProfessionalArgs = {
   input: CreateHealthCareProfessionalInput;
+};
+
+
+export type MutationTestFileUploadArgs = {
+  files: Array<Scalars['Upload']>;
 };
 
 /** Model for a post */
@@ -579,6 +587,7 @@ export type SearchPostsInput = {
   /** The search query to search posts by */
   search_query: Scalars['String'];
 };
+
 
 export type User = {
   __typename?: 'User';

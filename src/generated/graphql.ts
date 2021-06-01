@@ -17,6 +17,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 /** Response returned after saving a post */
@@ -190,8 +192,8 @@ export type CreateHealthCareProfessionalVerificationFilesInput = {
 export type CreatePostInput = {
   /** The post content */
   content: Scalars['String'];
-  /** An array of base64 encoded strings of images added to the post */
-  images: Array<Maybe<Scalars['String']>>;
+  /** An array of images added to the post */
+  images?: Maybe<Array<Maybe<Scalars['Upload']>>>;
   /** Indicates if the user wants to make the post anonymous */
   posted_anonymously: Scalars['Boolean'];
   /** An array of ids for the tags added to the post */
@@ -202,19 +204,6 @@ export type CreatePostInput = {
   user_id: Scalars['Int'];
 };
 
-
-/** Input for filtering the list of posts */
-export type FilterPostsInput = {
-  /** The filter type to filter posts by */
-  filter_type: FilterType;
-};
-
-/** Enum for filtering records */
-export enum FilterType {
-  Latest = 'LATEST',
-  MostPopular = 'MOST_POPULAR',
-  Oldest = 'OLDEST'
-}
 
 /** Input for finding a user based on unique values */
 export type FindUserInput = {
@@ -241,6 +230,12 @@ export enum Genotype {
 export type GetPostCommentsInput = {
   /** The id of the post whose comments are needed */
   post_id: Scalars['Int'];
+};
+
+/** Input for getting the forum news feed of posts */
+export type GetPostsFeedInput = {
+  /** The type of sorting to be done on the posts, either by popularity or by latest posts */
+  sortType?: Maybe<PostsSortType>;
 };
 
 /** Input for getting a users posts */
@@ -353,6 +348,7 @@ export type Mutation = {
   SignUpCareGiver: User;
   /** Create a user account for a health care professional */
   SignUpHealthCareProfessional: User;
+  testFileUpload: ApiResponse;
 };
 
 
@@ -403,6 +399,11 @@ export type MutationSignUpCareGiverArgs = {
 
 export type MutationSignUpHealthCareProfessionalArgs = {
   input: CreateHealthCareProfessionalInput;
+};
+
+
+export type MutationTestFileUploadArgs = {
+  files: Array<Scalars['Upload']>;
 };
 
 /** Model for a post */
@@ -510,10 +511,15 @@ export type PostTagInput = {
   name: Scalars['String'];
 };
 
+/** Enum for sorting post records */
+export enum PostsSortType {
+  Latest = 'LATEST',
+  MostPopular = 'MOST_POPULAR',
+  Oldest = 'OLDEST'
+}
+
 export type Query = {
   __typename?: 'Query';
-  /** Filter posts by creation date or popularity */
-  FilterPosts: Array<Maybe<Post>>;
   /** Find a user by their unique values like id, uuid or email */
   FindUser: User;
   /** Get the comments on a post */
@@ -529,11 +535,6 @@ export type Query = {
 };
 
 
-export type QueryFilterPostsArgs = {
-  input: FilterPostsInput;
-};
-
-
 export type QueryFindUserArgs = {
   input: FindUserInput;
 };
@@ -541,6 +542,11 @@ export type QueryFindUserArgs = {
 
 export type QueryGetPostCommentsArgs = {
   input: GetPostCommentsInput;
+};
+
+
+export type QueryGetPostsFeedArgs = {
+  input?: Maybe<GetPostsFeedInput>;
 };
 
 
@@ -582,6 +588,7 @@ export type SearchPostsInput = {
   search_query: Scalars['String'];
 };
 
+
 export type User = {
   __typename?: 'User';
   /** The user's care giver profile (if the user is a care giver) */
@@ -619,327 +626,96 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & { Login: (
-    { __typename?: 'LoginResponse' }
-    & Pick<LoginResponse, 'access_token'>
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'uuid' | 'full_name' | 'email' | 'phone_number' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'id' | 'uuid' | 'address' | 'city' | 'country' | 'state' | 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
-      )> }
-    ) }
-  ) }
-);
+export type LoginMutation = { __typename?: 'Mutation', Login: { __typename?: 'LoginResponse', access_token: string, user: { __typename?: 'User', id: number, uuid: string, full_name: string, email: string, phone_number: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, uuid: string, address: string, city: string, country: string, state: string, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, years_of_experience: number }> } } };
 
 export type SignUpCareGiverMutationVariables = Exact<{
   input: CreateCareGiverInput;
 }>;
 
 
-export type SignUpCareGiverMutation = (
-  { __typename?: 'Mutation' }
-  & { SignUpCareGiver: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'uuid' | 'email' | 'full_name' | 'phone_number' | 'user_type' | 'created_at' | 'updated_at'>
-    & { care_giver_profile?: Maybe<(
-      { __typename?: 'CareGiverProfile' }
-      & Pick<CareGiverProfile, 'id' | 'uuid' | 'country' | 'state' | 'city' | 'address' | 'role'>
-      & { children: Array<Maybe<(
-        { __typename?: 'Child' }
-        & Pick<Child, 'first_name' | 'birth_term' | 'date_of_birth' | 'gender' | 'genotype' | 'blood_group' | 'has_allergies' | 'has_medical_conditions' | 'has_special_needs' | 'track_growth' | 'track_immunizations' | 'track_milestones' | 'allergies'>
-      )>> }
-    )> }
-  ) }
-);
+export type SignUpCareGiverMutation = { __typename?: 'Mutation', SignUpCareGiver: { __typename?: 'User', id: number, uuid: string, email: string, full_name: string, phone_number: string, user_type: UserType, created_at: any, updated_at: any, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, uuid: string, country: string, state: string, city: string, address: string, role: CareGiverRole, children: Array<Maybe<{ __typename?: 'Child', first_name: string, birth_term: BirthTerm, date_of_birth: any, gender: Gender, genotype: Genotype, blood_group: BloodGroup, has_allergies: boolean, has_medical_conditions: boolean, has_special_needs: boolean, track_growth: boolean, track_immunizations: boolean, track_milestones: boolean, allergies: Array<string> }>> }> } };
 
 export type SignUpHealthCareProfessionalMutationVariables = Exact<{
   input: CreateHealthCareProfessionalInput;
 }>;
 
 
-export type SignUpHealthCareProfessionalMutation = (
-  { __typename?: 'Mutation' }
-  & { SignUpHealthCareProfessional: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'uuid' | 'email' | 'full_name' | 'phone_number' | 'user_type' | 'created_at' | 'updated_at'>
-    & { health_care_professional_profile?: Maybe<(
-      { __typename?: 'HealthCareProfessionalProfile' }
-      & Pick<HealthCareProfessionalProfile, 'id' | 'years_of_experience'>
-      & { verification_files: Array<(
-        { __typename?: 'HealthCareProfessionalVerificationFile' }
-        & Pick<HealthCareProfessionalVerificationFile, 'id' | 'file_url' | 'type'>
-      )> }
-    )> }
-  ) }
-);
+export type SignUpHealthCareProfessionalMutation = { __typename?: 'Mutation', SignUpHealthCareProfessional: { __typename?: 'User', id: number, uuid: string, email: string, full_name: string, phone_number: string, user_type: UserType, created_at: any, updated_at: any, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, years_of_experience: number, verification_files: Array<{ __typename?: 'HealthCareProfessionalVerificationFile', id: number, file_url: string, type: HealthCareProfessionalVerificationFileType }> }> } };
 
 export type CreatePostCommentReplyMutationVariables = Exact<{
   input: PostCommentReplyInput;
 }>;
 
 
-export type CreatePostCommentReplyMutation = (
-  { __typename?: 'Mutation' }
-  & { CreatePostCommentReply: (
-    { __typename?: 'PostCommentReply' }
-    & Pick<PostCommentReply, 'id' | 'content'>
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    ), comment: (
-      { __typename?: 'Post' }
-      & Pick<Post, 'id'>
-    ) }
-  ) }
-);
+export type CreatePostCommentReplyMutation = { __typename?: 'Mutation', CreatePostCommentReply: { __typename?: 'PostCommentReply', id: number, content: string, user: { __typename?: 'User', id: number }, comment: { __typename?: 'Post', id: number } } };
 
 export type CreatePostCommentMutationVariables = Exact<{
   input: PostCommentInput;
 }>;
 
 
-export type CreatePostCommentMutation = (
-  { __typename?: 'Mutation' }
-  & { CreatePostComment: (
-    { __typename?: 'PostComment' }
-    & Pick<PostComment, 'id' | 'content'>
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    ), post?: Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id'>
-    )> }
-  ) }
-);
+export type CreatePostCommentMutation = { __typename?: 'Mutation', CreatePostComment: { __typename?: 'PostComment', id: number, content: string, user: { __typename?: 'User', id: number }, post?: Maybe<{ __typename?: 'Post', id: number }> } };
 
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostInput;
 }>;
 
 
-export type CreatePostMutation = (
-  { __typename?: 'Mutation' }
-  & { CreatePost: (
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'uuid' | 'posted_anonymously' | 'title' | 'content'>
-    & { tags: Array<Maybe<(
-      { __typename?: 'PostTag' }
-      & Pick<PostTag, 'id' | 'name'>
-    )>>, files: Array<Maybe<(
-      { __typename?: 'PostFileUpload' }
-      & Pick<PostFileUpload, 'id' | 'file_url'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    ) }
-  ) }
-);
+export type CreatePostMutation = { __typename?: 'Mutation', CreatePost: { __typename?: 'Post', id: number, uuid: string, posted_anonymously: boolean, title: string, content: string, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, files: Array<Maybe<{ __typename?: 'PostFileUpload', id: number, file_url: string }>>, user: { __typename?: 'User', id: number } } };
 
 export type LikePostMutationVariables = Exact<{
   input: LikePostInput;
 }>;
 
 
-export type LikePostMutation = (
-  { __typename?: 'Mutation' }
-  & { LikePost: (
-    { __typename?: 'ApiResponse' }
-    & Pick<ApiResponse, 'success' | 'message'>
-  ) }
-);
+export type LikePostMutation = { __typename?: 'Mutation', LikePost: { __typename?: 'ApiResponse', success: boolean, message: string } };
 
 export type ReportPostMutationVariables = Exact<{
   input: ReportPostInput;
 }>;
 
 
-export type ReportPostMutation = (
-  { __typename?: 'Mutation' }
-  & { ReportPost: (
-    { __typename?: 'ApiResponse' }
-    & Pick<ApiResponse, 'success' | 'message'>
-  ) }
-);
+export type ReportPostMutation = { __typename?: 'Mutation', ReportPost: { __typename?: 'ApiResponse', success: boolean, message: string } };
 
 export type SavePostMutationVariables = Exact<{
   input: SavePostInput;
 }>;
 
 
-export type SavePostMutation = (
-  { __typename?: 'Mutation' }
-  & { SavePost: (
-    { __typename?: 'ApiResponse' }
-    & Pick<ApiResponse, 'success' | 'message'>
-  ) }
-);
+export type SavePostMutation = { __typename?: 'Mutation', SavePost: { __typename?: 'ApiResponse', success: boolean, message: string } };
 
 export type GetPostCommentsQueryVariables = Exact<{
   input: GetPostCommentsInput;
 }>;
 
 
-export type GetPostCommentsQuery = (
-  { __typename?: 'Query' }
-  & { GetPostComments: Array<(
-    { __typename?: 'PostComment' }
-    & Pick<PostComment, 'id' | 'content' | 'created_at'>
-    & { replies: Array<Maybe<(
-      { __typename?: 'PostCommentReply' }
-      & Pick<PostCommentReply, 'id' | 'content' | 'created_at'>
-      & { user: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'full_name' | 'user_type' | 'profile_image'>
-        & { care_giver_profile?: Maybe<(
-          { __typename?: 'CareGiverProfile' }
-          & Pick<CareGiverProfile, 'role'>
-        )>, health_care_professional_profile?: Maybe<(
-          { __typename?: 'HealthCareProfessionalProfile' }
-          & Pick<HealthCareProfessionalProfile, 'role'>
-        )> }
-      ) }
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'role'>
-      )> }
-    ), post?: Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id'>
-    )> }
-  )> }
-);
+export type GetPostCommentsQuery = { __typename?: 'Query', GetPostComments: Array<{ __typename?: 'PostComment', id: number, content: string, created_at: any, replies: Array<Maybe<{ __typename?: 'PostCommentReply', id: number, content: string, created_at: any, user: { __typename?: 'User', id: number, full_name: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', role: HealthCareProfessionalRole }> } }>>, user: { __typename?: 'User', id: number, full_name: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', role: HealthCareProfessionalRole }> }, post?: Maybe<{ __typename?: 'Post', id: number }> }> };
 
 export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsFeedQuery = (
-  { __typename?: 'Query' }
-  & { GetPostsFeed: Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
-    & { comments: Array<Maybe<(
-      { __typename?: 'PostComment' }
-      & Pick<PostComment, 'id'>
-    )>>, tags: Array<Maybe<(
-      { __typename?: 'PostTag' }
-      & Pick<PostTag, 'id' | 'name'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'id' | 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
-      )> }
-    ) }
-  )>> }
-);
+export type GetPostsFeedQuery = { __typename?: 'Query', GetPostsFeed: Array<Maybe<{ __typename?: 'Post', id: number, uuid: string, title: string, likes: number, content: string, created_at: any, comments: Array<Maybe<{ __typename?: 'PostComment', id: number }>>, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, user: { __typename?: 'User', id: number, full_name: string, phone_number: string, email: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, role: HealthCareProfessionalRole, years_of_experience: number }> } }>> };
 
 export type GetUserPostsQueryVariables = Exact<{
   input: GetUserPostsInput;
 }>;
 
 
-export type GetUserPostsQuery = (
-  { __typename?: 'Query' }
-  & { GetUserPosts: Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
-    & { comments: Array<Maybe<(
-      { __typename?: 'PostComment' }
-      & Pick<PostComment, 'id'>
-    )>>, tags: Array<Maybe<(
-      { __typename?: 'PostTag' }
-      & Pick<PostTag, 'id' | 'name'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'id' | 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
-      )> }
-    ) }
-  )>> }
-);
+export type GetUserPostsQuery = { __typename?: 'Query', GetUserPosts: Array<Maybe<{ __typename?: 'Post', id: number, uuid: string, title: string, likes: number, content: string, created_at: any, comments: Array<Maybe<{ __typename?: 'PostComment', id: number }>>, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, user: { __typename?: 'User', id: number, full_name: string, phone_number: string, email: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, role: HealthCareProfessionalRole, years_of_experience: number }> } }>> };
 
 export type GetUserSavedPostsQueryVariables = Exact<{
   input: GetUserSavedPostsInput;
 }>;
 
 
-export type GetUserSavedPostsQuery = (
-  { __typename?: 'Query' }
-  & { GetUserSavedPosts: Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
-    & { comments: Array<Maybe<(
-      { __typename?: 'PostComment' }
-      & Pick<PostComment, 'id'>
-    )>>, tags: Array<Maybe<(
-      { __typename?: 'PostTag' }
-      & Pick<PostTag, 'id' | 'name'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'id' | 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
-      )> }
-    ) }
-  )>> }
-);
+export type GetUserSavedPostsQuery = { __typename?: 'Query', GetUserSavedPosts: Array<Maybe<{ __typename?: 'Post', id: number, uuid: string, title: string, likes: number, content: string, created_at: any, comments: Array<Maybe<{ __typename?: 'PostComment', id: number }>>, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, user: { __typename?: 'User', id: number, full_name: string, phone_number: string, email: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, role: HealthCareProfessionalRole, years_of_experience: number }> } }>> };
 
 export type SearchPostsQueryVariables = Exact<{
   input: SearchPostsInput;
 }>;
 
 
-export type SearchPostsQuery = (
-  { __typename?: 'Query' }
-  & { SearchPosts: Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'uuid' | 'title' | 'likes' | 'content' | 'created_at'>
-    & { comments: Array<Maybe<(
-      { __typename?: 'PostComment' }
-      & Pick<PostComment, 'id'>
-    )>>, tags: Array<Maybe<(
-      { __typename?: 'PostTag' }
-      & Pick<PostTag, 'id' | 'name'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'full_name' | 'phone_number' | 'email' | 'user_type' | 'profile_image'>
-      & { care_giver_profile?: Maybe<(
-        { __typename?: 'CareGiverProfile' }
-        & Pick<CareGiverProfile, 'id' | 'role'>
-      )>, health_care_professional_profile?: Maybe<(
-        { __typename?: 'HealthCareProfessionalProfile' }
-        & Pick<HealthCareProfessionalProfile, 'id' | 'role' | 'years_of_experience'>
-      )> }
-    ) }
-  )>> }
-);
+export type SearchPostsQuery = { __typename?: 'Query', SearchPosts: Array<Maybe<{ __typename?: 'Post', id: number, uuid: string, title: string, likes: number, content: string, created_at: any, comments: Array<Maybe<{ __typename?: 'PostComment', id: number }>>, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, user: { __typename?: 'User', id: number, full_name: string, phone_number: string, email: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, role: HealthCareProfessionalRole, years_of_experience: number }> } }>> };
 
 
 export const LoginDocument = `

@@ -10,6 +10,7 @@ generates:
     config:
       fetcher: graphql-request
       exposeQueryKeys: true
+      preResolveTypes: true
   ./graphql.schema.json:
     plugins:
       - "introspection"

@@ -87,13 +87,13 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
         });
         queryClient.invalidateQueries(queryKey);
 
-        post.comments.push(response?.CreatePostComment);
+        post.comments.push(response?.CreatePostComment as PostComment);
         setVisible(false);
       },
 
       onError: (error) => {
         toast.show("Failed to add your comment. Please try again", {
-          type: "error",
+          type: "danger",
         });
       },
     });

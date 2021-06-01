@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
+import { ReactNativeFile } from "apollo-upload-client";
+import { nanoid } from "nanoid/non-secure";
 
 import AppText from "../../common/components/typography/text.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
@@ -49,7 +51,7 @@ const CreatePostScreen = () => {
   const toast: any = useToast();
   const queryClient = useQueryClient();
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const [images, setImages] = useState([] as Array<string>);
+  const [images, setImages] = useState([] as Array<object>);
   const { authenticatedUser } = useAuthenticatedUser();
 
   // Form validation
@@ -131,7 +133,18 @@ const CreatePostScreen = () => {
     });
 
     if (!result.cancelled) {
-      setImages([...images, result.uri]);
+      let uri = result.uri.toString();
+      let fileExtension = uri.substr(uri.lastIndexOf(".") + 1);
+
+      const file = new ReactNativeFile({
+        uri: result.uri,
+        type: `${result.type}/${fileExtension}`,
+        name: `${nanoid()}.${fileExtension}`,
+      });
+
+      console.log(file);
+
+      setImages([...images, file]);
     }
   };
 
@@ -140,8 +153,8 @@ const CreatePostScreen = () => {
    *
    * @param uri
    */
-  const removeImage = (uri: string) => {
-    setImages(images.filter((image) => uri !== image));
+  const removeImage = (index: number) => {
+    setImages(images.filter((image, imageIndex) => imageIndex !== index));
   };
 
   /**
@@ -155,7 +168,7 @@ const CreatePostScreen = () => {
       content: data.content,
       title: data.title,
       posted_anonymously: postAnonymously,
-      images,
+      // images, @TODO add this back when the issue with uploading images is resolved
       tags: [data.tags],
       user_id: authenticatedUser?.id,
     };
@@ -219,19 +232,19 @@ const CreatePostScreen = () => {
         </View>
         {images && (
           <View style={styles.image__preview__container}>
-            {images.map((imageUri) => (
-              <>
+            {images.map((image, index) => (
+              <View key={index.toString()} style={{ flexDirection: "row" }}>
                 <Image
-                  source={{ uri: imageUri }}
+                  source={{ uri: image.uri }}
                   style={styles.image__preview}
                 />
-                <TouchableWithoutFeedback onPress={() => removeImage(imageUri)}>
+                <TouchableWithoutFeedback onPress={() => removeImage(index)}>
                   <SvgIcon
                     iconName={SVG_ICONS.BLACK_CANCEL_ICON}
                     style={styles.image__preview__cancel__icon}
                   />
                 </TouchableWithoutFeedback>
-              </>
+              </View>
             ))}
           </View>
         )}
@@ -281,13 +294,15 @@ const styles = StyleSheet.create({
   image__preview: {
     width: 100,
     height: 100,
-    marginHorizontal: 5,
+    marginLeft: 5,
     marginVertical: 5,
     borderRadius: 10,
   },
 
   image__preview__cancel__icon: {
-    left: -15,
+    left: -3,
+    zIndex: 1000,
+    elevation: 1000,
   },
 
   add__image__and__post__anonymously__container: {

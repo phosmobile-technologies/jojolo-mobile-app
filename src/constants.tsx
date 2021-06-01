@@ -39,6 +39,7 @@ export const NAVIGATION_CONSTANTS = {
       GET_DOCTOR_FOR_CHAT_SCREEN: "Private Chat",
       DOCTOR_PROFILE_SCREEN: "Doctor Profile",
       CHAT_SCREEN: "Chat",
+      BOOK_A_CONSULTAION_SCREEN: "Book A Consultation",
     },
 
     BOOKING: {
@@ -140,3 +141,9 @@ export const DROPDOWN_OPTIONS = {
 export const ASYNC_STORAGE_ITEMS = {
   USER_TOKEN: "@jojolo_user_token",
 };
+
+// Possible values for sorting posts in the forum module
+export enum FORUM_POSTS_SORT_OPTIONS {
+  LATEST,
+  MOST_POPULAR,
+}

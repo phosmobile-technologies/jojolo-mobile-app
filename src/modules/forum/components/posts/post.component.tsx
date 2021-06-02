@@ -132,7 +132,7 @@ const Post = ({
   };
 
   return (
-    <View style={post.user.user_type ==='HEALTH_CARE_PROFESSIONAL' ? styles.borderedContainer :styles.container}>
+    <View style={post.user.user_type ==='HEALTH_CARE_PROFESSIONAL' ? {...styles.container,...styles.borderedContainer} :styles.container}>
       <Loader loading={isLoading} />
       <AppModal
         visible={confirmReportPost}
@@ -159,10 +159,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   borderedContainer: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
     borderWidth: 1,
     borderColor: COLORS.APP_PRIMARY_COLOR
   }

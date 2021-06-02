@@ -18,6 +18,8 @@ import Loader from "../../../common/components/loader.component";
 import AppModal from "../../../common/components/modal.component";
 import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
+import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
+import { COLORS } from "../../../../constants";
 
 const Post = ({
   post,
@@ -130,7 +132,7 @@ const Post = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={post.user.user_type ==='HEALTH_CARE_PROFESSIONAL' ? styles.borderedContainer :styles.container}>
       <Loader loading={isLoading} />
       <AppModal
         visible={confirmReportPost}
@@ -156,6 +158,14 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 20,
   },
+  borderedContainer: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: COLORS.APP_PRIMARY_COLOR
+  }
 });
 
 export default Post;

@@ -169,6 +169,7 @@ const CreatePostScreen = () => {
       title: data.title,
       posted_anonymously: postAnonymously,
       // images, @TODO add this back when the issue with uploading images is resolved
+      images: [],
       tags: [data.tags],
       user_id: authenticatedUser?.id,
     };

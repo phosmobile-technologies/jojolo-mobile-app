@@ -1,10 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { Searchbar } from "react-native-paper";
-import ContentLoader, {
-  FacebookLoader,
-  InstagramLoader,
-} from "react-native-easy-content-loader";
+import { FacebookLoader } from "react-native-easy-content-loader";
 import { useNavigation } from "@react-navigation/native";
 import { debounce, throttle } from "lodash";
 
@@ -18,8 +15,6 @@ import { useAuthenticatedUser } from "../../../providers/user-context";
 import { useSearchPostsQuery } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import PostsList from "../components/posts/posts-list.component";
-import Loader from "../../common/components/loader.component";
-import { useToast } from "react-native-fast-toast";
 
 /**
  * @TODO clean this code up and add debouncing and loading icon
@@ -28,7 +23,6 @@ import { useToast } from "react-native-fast-toast";
 const SearchScreen = () => {
   const navigation = useNavigation() as any;
   const { authenticatedUser } = useAuthenticatedUser();
-  const toast = useToast();
 
   /**
    * Customize the navigation header components for the screen

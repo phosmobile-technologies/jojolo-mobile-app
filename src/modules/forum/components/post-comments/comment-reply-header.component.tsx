@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useToast } from "react-native-fast-toast";
 import { formatDistance } from "date-fns";
 
@@ -13,6 +18,7 @@ import {
   User,
   UserType,
 } from "../../../../generated/graphql";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 /**
  * The header for a comment reply
@@ -21,11 +27,49 @@ import {
 const CommentReplyHeader = ({
   user,
   reply,
+  toggleEditReplyBottomSheet,
 }: {
   user: User;
   reply: PostCommentReply;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   const toast: any = useToast();
+  const { showActionSheetWithOptions } = useActionSheet();
+  const [action, setAction] = useState("");
+
+  const handleOpenActionSheet = () => {
+    const options = ["Edit Reply", "Report Reply", "Cancel"];
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          console.log("here bro");
+          toggleEditReplyBottomSheet(reply);
+        }
+
+        if (buttonIndex === 1) {
+          // Save the post
+          toast.show("Comment Reported successfully", { type: "success" });
+
+          /**
+           * Function For Getting Comment Actions For Api
+           */
+          setAction(options[buttonIndex]);
+          const Action = {
+            user_id: user.id, // This will change when User Authentication has been carried out and user can be accessed Globally
+            post_id: reply.id,
+            action: action,
+          };
+          console.log(Action);
+        }
+      }
+    );
+  };
 
   return (
     <View style={styles.header}>
@@ -59,6 +103,11 @@ const CommentReplyHeader = ({
           </View>
         </View>
       </View>
+      <TouchableWithoutFeedback onPress={handleOpenActionSheet}>
+        <View style={styles.actions__icon}>
+          <SvgIcon iconName={SVG_ICONS.THREE_DOTS_ICON} />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };

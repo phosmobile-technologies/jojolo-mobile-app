@@ -23,17 +23,19 @@ import { PostComment, User, UserType } from "../../../../generated/graphql";
 const CommentHeader = ({
   user,
   comment,
+  toggleEditCommentBottomSheet,
 }: {
   user: User;
   comment: PostComment;
+  toggleEditCommentBottomSheet: Function;
 }) => {
   const toast: any = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
   const [action, setAction] = useState("");
 
   const handleOpenActionSheet = () => {
-    const options = ["Report Comment", "Cancel"];
-    const cancelButtonIndex = 1;
+    const options = ["Edit comment", "Report Comment", "Cancel"];
+    const cancelButtonIndex = 2;
 
     showActionSheetWithOptions(
       {
@@ -42,6 +44,11 @@ const CommentHeader = ({
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
+          console.log("here ");
+          toggleEditCommentBottomSheet();
+        }
+
+        if (buttonIndex === 1) {
           // Save the post
           toast.show("Comment Reported successfully", { type: "success" });
 
@@ -50,7 +57,7 @@ const CommentHeader = ({
            */
           setAction(options[buttonIndex]);
           const Action = {
-            user_id: user.id, // This will change when User Authemtication as been carried out and user can be accessed Globally
+            user_id: user.id, // This will change when User Authentication has been carried out and user can be accessed Globally
             post_id: comment.id,
             action: action,
           };

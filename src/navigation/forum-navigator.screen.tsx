@@ -4,6 +4,7 @@ import ForumScreen from "../modules/forum/screens/forum.screen";
 import PostScreen from "../modules/forum/screens/post-details.screen";
 import NewPostScreen from "../modules/forum/screens/create-post.screen";
 import SearchPostsScreen from "../modules/forum/screens/search-screen.component";
+import EditPostScreen from "../modules/forum/screens/edit-post.screen";
 import { NAVIGATION_CONSTANTS } from "../constants";
 
 const ForumStackNavigator = createStackNavigator();
@@ -30,6 +31,11 @@ const ForumNavigator = () => {
       <ForumStackNavigator.Screen
         name={NAVIGATION_CONSTANTS.SCREENS.FORUM.CREATE_POST_SCREEN}
         component={NewPostScreen}
+        options={{ ...showHeaderOption }}
+      />
+      <ForumStackNavigator.Screen
+        name={NAVIGATION_CONSTANTS.SCREENS.FORUM.EDIT_POST_SCREEN}
+        component={EditPostScreen}
         options={{ ...showHeaderOption }}
       />
       <ForumStackNavigator.Screen

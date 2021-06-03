@@ -22,13 +22,19 @@ interface stateShape {
 export const CommentReplies = ({
   replies,
   openBottomsheet,
+  toggleEditReplyBottomSheet,
 }: {
   replies: PostCommentReply[];
   openBottomsheet: Function;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   return (
     <SafeAreaView>
-      <ReplyList replies={replies} openBottomsheet={openBottomsheet as any} />
+      <ReplyList
+        replies={replies}
+        openBottomsheet={openBottomsheet as any}
+        toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
+      />
     </SafeAreaView>
   );
 };

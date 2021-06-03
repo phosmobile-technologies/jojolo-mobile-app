@@ -18,6 +18,8 @@ import Loader from "../../../common/components/loader.component";
 import AppModal from "../../../common/components/modal.component";
 import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
+import { NAVIGATION_CONSTANTS } from "../../../../constants";
+import { useNavigation } from "@react-navigation/native";
 
 const Post = ({
   post,
@@ -32,6 +34,7 @@ const Post = ({
   const [confirmReportPost, setConfirmReportPost] = useState(false);
   const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
+  const navigation: any = useNavigation();
 
   // Mutation for saving posts
   const { mutate: savePost, isLoading } = useSavePostMutation(
@@ -103,9 +106,9 @@ const Post = ({
    * Open the action sheet for saving / reporting posts
    */
   const handleOpenActionSheet = () => {
-    const options = ["Save Post", "Report Post", "Cancel"];
-    const destructiveButtonIndex = 1;
-    const cancelButtonIndex = 2;
+    const options = ["Edit post", "Save Post", "Report Post", "Cancel"];
+    const destructiveButtonIndex = 2;
+    const cancelButtonIndex = 3;
 
     showActionSheetWithOptions(
       {
@@ -115,13 +118,22 @@ const Post = ({
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.FORUM.EDIT_POST_SCREEN,
+            {
+              post,
+            }
+          );
+        }
+
+        if (buttonIndex === 1) {
           // Save the post
           savePost({
             input: { user_id: authenticatedUser?.id, post_id: post.id },
           });
         }
 
-        if (buttonIndex === 1) {
+        if (buttonIndex === 2) {
           // Report Post
           setConfirmReportPost(true);
         }

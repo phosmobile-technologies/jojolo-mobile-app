@@ -34,6 +34,7 @@ export const NAVIGATION_CONSTANTS = {
       TAGS_SCREEN: "Tags",
       POST_DETAILS_SCREEN: "POST_DETAILS_SCREEN",
       EDIT_POST_SCREEN: "EDIT POST",
+      TAGS_POST_SCREEN: "Tags Post Screen",
     },
 
     PRIVATE_CHAT: {

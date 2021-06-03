@@ -1,5 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ScrollView, Text, FlatList, View, StyleSheet } from "react-native";
+import { NAVIGATION_CONSTANTS } from "../../../constants";
 import TagComponent from "../components/tag.component";
 
 /**
@@ -41,14 +43,21 @@ const tags = [
   // },
 ];
 
+/**
+ * Function For rendering the Tags Page
+ * @returns
+ *
+ */
 export const TagsPage = () => {
+  const navigation = useNavigation() as any;
+
   return (
     <ScrollView style={styles.container}>
       <View>
         <FlatList
           style={styles.feed}
           data={tags}
-          renderItem={(item: any) => <TagComponent tag={item} />}
+          renderItem={({ item }) => <TagComponent tag={item} />}
           keyExtractor={(item: any) => item.id}
           showsVerticalScrollIndicator={false}
         ></FlatList>

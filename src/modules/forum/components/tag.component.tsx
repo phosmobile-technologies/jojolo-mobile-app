@@ -1,15 +1,33 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import AppText from "../../common/components/typography/text.component";
 
+/**
+ *
+ *
+ * Compoment For Rendering Each Tag
+ * @param Tag_Object
+ *
+ * @returns
+ */
 const TagComponent = ({ tag }: { tag: any }) => {
+  const navigation = useNavigation() as any;
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.FORUM.TAGS_POST_SCREEN,
+            { tag }
+          );
+        }}
+      >
         <View style={styles.tag}>
-          <AppText style={styles.tag__text}>{tag.item.name}</AppText>
-          <AppText style={styles.tag__text}>{tag.item.number}</AppText>
+          <AppText style={styles.tag__text}>{tag.name}</AppText>
+          <AppText style={styles.tag__text}>{tag.number}</AppText>
         </View>
       </TouchableOpacity>
     </View>

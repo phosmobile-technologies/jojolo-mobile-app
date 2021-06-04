@@ -21,7 +21,6 @@ import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
 import { NAVIGATION_CONSTANTS } from "../../../../constants";
 import { useNavigation } from "@react-navigation/native";
-import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
 import { COLORS } from "../../../../constants";
 
 const Post = ({
@@ -38,7 +37,10 @@ const Post = ({
   const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
   const navigation: any = useNavigation();
-  const containerStyle = post.user.user_type === UserType.HealthCareProfessional ? [styles.container, styles.borderedContainer] : [styles.container];
+  const containerStyle =
+    post.user.user_type === UserType.HealthCareProfessional
+      ? [styles.container, styles.borderedContainer]
+      : [styles.container];
 
   // Mutation for saving posts
   const { mutate: savePost, isLoading } = useSavePostMutation(
@@ -107,36 +109,39 @@ const Post = ({
   };
 
   /**
-   * Open the action sheet for saving / reporting posts
+   * Open the action sheet for saving / editing / reporting posts
    */
   const handleOpenActionSheet = () => {
-    const options = ["Edit post", "Save Post", "Report Post", "Cancel"];
-    const destructiveButtonIndex = 2;
-    const cancelButtonIndex = 3;
-    
-    //remove the report post option if the current user created the post
-    if(post.user.id === authenticatedUser?.id){
-      const options = ["Save Post", "Cancel"]
-      const cancelButtonIndex = 1
-
-      showActionSheetWithOptions(
-        {
-          options,
-          cancelButtonIndex,
-        },
-        (buttonIndex) => {
-          if (buttonIndex === 0) {
-            // Save the post
-            savePost({
-              input: { user_id: authenticatedUser?.id, post_id: post.id },
-            });
-          }
-        }
-      );
-    } else {
-    const options = ["Save Post", "Report Post", "Cancel"];
-    const destructiveButtonIndex = 1;
+    const postIsOwnedByAuthenticatedUser =
+      post.user.id === authenticatedUser?.id;
+    const options = postIsOwnedByAuthenticatedUser
+      ? ["Edit Post", "Save Post", "Cancel"]
+      : ["Save Post", "Report Post", "Cancel"];
+    const destructiveButtonIndex = postIsOwnedByAuthenticatedUser
+      ? undefined
+      : 1;
     const cancelButtonIndex = 2;
+
+    const actionSheetMethods: { [key: string]: Function } = {
+      ["Save Post"]: () => {
+        savePost({
+          input: { user_id: authenticatedUser?.id, post_id: post.id },
+        });
+      },
+
+      ["Report Post"]: () => {
+        setConfirmReportPost(true);
+      },
+
+      ["Edit Post"]: () => {
+        navigation.navigate(
+          NAVIGATION_CONSTANTS.SCREENS.FORUM.EDIT_POST_SCREEN,
+          {
+            post,
+          }
+        );
+      },
+    };
 
     showActionSheetWithOptions(
       {
@@ -145,30 +150,12 @@ const Post = ({
         destructiveButtonIndex,
       },
       (buttonIndex) => {
-        if (buttonIndex === 0) {
-          navigation.navigate(
-            NAVIGATION_CONSTANTS.SCREENS.FORUM.EDIT_POST_SCREEN,
-            {
-              post,
-            }
-          );
-        }
-
-        if (buttonIndex === 1) {
-          // Save the post
-          savePost({
-            input: { user_id: authenticatedUser?.id, post_id: post.id },
-          });
-        }
-
-        if (buttonIndex === 2) {
-          // Report Post
-          setConfirmReportPost(true);
+        if (typeof actionSheetMethods[options[buttonIndex]] === "function") {
+          actionSheetMethods[options[buttonIndex]]();
         }
       }
-    )};
+    );
   };
-  
 
   return (
     <View style={containerStyle}>
@@ -199,8 +186,8 @@ const styles = StyleSheet.create({
   },
   borderedContainer: {
     borderWidth: 1,
-    borderColor: COLORS.APP_PRIMARY_COLOR
-  }
+    borderColor: COLORS.APP_PRIMARY_COLOR,
+  },
 });
 
 export default Post;

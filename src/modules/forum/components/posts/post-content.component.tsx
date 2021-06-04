@@ -60,9 +60,7 @@ const PostContent = ({
    * Function for navigating to a particular post
    * @param post
    */
-
   const goToPostDetailsPage = (post: PostModel) => {
-    //console.log(post);
     navigation.navigate(
       NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
       {

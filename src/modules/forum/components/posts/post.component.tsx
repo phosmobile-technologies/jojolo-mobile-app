@@ -8,6 +8,7 @@ import {
   useGetUserPostsQuery,
   useGetUserSavedPostsQuery,
   useReportPostMutation,
+  UserType,
   useSavePostMutation,
 } from "../../../../generated/graphql";
 import PostHeader from "./post-header.component";
@@ -18,6 +19,8 @@ import Loader from "../../../common/components/loader.component";
 import AppModal from "../../../common/components/modal.component";
 import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
+import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
+import { COLORS } from "../../../../constants";
 
 const Post = ({
   post,
@@ -32,6 +35,7 @@ const Post = ({
   const [confirmReportPost, setConfirmReportPost] = useState(false);
   const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
+  const containerStyle = post.user.user_type === UserType.HealthCareProfessional ? [styles.container, styles.borderedContainer] : [styles.container];
 
   // Mutation for saving posts
   const { mutate: savePost, isLoading } = useSavePostMutation(
@@ -128,9 +132,10 @@ const Post = ({
       }
     );
   };
+  
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Loader loading={isLoading} />
       <AppModal
         visible={confirmReportPost}
@@ -156,6 +161,10 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 20,
   },
+  borderedContainer: {
+    borderWidth: 1,
+    borderColor: COLORS.APP_PRIMARY_COLOR
+  }
 });
 
 export default Post;

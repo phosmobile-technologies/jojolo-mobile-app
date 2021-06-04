@@ -748,16 +748,16 @@ export const LoginDocument = `
 }
     `;
 export const useLoginMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>
-    ) => 
-    useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
-      (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>
+) =>
+  useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+    (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables)(),
+    options
+  );
 export const SignUpCareGiverDocument = `
     mutation SignUpCareGiver($input: CreateCareGiverInput!) {
   SignUpCareGiver(input: $input) {
@@ -797,16 +797,16 @@ export const SignUpCareGiverDocument = `
 }
     `;
 export const useSignUpCareGiverMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<SignUpCareGiverMutation, TError, SignUpCareGiverMutationVariables, TContext>
-    ) => 
-    useMutation<SignUpCareGiverMutation, TError, SignUpCareGiverMutationVariables, TContext>(
-      (variables?: SignUpCareGiverMutationVariables) => fetcher<SignUpCareGiverMutation, SignUpCareGiverMutationVariables>(client, SignUpCareGiverDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<SignUpCareGiverMutation, TError, SignUpCareGiverMutationVariables, TContext>
+) =>
+  useMutation<SignUpCareGiverMutation, TError, SignUpCareGiverMutationVariables, TContext>(
+    (variables?: SignUpCareGiverMutationVariables) => fetcher<SignUpCareGiverMutation, SignUpCareGiverMutationVariables>(client, SignUpCareGiverDocument, variables)(),
+    options
+  );
 export const SignUpHealthCareProfessionalDocument = `
     mutation SignUpHealthCareProfessional($input: CreateHealthCareProfessionalInput!) {
   SignUpHealthCareProfessional(input: $input) {
@@ -831,16 +831,16 @@ export const SignUpHealthCareProfessionalDocument = `
 }
     `;
 export const useSignUpHealthCareProfessionalMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>
-    ) => 
-    useMutation<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>(
-      (variables?: SignUpHealthCareProfessionalMutationVariables) => fetcher<SignUpHealthCareProfessionalMutation, SignUpHealthCareProfessionalMutationVariables>(client, SignUpHealthCareProfessionalDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>
+) =>
+  useMutation<SignUpHealthCareProfessionalMutation, TError, SignUpHealthCareProfessionalMutationVariables, TContext>(
+    (variables?: SignUpHealthCareProfessionalMutationVariables) => fetcher<SignUpHealthCareProfessionalMutation, SignUpHealthCareProfessionalMutationVariables>(client, SignUpHealthCareProfessionalDocument, variables)(),
+    options
+  );
 export const CreatePostCommentReplyDocument = `
     mutation CreatePostCommentReply($input: PostCommentReplyInput!) {
   CreatePostCommentReply(input: $input) {
@@ -856,16 +856,16 @@ export const CreatePostCommentReplyDocument = `
 }
     `;
 export const useCreatePostCommentReplyMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>
-    ) => 
-    useMutation<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>(
-      (variables?: CreatePostCommentReplyMutationVariables) => fetcher<CreatePostCommentReplyMutation, CreatePostCommentReplyMutationVariables>(client, CreatePostCommentReplyDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>
+) =>
+  useMutation<CreatePostCommentReplyMutation, TError, CreatePostCommentReplyMutationVariables, TContext>(
+    (variables?: CreatePostCommentReplyMutationVariables) => fetcher<CreatePostCommentReplyMutation, CreatePostCommentReplyMutationVariables>(client, CreatePostCommentReplyDocument, variables)(),
+    options
+  );
 export const CreatePostCommentDocument = `
     mutation CreatePostComment($input: PostCommentInput!) {
   CreatePostComment(input: $input) {
@@ -881,16 +881,16 @@ export const CreatePostCommentDocument = `
 }
     `;
 export const useCreatePostCommentMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>
-    ) => 
-    useMutation<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>(
-      (variables?: CreatePostCommentMutationVariables) => fetcher<CreatePostCommentMutation, CreatePostCommentMutationVariables>(client, CreatePostCommentDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>
+) =>
+  useMutation<CreatePostCommentMutation, TError, CreatePostCommentMutationVariables, TContext>(
+    (variables?: CreatePostCommentMutationVariables) => fetcher<CreatePostCommentMutation, CreatePostCommentMutationVariables>(client, CreatePostCommentDocument, variables)(),
+    options
+  );
 export const CreatePostDocument = `
     mutation CreatePost($input: CreatePostInput!) {
   CreatePost(input: $input) {
@@ -914,16 +914,16 @@ export const CreatePostDocument = `
 }
     `;
 export const useCreatePostMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<CreatePostMutation, TError, CreatePostMutationVariables, TContext>
-    ) => 
-    useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
-      (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<CreatePostMutation, TError, CreatePostMutationVariables, TContext>
+) =>
+  useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
+    (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
+    options
+  );
 export const LikePostDocument = `
     mutation LikePost($input: LikePostInput!) {
   LikePost(input: $input) {
@@ -933,16 +933,16 @@ export const LikePostDocument = `
 }
     `;
 export const useLikePostMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<LikePostMutation, TError, LikePostMutationVariables, TContext>
-    ) => 
-    useMutation<LikePostMutation, TError, LikePostMutationVariables, TContext>(
-      (variables?: LikePostMutationVariables) => fetcher<LikePostMutation, LikePostMutationVariables>(client, LikePostDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<LikePostMutation, TError, LikePostMutationVariables, TContext>
+) =>
+  useMutation<LikePostMutation, TError, LikePostMutationVariables, TContext>(
+    (variables?: LikePostMutationVariables) => fetcher<LikePostMutation, LikePostMutationVariables>(client, LikePostDocument, variables)(),
+    options
+  );
 export const ReportPostDocument = `
     mutation ReportPost($input: ReportPostInput!) {
   ReportPost(input: $input) {
@@ -952,16 +952,16 @@ export const ReportPostDocument = `
 }
     `;
 export const useReportPostMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<ReportPostMutation, TError, ReportPostMutationVariables, TContext>
-    ) => 
-    useMutation<ReportPostMutation, TError, ReportPostMutationVariables, TContext>(
-      (variables?: ReportPostMutationVariables) => fetcher<ReportPostMutation, ReportPostMutationVariables>(client, ReportPostDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<ReportPostMutation, TError, ReportPostMutationVariables, TContext>
+) =>
+  useMutation<ReportPostMutation, TError, ReportPostMutationVariables, TContext>(
+    (variables?: ReportPostMutationVariables) => fetcher<ReportPostMutation, ReportPostMutationVariables>(client, ReportPostDocument, variables)(),
+    options
+  );
 export const SavePostDocument = `
     mutation SavePost($input: SavePostInput!) {
   SavePost(input: $input) {
@@ -971,16 +971,16 @@ export const SavePostDocument = `
 }
     `;
 export const useSavePostMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient, 
-      options?: UseMutationOptions<SavePostMutation, TError, SavePostMutationVariables, TContext>
-    ) => 
-    useMutation<SavePostMutation, TError, SavePostMutationVariables, TContext>(
-      (variables?: SavePostMutationVariables) => fetcher<SavePostMutation, SavePostMutationVariables>(client, SavePostDocument, variables)(),
-      options
-    );
+  TError = unknown,
+  TContext = unknown
+>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<SavePostMutation, TError, SavePostMutationVariables, TContext>
+) =>
+  useMutation<SavePostMutation, TError, SavePostMutationVariables, TContext>(
+    (variables?: SavePostMutationVariables) => fetcher<SavePostMutation, SavePostMutationVariables>(client, SavePostDocument, variables)(),
+    options
+  );
 export const GetPostCommentsDocument = `
     query GetPostComments($input: GetPostCommentsInput!) {
   GetPostComments(input: $input) {
@@ -1023,18 +1023,18 @@ export const GetPostCommentsDocument = `
 }
     `;
 export const useGetPostCommentsQuery = <
-      TData = GetPostCommentsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient, 
-      variables: GetPostCommentsQueryVariables, 
-      options?: UseQueryOptions<GetPostCommentsQuery, TError, TData>
-    ) => 
-    useQuery<GetPostCommentsQuery, TError, TData>(
-      ['GetPostComments', variables],
-      fetcher<GetPostCommentsQuery, GetPostCommentsQueryVariables>(client, GetPostCommentsDocument, variables),
-      options
-    );
+  TData = GetPostCommentsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: GetPostCommentsQueryVariables,
+  options?: UseQueryOptions<GetPostCommentsQuery, TError, TData>
+) =>
+  useQuery<GetPostCommentsQuery, TError, TData>(
+    ['GetPostComments', variables],
+    fetcher<GetPostCommentsQuery, GetPostCommentsQueryVariables>(client, GetPostCommentsDocument, variables),
+    options
+  );
 useGetPostCommentsQuery.getKey = (variables: GetPostCommentsQueryVariables) => ['GetPostComments', variables];
 
 export const GetPostsFeedDocument = `
@@ -1074,18 +1074,18 @@ export const GetPostsFeedDocument = `
 }
     `;
 export const useGetPostsFeedQuery = <
-      TData = GetPostsFeedQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient, 
-      variables?: GetPostsFeedQueryVariables, 
-      options?: UseQueryOptions<GetPostsFeedQuery, TError, TData>
-    ) => 
-    useQuery<GetPostsFeedQuery, TError, TData>(
-      ['GetPostsFeed', variables],
-      fetcher<GetPostsFeedQuery, GetPostsFeedQueryVariables>(client, GetPostsFeedDocument, variables),
-      options
-    );
+  TData = GetPostsFeedQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables?: GetPostsFeedQueryVariables,
+  options?: UseQueryOptions<GetPostsFeedQuery, TError, TData>
+) =>
+  useQuery<GetPostsFeedQuery, TError, TData>(
+    ['GetPostsFeed', variables],
+    fetcher<GetPostsFeedQuery, GetPostsFeedQueryVariables>(client, GetPostsFeedDocument, variables),
+    options
+  );
 useGetPostsFeedQuery.getKey = (variables?: GetPostsFeedQueryVariables) => ['GetPostsFeed', variables];
 
 export const GetUserPostsDocument = `
@@ -1125,18 +1125,18 @@ export const GetUserPostsDocument = `
 }
     `;
 export const useGetUserPostsQuery = <
-      TData = GetUserPostsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient, 
-      variables: GetUserPostsQueryVariables, 
-      options?: UseQueryOptions<GetUserPostsQuery, TError, TData>
-    ) => 
-    useQuery<GetUserPostsQuery, TError, TData>(
-      ['GetUserPosts', variables],
-      fetcher<GetUserPostsQuery, GetUserPostsQueryVariables>(client, GetUserPostsDocument, variables),
-      options
-    );
+  TData = GetUserPostsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: GetUserPostsQueryVariables,
+  options?: UseQueryOptions<GetUserPostsQuery, TError, TData>
+) =>
+  useQuery<GetUserPostsQuery, TError, TData>(
+    ['GetUserPosts', variables],
+    fetcher<GetUserPostsQuery, GetUserPostsQueryVariables>(client, GetUserPostsDocument, variables),
+    options
+  );
 useGetUserPostsQuery.getKey = (variables: GetUserPostsQueryVariables) => ['GetUserPosts', variables];
 
 export const GetUserSavedPostsDocument = `
@@ -1176,18 +1176,18 @@ export const GetUserSavedPostsDocument = `
 }
     `;
 export const useGetUserSavedPostsQuery = <
-      TData = GetUserSavedPostsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient, 
-      variables: GetUserSavedPostsQueryVariables, 
-      options?: UseQueryOptions<GetUserSavedPostsQuery, TError, TData>
-    ) => 
-    useQuery<GetUserSavedPostsQuery, TError, TData>(
-      ['GetUserSavedPosts', variables],
-      fetcher<GetUserSavedPostsQuery, GetUserSavedPostsQueryVariables>(client, GetUserSavedPostsDocument, variables),
-      options
-    );
+  TData = GetUserSavedPostsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: GetUserSavedPostsQueryVariables,
+  options?: UseQueryOptions<GetUserSavedPostsQuery, TError, TData>
+) =>
+  useQuery<GetUserSavedPostsQuery, TError, TData>(
+    ['GetUserSavedPosts', variables],
+    fetcher<GetUserSavedPostsQuery, GetUserSavedPostsQueryVariables>(client, GetUserSavedPostsDocument, variables),
+    options
+  );
 useGetUserSavedPostsQuery.getKey = (variables: GetUserSavedPostsQueryVariables) => ['GetUserSavedPosts', variables];
 
 export const SearchPostsDocument = `
@@ -1227,16 +1227,16 @@ export const SearchPostsDocument = `
 }
     `;
 export const useSearchPostsQuery = <
-      TData = SearchPostsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient, 
-      variables: SearchPostsQueryVariables, 
-      options?: UseQueryOptions<SearchPostsQuery, TError, TData>
-    ) => 
-    useQuery<SearchPostsQuery, TError, TData>(
-      ['SearchPosts', variables],
-      fetcher<SearchPostsQuery, SearchPostsQueryVariables>(client, SearchPostsDocument, variables),
-      options
-    );
+  TData = SearchPostsQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables: SearchPostsQueryVariables,
+  options?: UseQueryOptions<SearchPostsQuery, TError, TData>
+) =>
+  useQuery<SearchPostsQuery, TError, TData>(
+    ['SearchPosts', variables],
+    fetcher<SearchPostsQuery, SearchPostsQueryVariables>(client, SearchPostsDocument, variables),
+    options
+  );
 useSearchPostsQuery.getKey = (variables: SearchPostsQueryVariables) => ['SearchPosts', variables];

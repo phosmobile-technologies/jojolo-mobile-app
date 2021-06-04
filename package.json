@@ -46,6 +46,7 @@
     "react-native-btr": "^2.1.2",
     "react-native-calendar-picker": "^7.1.2",
     "react-native-dotenv": "^2.5.5",
+    "react-native-easy-content-loader": "^0.3.2",
     "react-native-elements": "^3.4.1",
     "react-native-fast-toast": "^2.3.0",
     "react-native-floating-action": "^1.21.0",

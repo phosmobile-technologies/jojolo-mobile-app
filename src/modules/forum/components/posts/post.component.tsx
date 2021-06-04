@@ -8,6 +8,7 @@ import {
   useGetUserPostsQuery,
   useGetUserSavedPostsQuery,
   useReportPostMutation,
+  UserType,
   useSavePostMutation,
 } from "../../../../generated/graphql";
 import PostHeader from "./post-header.component";
@@ -20,6 +21,8 @@ import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
 import { NAVIGATION_CONSTANTS } from "../../../../constants";
 import { useNavigation } from "@react-navigation/native";
+import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
+import { COLORS } from "../../../../constants";
 
 const Post = ({
   post,
@@ -35,6 +38,7 @@ const Post = ({
   const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
   const navigation: any = useNavigation();
+  const containerStyle = post.user.user_type === UserType.HealthCareProfessional ? [styles.container, styles.borderedContainer] : [styles.container];
 
   // Mutation for saving posts
   const { mutate: savePost, isLoading } = useSavePostMutation(
@@ -109,6 +113,30 @@ const Post = ({
     const options = ["Edit post", "Save Post", "Report Post", "Cancel"];
     const destructiveButtonIndex = 2;
     const cancelButtonIndex = 3;
+    
+    //remove the report post option if the current user created the post
+    if(post.user.id === authenticatedUser?.id){
+      const options = ["Save Post", "Cancel"]
+      const cancelButtonIndex = 1
+
+      showActionSheetWithOptions(
+        {
+          options,
+          cancelButtonIndex,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // Save the post
+            savePost({
+              input: { user_id: authenticatedUser?.id, post_id: post.id },
+            });
+          }
+        }
+      );
+    } else {
+    const options = ["Save Post", "Report Post", "Cancel"];
+    const destructiveButtonIndex = 1;
+    const cancelButtonIndex = 2;
 
     showActionSheetWithOptions(
       {
@@ -138,11 +166,12 @@ const Post = ({
           setConfirmReportPost(true);
         }
       }
-    );
+    )};
   };
+  
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Loader loading={isLoading} />
       <AppModal
         visible={confirmReportPost}
@@ -168,6 +197,10 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 20,
   },
+  borderedContainer: {
+    borderWidth: 1,
+    borderColor: COLORS.APP_PRIMARY_COLOR
+  }
 });
 
 export default Post;

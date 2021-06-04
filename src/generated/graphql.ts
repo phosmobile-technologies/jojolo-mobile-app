@@ -238,6 +238,12 @@ export type GetPostsFeedInput = {
   sortType?: Maybe<PostsSortType>;
 };
 
+/** Input for getting all posts that belong to a tag */
+export type GetPostsForTagInput = {
+  /** The id of the tag whose posts we need */
+  tag_id: Scalars['Int'];
+};
+
 /** Input for getting a users posts */
 export type GetUserPostsInput = {
   /** The id of the user whose posts we are retrieving */
@@ -511,6 +517,17 @@ export type PostTagInput = {
   name: Scalars['String'];
 };
 
+/** Model for a post tag with the count of posts attached */
+export type PostTagWithCount = {
+  __typename?: 'PostTagWithCount';
+  /** The tag id */
+  id: Scalars['Int'];
+  /** The tags name */
+  name: Scalars['String'];
+  /** The number of posts that have been tagged with this tag */
+  number_of_posts: Scalars['Int'];
+};
+
 /** Enum for sorting post records */
 export enum PostsSortType {
   Latest = 'LATEST',
@@ -526,6 +543,10 @@ export type Query = {
   GetPostComments: Array<PostComment>;
   /** Get the posts feed */
   GetPostsFeed: Array<Maybe<Post>>;
+  /** Get the posts for a tag */
+  GetPostsForTag: Array<Maybe<Post>>;
+  /** Get all forum posts tags */
+  GetTags: Array<Maybe<PostTagWithCount>>;
   /** Get the posts created by a user */
   GetUserPosts: Array<Maybe<Post>>;
   /** Get the posts saved by a user */
@@ -547,6 +568,11 @@ export type QueryGetPostCommentsArgs = {
 
 export type QueryGetPostsFeedArgs = {
   input?: Maybe<GetPostsFeedInput>;
+};
+
+
+export type QueryGetPostsForTagArgs = {
+  input: GetPostsForTagInput;
 };
 
 

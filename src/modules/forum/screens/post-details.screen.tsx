@@ -60,18 +60,39 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
 
   const [visible, setVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
+  const [editCommentVisible, setEditCommentVisible] = useState(false);
   const [comment, setComment] = useState("");
   const [reply, setReply] = useState("");
   const [activeComment, setActiveComment] = useState({} as PostComment);
+  const [activeReply, setActiveReply] = useState({} as PostCommentReply);
+  const [editComment, setEditComment] = useState("");
+  const [editReplyVisible, setEditReplyVisible] = useState(false);
 
   const toggleReplyBottomSheet = () => {
     setReply("");
     setReplyVisible((replyVisible) => !replyVisible);
+    console.log(activeReply);
   };
 
   const toggleBottomSheet = () => {
     setComment("");
     setVisible((visible) => !visible);
+  };
+  /**
+   * Function For Toggling editing comment BottomSheet
+   *
+   */
+  const toggleEditCommentBottomSheet = () => {
+    setEditComment("");
+    setEditCommentVisible((setEditCommentVisible) => !setEditCommentVisible);
+  };
+
+  /**
+   * Function For Toggling editing reply BottomSheet
+   *
+   */
+  const toggleEditReplyBottomSheet = () => {
+    setEditReplyVisible((setEditReplyVisible) => !setEditReplyVisible);
   };
 
   // GraphQL mutation for saving a comment
@@ -174,6 +195,13 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
                   setActiveComment(comment);
                   setReplyVisible(!replyVisible);
                 }}
+                toggleEditCommentBottomSheet={() =>
+                  setEditCommentVisible(!editCommentVisible)
+                }
+                toggleEditReplyBottomSheet={(reply: PostCommentReply) => {
+                  setActiveReply(reply);
+                  setEditReplyVisible(!editReplyVisible);
+                }}
               />
             </View>
           </View>
@@ -273,6 +301,90 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
           </View>
           <View style={styles.reply}>
             <AppTextLink style={styles.reply__text} onPress={onReplySubnmit}>
+              REPLY
+            </AppTextLink>
+          </View>
+        </View>
+      </BottomSheet>
+
+      {/* Bottom sheet for Editing a comment to a post */}
+      <BottomSheet
+        visible={editCommentVisible}
+        onBackButtonPress={toggleEditCommentBottomSheet}
+        onBackdropPress={toggleEditCommentBottomSheet}
+      >
+        <View style={styles.bottomSheetContainer}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <AppText style={styles.commenting__title}>
+              Editing Comment On:{" "}
+              <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
+                {post.title}
+              </Text>
+            </AppText>
+            <TouchableWithoutFeedback onPress={toggleEditCommentBottomSheet}>
+              <SvgIcon iconName={SVG_ICONS.CLOSE_ICON} />
+            </TouchableWithoutFeedback>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textBox}
+              placeholder="Add a comment"
+              placeholderTextColor={COLORS.APP_GRAY_TEXT}
+              //onChangeText={(text) => setComment(text)}
+              defaultValue={activeComment.content}
+              multiline={true}
+              numberOfLines={3}
+            />
+          </View>
+          <View style={styles.reply}>
+            <AppTextLink
+              style={styles.reply__text}
+              onPress={toggleEditCommentBottomSheet}
+            >
+              REPLY
+            </AppTextLink>
+          </View>
+        </View>
+      </BottomSheet>
+
+      {/* Bottom sheet for Editing a comment to a post */}
+      <BottomSheet
+        visible={editReplyVisible}
+        onBackButtonPress={toggleEditReplyBottomSheet}
+        onBackdropPress={toggleEditReplyBottomSheet}
+      >
+        <View style={styles.bottomSheetContainer}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <AppText style={styles.commenting__title}>
+              Editing reply On:{" "}
+              <Text style={{ color: COLORS.APP_PRIMARY_COLOR }}>
+                {activeComment?.user?.full_name}
+              </Text>
+            </AppText>
+            <TouchableWithoutFeedback onPress={toggleEditReplyBottomSheet}>
+              <SvgIcon iconName={SVG_ICONS.CLOSE_ICON} />
+            </TouchableWithoutFeedback>
+          </View>
+          <View>
+            <TextInput
+              style={styles.textBox}
+              placeholder="Add a comment"
+              placeholderTextColor={COLORS.APP_GRAY_TEXT}
+              //onChangeText={(text) => setComment(text)}
+              defaultValue={activeReply.content}
+              multiline={true}
+              numberOfLines={3}
+            />
+          </View>
+          <View style={styles.reply}>
+            <AppTextLink
+              style={styles.reply__text}
+              onPress={toggleEditReplyBottomSheet}
+            >
               REPLY
             </AppTextLink>
           </View>

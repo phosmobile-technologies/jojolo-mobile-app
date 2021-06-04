@@ -13,15 +13,21 @@ import ReplyComponent from "./reply.component";
 const CommentReplyList = ({
   replies,
   openBottomsheet,
+  toggleEditReplyBottomSheet,
 }: {
   replies: PostCommentReply[];
   openBottomsheet: any;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   return (
     <FlatList
       data={replies}
       renderItem={({ item }) => (
-        <ReplyComponent reply={item} openBottomsheet={openBottomsheet} />
+        <ReplyComponent
+          reply={item}
+          openBottomsheet={openBottomsheet}
+          toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
+        />
       )}
       keyExtractor={(item) => item.id.toString()}
       showsHorizontalScrollIndicator={false}

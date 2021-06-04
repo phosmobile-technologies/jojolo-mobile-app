@@ -19,9 +19,11 @@ import CommentReplyHeader from "./comment-reply-header.component";
 const CommentReply = ({
   reply,
   openBottomsheet,
+  toggleEditReplyBottomSheet,
 }: {
   reply: PostCommentReply;
-  openBottomsheet: any;
+  openBottomsheet: Function;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   const { user } = reply;
 
@@ -37,7 +39,11 @@ const CommentReply = ({
 
   return (
     <View style={styles.container}>
-      <CommentReplyHeader user={user} reply={reply} />
+      <CommentReplyHeader
+        user={user}
+        reply={reply}
+        toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
+      />
       <AppText style={styles.comment}>{reply.content}</AppText>
       <View style={styles.share__and__like__container}>
         {/* <TouchableOpacity

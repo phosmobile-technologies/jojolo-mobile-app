@@ -19,6 +19,8 @@ import Loader from "../../../common/components/loader.component";
 import AppModal from "../../../common/components/modal.component";
 import { useQueryClient } from "react-query";
 import { queryClient } from "../../../../providers/query-client.context";
+import { NAVIGATION_CONSTANTS } from "../../../../constants";
+import { useNavigation } from "@react-navigation/native";
 import { blue100 } from "react-native-paper/lib/typescript/styles/colors";
 import { COLORS } from "../../../../constants";
 
@@ -35,6 +37,7 @@ const Post = ({
   const [confirmReportPost, setConfirmReportPost] = useState(false);
   const queryClient = useQueryClient();
   const { authenticatedUser } = useAuthenticatedUser();
+  const navigation: any = useNavigation();
   const containerStyle = post.user.user_type === UserType.HealthCareProfessional ? [styles.container, styles.borderedContainer] : [styles.container];
 
   // Mutation for saving posts
@@ -107,6 +110,10 @@ const Post = ({
    * Open the action sheet for saving / reporting posts
    */
   const handleOpenActionSheet = () => {
+    const options = ["Edit post", "Save Post", "Report Post", "Cancel"];
+    const destructiveButtonIndex = 2;
+    const cancelButtonIndex = 3;
+    
     //remove the report post option if the current user created the post
     if(post.user.id === authenticatedUser?.id){
       const options = ["Save Post", "Cancel"]
@@ -139,13 +146,22 @@ const Post = ({
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
+          navigation.navigate(
+            NAVIGATION_CONSTANTS.SCREENS.FORUM.EDIT_POST_SCREEN,
+            {
+              post,
+            }
+          );
+        }
+
+        if (buttonIndex === 1) {
           // Save the post
           savePost({
             input: { user_id: authenticatedUser?.id, post_id: post.id },
           });
         }
 
-        if (buttonIndex === 1) {
+        if (buttonIndex === 2) {
           // Report Post
           setConfirmReportPost(true);
         }

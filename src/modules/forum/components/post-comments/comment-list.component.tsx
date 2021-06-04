@@ -14,10 +14,14 @@ const CommentList = ({
   comments,
   openBottomsheet,
   openCommentRepliesBottomSheet,
+  toggleEditCommentBottomSheet,
+  toggleEditReplyBottomSheet,
 }: {
   comments: PostComment[];
   openBottomsheet: Function;
   openCommentRepliesBottomSheet: Function;
+  toggleEditCommentBottomSheet: Function;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   return (
     <FlatList
@@ -27,6 +31,8 @@ const CommentList = ({
           comment={item}
           openBottomsheet={openBottomsheet}
           openCommentRepliesBottomSheet={openCommentRepliesBottomSheet}
+          toggleEditCommentBottomSheet={toggleEditCommentBottomSheet}
+          toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
         />
       )}
       keyExtractor={(item) => item.id.toString()}

@@ -1,60 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Platform, Image } from "react-native";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import * as ImagePicker from "expo-image-picker";
 import {
-  ScrollView,
+  View,
+  StyleSheet,
+  Platform,
+  Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import { ReactNativeFile } from "apollo-upload-client";
-import { nanoid } from "nanoid/non-secure";
-
-import AppText from "../../common/components/typography/text.component";
-import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
-import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
-import AppButton from "../../common/components/button.component";
-import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
-import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
-import { APP_STYLES } from "../../common/styles";
-import AppCheckboxInput from "../../common/components/forms/checkbox.component";
-import {
-  CreatePostInput,
-  useCreatePostMutation,
-  useGetPostsFeedQuery,
-} from "../../../generated/graphql";
-import { AppGraphQLClient } from "../../common/api/graphql-client";
-import { useToast } from "react-native-fast-toast";
-import Loader from "../../common/components/loader.component";
-import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
+} from "react-native";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
+import { nanoid } from "nanoid/non-secure";
+import { ReactNativeFile } from "apollo-upload-client";
+
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
-import { useAuthenticatedUser } from "../../../providers/user-context";
-import { useQueryClient } from "react-query";
+import { ScrollView } from "react-native-gesture-handler";
+import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
+import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
+import ControlledAppDropdownInput from "../../common/components/forms/controlled-dropdown-input.component";
+import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
+import AppText from "../../common/components/typography/text.component";
+import AppCheckboxInput from "../../common/components/forms/checkbox.component";
+import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
+import AppButton from "../../common/components/button.component";
+import { APP_STYLES } from "../../common/styles";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
   content: yup.string().required("Please provide a title"),
 });
 
-/**
- * Page used for creating a new post.
- *
- * @returns
- */
-
-const CreatePostScreen = () => {
+const EditPostScreen = ({ route }: { route: any }) => {
+  const { post }: { post: any } = route.params;
   const navigation = useNavigation() as any;
-  const toast: any = useToast();
-  const queryClient = useQueryClient();
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [images, setImages] = useState([] as Array<object>);
-  const { authenticatedUser } = useAuthenticatedUser();
-
-  // Form validation
   const {
     control,
     handleSubmit,
@@ -62,48 +45,6 @@ const CreatePostScreen = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  /**
-   * Customize the navigation header components for the screen
-   */
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
-      ),
-      headerTitle: () => <AppHeaderTitle text={"New Post"} />,
-      headerRight: () => <></>,
-    });
-  }, [navigation]);
-
-  /**
-   * Mutation for creating a new post
-   */
-  const { mutate: createPost, isLoading } = useCreatePostMutation(
-    AppGraphQLClient,
-    {
-      onSuccess: (response) => {
-        const { id } = response.CreatePost;
-
-        toast.show("Post created successfully", {
-          type: "success",
-        });
-
-        const queryKey = useGetPostsFeedQuery.getKey();
-        queryClient.invalidateQueries(queryKey);
-
-        navigation.goBack();
-      },
-
-      onError: (err) => {
-        toast.show("Failed to create your post. Please try again", {
-          type: "error",
-        });
-      },
-
-      onMutate: () => {},
-    }
-  );
 
   /**
    * Get camera permissions
@@ -163,35 +104,38 @@ const CreatePostScreen = () => {
    * @todo add hook to get authenticated user and all multi select tag
    * @param data
    */
-  const onSubmit = (data: any) => {
-    const post: CreatePostInput = {
-      content: data.content,
-      title: data.title,
-      posted_anonymously: postAnonymously,
-      images, //@TODO add this back when the issue with uploading images is resolved
-      tags: [data.tags],
-      user_id: authenticatedUser?.id,
-    };
-
-    createPost({ input: post });
+  const onSubmit = () => {
+    console.log("post");
   };
 
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"Edit Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
+
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView>
-        <Loader loading={isLoading} />
         <View style={styles.form__input__wrapper}>
           <ControlledAppTextInput
             name={"title"}
             label={"Title Of Post"}
-            defaultValue={""}
+            defaultValue={post.title}
             control={control}
             error={errors.title}
           />
           <ControlledMultilineAppTextInput
             name={"content"}
             label={"Content Of Post"}
-            defaultValue={""}
+            defaultValue={post.content}
             control={control}
             error={errors.content}
           />
@@ -318,4 +262,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePostScreen;
+export default EditPostScreen;

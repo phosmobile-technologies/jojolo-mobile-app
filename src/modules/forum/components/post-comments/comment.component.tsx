@@ -18,16 +18,24 @@ const postComment = ({
   comment,
   openBottomsheet,
   openCommentRepliesBottomSheet,
+  toggleEditCommentBottomSheet,
+  toggleEditReplyBottomSheet,
 }: {
   comment: PostComment;
   openBottomsheet: Function;
   openCommentRepliesBottomSheet: Function;
+  toggleEditCommentBottomSheet: Function;
+  toggleEditReplyBottomSheet: Function;
 }) => {
   const { user } = comment;
   return (
     <View style={styles.container}>
       <View style={styles.comment__container}>
-        <CommentHeader user={user} comment={comment} />
+        <CommentHeader
+          user={user}
+          comment={comment}
+          toggleEditCommentBottomSheet={toggleEditCommentBottomSheet}
+        />
         <AppText style={styles.comment}>{comment.content}</AppText>
         <View style={styles.share__and__like__container}>
           <TouchableOpacity
@@ -41,6 +49,7 @@ const postComment = ({
         <CommentReplies
           replies={comment.replies}
           openBottomsheet={openBottomsheet}
+          toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
         />
       </View>
     </View>

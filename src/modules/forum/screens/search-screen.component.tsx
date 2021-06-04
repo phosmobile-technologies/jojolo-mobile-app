@@ -1,19 +1,25 @@
 import React, { useState, useCallback } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { Searchbar } from "react-native-paper";
+import ContentLoader, {
+  FacebookLoader,
+  InstagramLoader,
+} from "react-native-easy-content-loader";
+import { useNavigation } from "@react-navigation/native";
 import { debounce, throttle } from "lodash";
 
 import ControlledAppTextInput from "../../common/components/forms/controlled-text-input.component";
 import AppText from "../../common/components/typography/text.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import { COLORS } from "../../../constants";
-import { useNavigation } from "@react-navigation/native";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 import { useAuthenticatedUser } from "../../../providers/user-context";
 import { useSearchPostsQuery } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import PostsList from "../components/posts/posts-list.component";
+import Loader from "../../common/components/loader.component";
+import { useToast } from "react-native-fast-toast";
 
 /**
  * @TODO clean this code up and add debouncing and loading icon
@@ -22,6 +28,7 @@ import PostsList from "../components/posts/posts-list.component";
 const SearchScreen = () => {
   const navigation = useNavigation() as any;
   const { authenticatedUser } = useAuthenticatedUser();
+  const toast = useToast();
 
   /**
    * Customize the navigation header components for the screen
@@ -71,8 +78,8 @@ const SearchScreen = () => {
         onChangeText={onChangeSearch}
         value={searchQuery}
       />
-
-      {!posts?.SearchPosts?.length && (
+      {isLoading && <FacebookLoader loading={isLoading} />}
+      {!posts?.SearchPosts?.length && !isLoading ? (
         <View style={styles.content__wrapper}>
           <View>
             <SvgIcon style={styles.icon} iconName={SVG_ICONS.BIG_SEARCH_ICON} />
@@ -85,6 +92,8 @@ const SearchScreen = () => {
             Enter a keyword you’re trying to find and search for a post
           </AppText>
         </View>
+      ) : (
+        <></>
       )}
       {posts?.SearchPosts?.length > 0 && (
         <PostsList posts={posts?.SearchPosts} />

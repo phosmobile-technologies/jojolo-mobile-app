@@ -62,6 +62,7 @@ const PostContent = ({
    */
 
   const goToPostDetailsPage = (post: PostModel) => {
+    //console.log(post);
     navigation.navigate(
       NAVIGATION_CONSTANTS.SCREENS.FORUM.POST_DETAILS_SCREEN,
       {

@@ -24,10 +24,14 @@ export const PostComments = ({
   post,
   openBottomsheet,
   openCommentRepliesBottomSheet,
+  toggleEditCommentBottomSheet,
+  toggleEditReplyBottomSheet,
 }: {
   post: Post;
   openBottomsheet: Function;
   openCommentRepliesBottomSheet: Function;
+  toggleEditCommentBottomSheet: any;
+  toggleEditReplyBottomSheet: any;
 }) => {
   const { data, error, isLoading, isError } = useGetPostCommentsQuery(
     AppGraphQLClient,
@@ -45,6 +49,8 @@ export const PostComments = ({
         comments={data?.GetPostComments}
         openBottomsheet={openBottomsheet}
         openCommentRepliesBottomSheet={openCommentRepliesBottomSheet}
+        toggleEditCommentBottomSheet={toggleEditCommentBottomSheet}
+        toggleEditReplyBottomSheet={toggleEditReplyBottomSheet}
       />
     </SafeAreaView>
   );

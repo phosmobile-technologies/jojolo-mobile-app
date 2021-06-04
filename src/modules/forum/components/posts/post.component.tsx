@@ -107,6 +107,26 @@ const Post = ({
    * Open the action sheet for saving / reporting posts
    */
   const handleOpenActionSheet = () => {
+    //remove the report post option if the current user created the post
+    if(post.user.id === authenticatedUser?.id){
+      const options = ["Save Post", "Cancel"]
+      const cancelButtonIndex = 1
+
+      showActionSheetWithOptions(
+        {
+          options,
+          cancelButtonIndex,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // Save the post
+            savePost({
+              input: { user_id: authenticatedUser?.id, post_id: post.id },
+            });
+          }
+        }
+      );
+    } else {
     const options = ["Save Post", "Report Post", "Cancel"];
     const destructiveButtonIndex = 1;
     const cancelButtonIndex = 2;
@@ -130,7 +150,7 @@ const Post = ({
           setConfirmReportPost(true);
         }
       }
-    );
+    )};
   };
   
 

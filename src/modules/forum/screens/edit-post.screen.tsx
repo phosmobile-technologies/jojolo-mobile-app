@@ -10,10 +10,11 @@ import {
 } from "react-native";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { nanoid } from "nanoid/non-secure";
 import { ReactNativeFile } from "apollo-upload-client";
+import { QueryCache } from "react-query";
 
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
@@ -27,17 +28,49 @@ import AppCheckboxInput from "../../common/components/forms/checkbox.component";
 import { COLORS, DROPDOWN_OPTIONS } from "../../../constants";
 import AppButton from "../../common/components/button.component";
 import { APP_STYLES } from "../../common/styles";
+import {
+  CreatePostInput,
+  fetcher,
+  GetPostsFeedDocument,
+  GetPostsFeedQuery,
+  GetPostsFeedQueryVariables,
+  Post,
+  PostsSortType,
+  useGetPostsFeedQuery,
+  useUpdatePostMutation,
+} from "../../../generated/graphql";
+import { useAuthenticatedUser } from "../../../providers/user-context";
+import { AppGraphQLClient } from "../../common/api/graphql-client";
+import { useToast } from "react-native-fast-toast";
+import { queryClient } from "../../../providers/query-client.context";
+import Loader from "../../common/components/loader.component";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
   content: yup.string().required("Please provide a title"),
 });
 
-const EditPostScreen = ({ route }: { route: any }) => {
-  const { post }: { post: any } = route.params;
+interface EditPostScreenProps {
+  sortType: PostsSortType;
+}
+
+/**
+ * Page used for editing a post
+ *
+ * @param param0
+ * @returns
+ */
+const EditPostScreen = ({ sortType }: EditPostScreenProps) => {
   const navigation = useNavigation() as any;
-  const [postAnonymously, setPostAnonymously] = useState(false);
+  const route = useRoute();
+  const toast: any = useToast();
+
+  const { post } = route.params;
+  const [postAnonymously, setPostAnonymously] = useState(
+    post.posted_anonymously ? post.posted_anonymously : false
+  );
   const [images, setImages] = useState([] as Array<object>);
+  const { authenticatedUser } = useAuthenticatedUser();
   const {
     control,
     handleSubmit,
@@ -45,6 +78,19 @@ const EditPostScreen = ({ route }: { route: any }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  /**
+   * Customize the navigation header components for the screen
+   */
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
+      ),
+      headerTitle: () => <AppHeaderTitle text={"Edit Post"} />,
+      headerRight: () => <></>,
+    });
+  }, [navigation]);
 
   /**
    * Get camera permissions
@@ -62,7 +108,7 @@ const EditPostScreen = ({ route }: { route: any }) => {
   }, []);
 
   /**
-   * Callback called by the ImagePicker library when adding images to a new post
+   * Callback called by the ImagePicker library when adding images to a post
    */
   const handleChoosePhoto = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
@@ -90,7 +136,7 @@ const EditPostScreen = ({ route }: { route: any }) => {
   };
 
   /**
-   * Function for removing images added to a new post about to be created
+   * Function for removing images added to a post
    *
    * @param uri
    */
@@ -98,32 +144,69 @@ const EditPostScreen = ({ route }: { route: any }) => {
     setImages(images.filter((image, imageIndex) => imageIndex !== index));
   };
 
-  /**
-   * Send new post data to the api
-   *
-   * @todo add hook to get authenticated user and all multi select tag
-   * @param data
-   */
-  const onSubmit = () => {
-    console.log("post");
+  const refreshFeed = () => {
+    useGetPostsFeedQuery(AppGraphQLClient);
   };
 
   /**
-   * Customize the navigation header components for the screen
+   * Mutation for editing a post
    */
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppHeaderGoBackButton onPress={() => navigation.goBack()} />
-      ),
-      headerTitle: () => <AppHeaderTitle text={"Edit Post"} />,
-      headerRight: () => <></>,
-    });
-  }, [navigation]);
+  const { mutate: editPost, isLoading } = useUpdatePostMutation(
+    AppGraphQLClient,
+    {
+      onSuccess: async (response) => {
+        const { id, ...updatedPostData } = response.UpdatePost;
+        const queryKey = useGetPostsFeedQuery.getKey({
+          input: { sortType: sortType },
+        });
+        // queryClient.invalidateQueries(queryKey);
+        const feedData = queryClient.getQueryData(queryKey);
+
+        console.log(queryKey);
+        console.log(feedData);
+
+        toast.show("Post updated successfully", {
+          type: "success",
+        });
+
+        navigation.goBack();
+      },
+
+      onError: (err) => {
+        toast.show("Failed to edit your post. Please try again", {
+          type: "error",
+        });
+      },
+
+      onMutate: async (editedPost) => {
+        console.log(editedPost);
+      },
+    }
+  );
+
+  /**
+   * Send edited post data to the api
+   *
+   * @todo add multi select tag
+   * @param data
+   */
+  const onSubmit = (data: any) => {
+    const editedPost: CreatePostInput = {
+      content: data.content,
+      title: data.title,
+      posted_anonymously: postAnonymously,
+      images, //@TODO add this back when the issue with uploading images is resolved
+      tags: [data.tags],
+      user_id: authenticatedUser?.id,
+    };
+
+    editPost({ id: post.id, input: editedPost });
+  };
 
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView>
+        <Loader loading={isLoading} />
         <View style={styles.form__input__wrapper}>
           <ControlledAppTextInput
             name={"title"}
@@ -195,7 +278,7 @@ const EditPostScreen = ({ route }: { route: any }) => {
         <View style={APP_STYLES.screen__bottom__bar__button}>
           <AppButton
             type="submit"
-            title="Send Post"
+            title="Edit Post"
             onPress={handleSubmit(onSubmit)}
           />
         </View>

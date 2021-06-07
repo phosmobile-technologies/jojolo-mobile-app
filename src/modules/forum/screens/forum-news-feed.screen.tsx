@@ -19,6 +19,7 @@ import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
 import { queryClient } from "../../../providers/query-client.context";
 import { useAuthenticatedUser } from "../../../providers/user-context";
+import { useRoute } from "@react-navigation/native";
 
 interface ForumNewsFeedScreenProps {
   sortType: PostsSortType;
@@ -33,34 +34,53 @@ export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
   const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
   const queryClient = useQueryClient();
+  const route: any = useRoute();
+
   const [refreshing, setRefreshing] = useState(false);
 
   /**
    * Query for getting post's feed
    */
-  const { data, error, isLoading, isError } = useGetPostsFeedQuery(
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+    refetch: refetchPostFeed,
+  } = useGetPostsFeedQuery(
     AppGraphQLClient,
     {
       input: { sortType },
+    },
+    {
+      onError: () => {
+        toast?.show("An error occured while loading the posts feed", {
+          type: "danger",
+        });
+      },
     }
   );
+
+  /**
+   * Refetch the post's feed if the refresh param is set when the page is navigated to
+   */
+  React.useEffect(() => {
+    if (route.params?.refresh) {
+      refetchPostFeed();
+    }
+  }, [route.params?.refresh]);
 
   /**
    * Function for reloading the news feed when the user pulls down to refresh
    */
   const onRefresh = () => {
     setRefreshing(true);
-    const queryKey = useGetPostsFeedQuery.getKey({
-      input: { sortType },
-    });
-    queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
+    // const queryKey = useGetPostsFeedQuery.getKey({
+    //   input: { sortType },
+    // });
+    refetchPostFeed().finally(() => setRefreshing(false));
+    // queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
   };
-
-  if (error) {
-    toast?.show("An error occured while loading the posts feed", {
-      type: "danger",
-    });
-  }
 
   if (isLoading) {
     return <Loader loading={isLoading} />;
@@ -72,7 +92,11 @@ export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <PostsList posts={posts} refreshing={refreshing} onRefresh={onRefresh} />
+      <PostsList
+        posts={posts}
+        refreshing={isLoading}
+        onRefresh={refetchPostFeed}
+      />
       <FloatingAction
         color={COLORS.APP_PRIMARY_COLOR}
         floatingIcon={<SvgIcon iconName={SVG_ICONS.POST_ICON} />}

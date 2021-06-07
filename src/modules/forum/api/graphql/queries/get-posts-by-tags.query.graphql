@@ -1,0 +1,5 @@
+query GetPostsForTag($input: GetPostsForTagInput!) {
+  GetPostsForTag(input: $input) {
+    ...postFragment
+  }
+}

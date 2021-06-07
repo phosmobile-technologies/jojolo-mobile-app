@@ -3,6 +3,8 @@ import { View, StyleSheet, Platform, Image } from "react-native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import { useToast } from "react-native-fast-toast";
+import { useQueryClient } from "react-query";
 import * as ImagePicker from "expo-image-picker";
 import {
   ScrollView,
@@ -26,14 +28,12 @@ import {
   useGetPostsFeedQuery,
 } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
-import { useToast } from "react-native-fast-toast";
 import Loader from "../../common/components/loader.component";
 import ControlledMultilineAppTextInput from "../../common/components/forms/controlled-multi-line-input.component";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import AppHeaderGoBackButton from "../../common/components/header/app-header-go-back-button.component";
 import AppHeaderTitle from "../../common/components/header/app-header-title.component";
 import { useAuthenticatedUser } from "../../../providers/user-context";
-import { useQueryClient } from "react-query";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please provide valid content"),
@@ -49,7 +49,9 @@ const schema = yup.object().shape({
 const CreatePostScreen = () => {
   const navigation = useNavigation() as any;
   const toast: any = useToast();
+  const route: any = useRoute();
   const queryClient = useQueryClient();
+
   const [postAnonymously, setPostAnonymously] = useState(false);
   const [images, setImages] = useState([] as Array<object>);
   const { authenticatedUser } = useAuthenticatedUser();
@@ -82,17 +84,19 @@ const CreatePostScreen = () => {
   const { mutate: createPost, isLoading } = useCreatePostMutation(
     AppGraphQLClient,
     {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         const { id } = response.CreatePost;
 
         toast.show("Post created successfully", {
           type: "success",
         });
 
-        const queryKey = useGetPostsFeedQuery.getKey();
-        queryClient.invalidateQueries(queryKey);
+        // const queryKey = useGetPostsFeedQuery.getKey();
+        // queryClient.invalidateQueries(queryKey);
 
-        navigation.goBack();
+        navigation.goBack({
+          refresh: true,
+        });
       },
 
       onError: (err) => {

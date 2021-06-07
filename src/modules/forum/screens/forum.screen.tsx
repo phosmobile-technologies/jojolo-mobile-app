@@ -7,11 +7,7 @@ import { useToast } from "react-native-fast-toast";
 import ForumNewsFeedPage from "./forum-news-feed.screen";
 import { TagsPage } from "./tags.screen";
 import ForumHeader from "../components/forum-header.component";
-import {
-  COLORS,
-  FORUM_POSTS_SORT_OPTIONS,
-  NAVIGATION_CONSTANTS,
-} from "../../../constants";
+import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import MyPostsPage from "./my-posts-screen";
 import SavedPostsPage from "./saved-posts.screen";
@@ -20,16 +16,20 @@ import { PostsSortType } from "../../../generated/graphql";
 
 const ForumPageTabNavigationStack = createMaterialTopTabNavigator();
 
+interface ForumScreenProps {
+  sortType: PostsSortType;
+  setSortType: Function;
+}
+
 /**
  * The Main Forum screen which shows all the various forum related tabs like (Feed, My Posts, Saved Posts and tags)
  *
  * @returns
  */
-const ForumScreen = () => {
+const ForumScreen = ({ sortType, setSortType }: ForumScreenProps) => {
   const navigation = useNavigation();
   const { showActionSheetWithOptions } = useActionSheet();
   const toast: any = useToast();
-  const [sortType, setSortType] = useState<PostsSortType>(PostsSortType.Latest);
 
   // Handle opening of action sheet for sorting posts
   const handleOpenActionSheet = () => {

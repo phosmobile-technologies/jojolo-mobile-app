@@ -1,0 +1,20 @@
+mutation UpdatePost($id: Int!, $input: CreatePostInput!) {
+  UpdatePost(id: $id, input: $input) {
+    id
+    uuid
+    posted_anonymously
+    title
+    content
+    tags {
+      id
+      name
+    }
+    files {
+      id
+      file_url
+    }
+    user {
+      id
+    }
+  }
+}

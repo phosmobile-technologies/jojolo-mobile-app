@@ -1,0 +1,32 @@
+fragment postFragment on Post {
+  id
+  uuid
+  title
+  likes
+  content
+  comments {
+    id
+  }
+  tags {
+    id
+    name
+  }
+  user {
+    id
+    full_name
+    phone_number
+    email
+    user_type
+    profile_image
+    care_giver_profile {
+      id
+      role
+    }
+    health_care_professional_profile {
+      id
+      role
+      years_of_experience
+    }
+  }
+  created_at
+}

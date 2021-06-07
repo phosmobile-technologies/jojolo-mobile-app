@@ -1,0 +1,7 @@
+query GetTags {
+  GetTags {
+    id
+    name
+    number_of_posts
+  }
+}

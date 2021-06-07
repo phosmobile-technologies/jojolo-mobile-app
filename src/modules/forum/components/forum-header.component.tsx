@@ -1,12 +1,14 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFetching } from "react-query";
 
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
 import AppHeaderText from "../../common/components/typography/header-text.component";
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import AppText from "../../common/components/typography/text.component";
 
 /**
  * The forum page header
@@ -19,10 +21,16 @@ export const ForumHeader = ({
   handleOpenActionSheet: any;
 }) => {
   const navigation = useNavigation();
+  const isFetching = useIsFetching();
 
   return (
     <SafeAreaView style={styles.header}>
       <AppHeaderText>Forum</AppHeaderText>
+      <ActivityIndicator
+        animating={isFetching ? true : false}
+        color={COLORS.APP_PRIMARY_COLOR}
+      />
+
       <View style={styles.header__icons}>
         <TouchableOpacity
           onPress={() =>

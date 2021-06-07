@@ -1,15 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+
 import { COLORS, NAVIGATION_CONSTANTS } from "../../../constants";
+import Loader from "../../common/components/loader.component";
 import AppText from "../../common/components/typography/text.component";
 
 /**
- *
- *
  * Compoment For Rendering Each Tag
- * @param Tag_Object
  *
+ * @param param0
  * @returns
  */
 const TagComponent = ({ tag }: { tag: any }) => {
@@ -27,7 +27,7 @@ const TagComponent = ({ tag }: { tag: any }) => {
       >
         <View style={styles.tag}>
           <AppText style={styles.tag__text}>{tag.name}</AppText>
-          <AppText style={styles.tag__text}>{tag.number}</AppText>
+          <AppText style={styles.tag__text}>{tag.number_of_posts}</AppText>
         </View>
       </TouchableOpacity>
     </View>

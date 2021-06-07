@@ -6,7 +6,10 @@ import { useToast } from "react-native-fast-toast";
 import toast from "react-native-fast-toast/lib/typescript/toast";
 import { useQueryClient } from "react-query";
 
-import { useGetUserPostsQuery } from "../../../generated/graphql";
+import {
+  useGetPostsForTagQuery,
+  useGetUserPostsQuery,
+} from "../../../generated/graphql";
 import { ForumNavigatorNavigationContext } from "../../../providers/forum-navigator.context";
 import { useAuthenticatedUser } from "../../../providers/user-context";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
@@ -16,7 +19,7 @@ import AppText from "../../common/components/typography/text.component";
 import PostsList from "../components/posts/posts-list.component";
 
 /**
- * Screen For Rendering Feed Of Posts By Tag
+ * Screen For Rendering Feed Of Posts for a particular tag
  *
  * @returns
  */
@@ -24,20 +27,11 @@ const TagsPostScreen = () => {
   const toast = useToast();
   const navigation = useNavigation() as any;
   const route = useRoute() as any;
+
   const { tag } = route.params;
-  const { authenticatedUser } = useAuthenticatedUser();
-  const [refreshing, setRefreshing] = useState(false);
-  const queryClient = useQueryClient();
 
   /**
-   * For Now I lifted The Query For Displaying
-   * User's Post Until the Query for Getting Tags post is ready
-   *
-   */
-
-  /**
-   *
-   * Hook for customizing navigation header and title for chat sreen.
+   * Hook for customizing navigation header and title for screen.
    */
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,39 +48,27 @@ const TagsPostScreen = () => {
       headerRight: () => <></>,
     });
   }, [navigation]);
-  /**
-   * Reload the news feed when the user pulls down to refresh
-   */
-  const onRefresh = () => {
-    setRefreshing(true);
-    const queryKey = useGetUserPostsQuery.getKey({
-      input: { user_id: authenticatedUser?.id },
-    });
-    queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
-  };
 
-  /**
-   * query for getting post feed
-   */
-  const { data, error, isLoading, isError } = useGetUserPostsQuery(
+  // Query to get the posts for the selected tag
+  const { data, isError, isLoading, error, refetch } = useGetPostsForTagQuery(
     AppGraphQLClient,
-    { input: { user_id: authenticatedUser?.id } }
+    { input: { tag_id: tag.id } },
+    {
+      onError: () => {
+        toast?.show("An error occured while loading the posts feed", {
+          type: "danger",
+        });
+      },
+    }
   );
-
-  if (error) {
-    toast?.show("An error occured while loading the posts feed");
-  }
-
-  if (isLoading) {
-    return <Loader loading={isLoading} />;
-  }
 
   return (
     <View style={styles.container}>
+      <Loader loading={isLoading} />
       <PostsList
-        posts={data?.GetUserPosts}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
+        posts={data?.GetPostsForTag}
+        refreshing={isLoading}
+        onRefresh={refetch}
       />
     </View>
   );

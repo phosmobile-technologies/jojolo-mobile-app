@@ -25,6 +25,7 @@ import {
   PostCommentReply,
   useCreatePostCommentMutation,
   useCreatePostCommentReplyMutation,
+  useEditPostCommentMutation,
   useGetPostCommentsQuery,
 } from "../../../generated/graphql";
 import AppTextLink from "../../common/components/typography/text-link.component";
@@ -65,31 +66,28 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
   const [reply, setReply] = useState("");
   const [activeComment, setActiveComment] = useState({} as PostComment);
   const [activeReply, setActiveReply] = useState({} as PostCommentReply);
-  const [editComment, setEditComment] = useState("");
+  const [editedCommentContent, setEditedCommentContent] = useState("");
   const [editReplyVisible, setEditReplyVisible] = useState(false);
 
   const toggleReplyBottomSheet = () => {
     setReply("");
     setReplyVisible((replyVisible) => !replyVisible);
-    console.log(activeReply);
   };
 
   const toggleBottomSheet = () => {
     setComment("");
     setVisible((visible) => !visible);
   };
+
   /**
    * Function For Toggling editing comment BottomSheet
-   *
    */
   const toggleEditCommentBottomSheet = () => {
-    setEditComment("");
-    setEditCommentVisible((setEditCommentVisible) => !setEditCommentVisible);
+    setEditCommentVisible((editCommentVisible) => !editCommentVisible);
   };
 
   /**
    * Function For Toggling editing reply BottomSheet
-   *
    */
   const toggleEditReplyBottomSheet = () => {
     setEditReplyVisible((setEditReplyVisible) => !setEditReplyVisible);
@@ -142,6 +140,33 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
       },
     });
 
+  // GraphQL mutation for editing a comment
+  const { mutate: editPostComment, isLoading: isEditingComment } =
+    useEditPostCommentMutation(AppGraphQLClient, {
+      onSuccess: (response) => {
+        toast.show("Comment added successfully", {
+          type: "success",
+        });
+
+        const queryKey = useGetPostCommentsQuery.getKey({
+          input: { post_id: post.id },
+        });
+        queryClient.invalidateQueries(queryKey);
+
+        post.comments.push(response?.EditPostComment as PostComment);
+        setVisible(false);
+      },
+
+      onError: (error: any) => {
+        const errorMessage = error?.response?.errors[0]?.message
+          ? error?.response?.errors[0]?.message
+          : "Unable to edit this comment. Try again";
+        toast.show(`${errorMessage}`, {
+          type: "danger",
+        });
+      },
+    });
+
   /**
    * Send new comment data to the api
    *
@@ -159,13 +184,24 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
   /**
    * Send new comment reply to the API
    */
-  const onReplySubnmit = () => {
+  const onReplySubmit = () => {
     saveCommentReply({
       input: {
         content: reply,
         comment_id: activeComment?.id,
         user_id: authenticatedUser?.id,
       },
+    });
+  };
+
+  /**
+   * Send new comment reply to the API
+   */
+  const onEditCommentSubmit = () => {
+    setEditCommentVisible(false);
+    editPostComment({
+      content: editedCommentContent,
+      comment_id: activeComment?.id,
     });
   };
 
@@ -195,9 +231,10 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
                   setActiveComment(comment);
                   setReplyVisible(!replyVisible);
                 }}
-                toggleEditCommentBottomSheet={() =>
-                  setEditCommentVisible(!editCommentVisible)
-                }
+                toggleEditCommentBottomSheet={(comment: PostComment) => {
+                  setActiveComment(comment);
+                  setEditCommentVisible(!editCommentVisible);
+                }}
                 toggleEditReplyBottomSheet={(reply: PostCommentReply) => {
                   setActiveReply(reply);
                   setEditReplyVisible(!editReplyVisible);
@@ -300,7 +337,7 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
             />
           </View>
           <View style={styles.reply}>
-            <AppTextLink style={styles.reply__text} onPress={onReplySubnmit}>
+            <AppTextLink style={styles.reply__text} onPress={onReplySubmit}>
               REPLY
             </AppTextLink>
           </View>
@@ -330,18 +367,18 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
           <View>
             <TextInput
               style={styles.textBox}
-              placeholder="Add a comment"
+              placeholder="Edit your comment"
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
-              //onChangeText={(text) => setComment(text)}
               defaultValue={activeComment.content}
               multiline={true}
               numberOfLines={3}
+              onChangeText={(text) => setEditedCommentContent(text)}
             />
           </View>
           <View style={styles.reply}>
             <AppTextLink
               style={styles.reply__text}
-              onPress={toggleEditCommentBottomSheet}
+              onPress={onEditCommentSubmit}
             >
               REPLY
             </AppTextLink>
@@ -349,7 +386,7 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
         </View>
       </BottomSheet>
 
-      {/* Bottom sheet for Editing a comment to a post */}
+      {/* Bottom sheet for Editing a reply to a post */}
       <BottomSheet
         visible={editReplyVisible}
         onBackButtonPress={toggleEditReplyBottomSheet}
@@ -374,7 +411,6 @@ const PostDetailsScreen = ({ route }: { route: any }) => {
               style={styles.textBox}
               placeholder="Add a comment"
               placeholderTextColor={COLORS.APP_GRAY_TEXT}
-              //onChangeText={(text) => setComment(text)}
               defaultValue={activeReply.content}
               multiline={true}
               numberOfLines={3}

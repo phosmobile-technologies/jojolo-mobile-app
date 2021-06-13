@@ -1,34 +1,28 @@
-query GetPostsFeed {
-  GetPostsFeed {
-    id
-    uuid
-    title
-    likes
-    content
-    comments {
-      id
+query GetPostsFeed(
+  $input: GetPostsFeedInput
+  $paginationArgs: ConnectionArgs!
+) {
+  GetPostsFeed(input: $input, paginationArgs: $paginationArgs) {
+    pageData {
+      count
+      limit
+      offset
     }
-    tags {
-      id
-      name
-    }
-    user {
-      id
-      full_name
-      phone_number
-      email
-      user_type
-      profile_image
-      care_giver_profile {
-        id
-        role
+
+    page {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
       }
-      health_care_professional_profile {
-        id
-        role
-        years_of_experience
+
+      edges {
+        cursor
+        node {
+          ...postFragment
+        }
       }
     }
-    created_at
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import { View, FlatList, Text } from "react-native";
-import { PostComment } from "../../../../generated/graphql";
+import { FlatList } from "react-native";
 
+import { PostComment } from "../../../../generated/graphql";
 import CommentComponent from "./comment.component";
 
 /**

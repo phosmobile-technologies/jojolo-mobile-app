@@ -94,9 +94,9 @@ export const DOCTOR_TYPES = [
 ];
 
 export const TAGS = {
-  General: 1,
-  Breastfeeding: 2,
-  Teething: 3,
+  Vaccination: 1,
+  Immunization: 2,
+  Breastfeeding: 3,
   Feeding: 4,
   Stooling: 5,
   Illness: 6,
@@ -134,9 +134,9 @@ export const DROPDOWN_OPTIONS = {
   // ],
 
   POST_TAGS: [
-    { label: "Test Tag 1", value: TAGS.General },
-    { label: "Test Tag 2", value: TAGS.Breastfeeding },
-    { label: "Test Tag 3", value: TAGS.Teething },
+    { label: "Vaccination", value: TAGS.Vaccination },
+    { label: "Immunization", value: TAGS.Immunization },
+    { label: "Breastfeeding", value: TAGS.Breastfeeding },
   ],
 };
 

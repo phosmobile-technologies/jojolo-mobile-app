@@ -1,0 +1,12 @@
+mutation EditPostComment($comment_id: Int!, $content: String!) {
+  EditPostComment(comment_id: $comment_id, content: $content) {
+    id
+    content
+    user {
+      id
+    }
+    post {
+      id
+    }
+  }
+}

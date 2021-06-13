@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { useToast } from "react-native-fast-toast";
-import { useQueryClient } from "react-query";
 
 import PostsList from "../components/posts/posts-list.component";
 import SvgIcon, { SVG_ICONS } from "../../common/components/svg-icon.component";
@@ -11,15 +10,10 @@ import { ForumNavigatorNavigationContext } from "../../../providers/forum-naviga
 import {
   PostsSortType,
   useGetPostsFeedQuery,
-  useGetUserSavedPostsQuery,
   Post,
-  GetPostsFeedInput,
 } from "../../../generated/graphql";
 import { AppGraphQLClient } from "../../common/api/graphql-client";
 import Loader from "../../common/components/loader.component";
-import { queryClient } from "../../../providers/query-client.context";
-import { useAuthenticatedUser } from "../../../providers/user-context";
-import { useRoute } from "@react-navigation/native";
 
 interface ForumNewsFeedScreenProps {
   sortType: PostsSortType;
@@ -33,24 +27,23 @@ interface ForumNewsFeedScreenProps {
 export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
   const toast = useToast();
   const navigation: any = useContext(ForumNavigatorNavigationContext);
-  const queryClient = useQueryClient();
-  const route: any = useRoute();
 
-  const [refreshing, setRefreshing] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [lastCursor, setLastCursor] = useState<string>("");
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
 
   /**
-   * Query for getting post's feed
+   * Get feed of forum posts from the api
    */
   const {
-    data,
-    error,
     isLoading,
-    isError,
+    isFetching,
     refetch: refetchPostFeed,
   } = useGetPostsFeedQuery(
     AppGraphQLClient,
     {
       input: { sortType },
+      paginationArgs: { first: 10, after: lastCursor },
     },
     {
       onError: () => {
@@ -58,44 +51,51 @@ export const ForumNewsFeedPage = ({ sortType }: ForumNewsFeedScreenProps) => {
           type: "danger",
         });
       },
+
+      onSuccess: (data) => {
+        const {
+          GetPostsFeed: {
+            page: {
+              edges,
+              pageInfo: { endCursor, hasNextPage },
+            },
+          },
+        } = data;
+
+        const loadedPosts = edges?.map((edge) => edge.node) as Post[];
+
+        setPosts((posts) => [...posts, ...loadedPosts]);
+        setLastCursor(endCursor);
+        setHasNextPage(hasNextPage);
+      },
     }
   );
 
   /**
-   * Refetch the post's feed if the refresh param is set when the page is navigated to
+   * Fetch more posts from the api (used for infinite scrolling)
    */
-  React.useEffect(() => {
-    if (route.params?.refresh) {
+  const fetchMorePosts = () => {
+    if (hasNextPage) {
       refetchPostFeed();
+    } else {
+      toast?.show("There are no more posts to load", {
+        type: "normal",
+      });
     }
-  }, [route.params?.refresh]);
-
-  /**
-   * Function for reloading the news feed when the user pulls down to refresh
-   */
-  const onRefresh = () => {
-    setRefreshing(true);
-    // const queryKey = useGetPostsFeedQuery.getKey({
-    //   input: { sortType },
-    // });
-    refetchPostFeed().finally(() => setRefreshing(false));
-    // queryClient.invalidateQueries(queryKey).finally(() => setRefreshing(false));
   };
 
   if (isLoading) {
     return <Loader loading={isLoading} />;
   }
 
-  let posts = data?.GetPostsFeed
-    ? (data.GetPostsFeed as Post[])
-    : ([] as Post[]);
-
   return (
     <View style={styles.container}>
       <PostsList
         posts={posts}
         refreshing={isLoading}
+        isFetching={isFetching}
         onRefresh={refetchPostFeed}
+        onFetchMorePosts={fetchMorePosts}
       />
       <FloatingAction
         color={COLORS.APP_PRIMARY_COLOR}

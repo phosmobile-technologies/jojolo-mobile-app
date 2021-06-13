@@ -10,6 +10,7 @@ generates:
     config:
       fetcher: graphql-request
       exposeQueryKeys: true
+      exposeDocument: true
       preResolveTypes: true
   ./graphql.schema.json:
     plugins:

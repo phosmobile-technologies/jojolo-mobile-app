@@ -15,9 +15,10 @@ import SvgIcon, {
 } from "../../../common/components/svg-icon.component";
 import AppText from "../../../common/components/typography/text.component";
 import { PostComment, User, UserType } from "../../../../generated/graphql";
+import { useAuthenticatedUser } from "../../../../providers/user-context";
 
 /**
- * tThe header for a comment
+ * The header for a comment
  */
 
 const CommentHeader = ({
@@ -31,11 +32,16 @@ const CommentHeader = ({
 }) => {
   const toast: any = useToast();
   const { showActionSheetWithOptions } = useActionSheet();
+  const { authenticatedUser } = useAuthenticatedUser();
+
   const [action, setAction] = useState("");
 
   const handleOpenActionSheet = () => {
-    const options = ["Edit comment", "Report Comment", "Cancel"];
-    const cancelButtonIndex = 2;
+    const options =
+      authenticatedUser?.id === comment.user.id
+        ? ["Edit comment", "Cancel"]
+        : ["Report Comment", "Cancel"];
+    const cancelButtonIndex = 1;
 
     showActionSheetWithOptions(
       {
@@ -44,24 +50,27 @@ const CommentHeader = ({
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          console.log("here ");
-          toggleEditCommentBottomSheet();
-        }
+          console.log({
+            authenticatedUser,
+            comment,
+          });
+          // User can edit the comment because they created it
+          if (authenticatedUser?.id === comment.user.id) {
+            toggleEditCommentBottomSheet(comment);
+          } else {
+            toast.show("Comment Reported successfully", { type: "success" });
 
-        if (buttonIndex === 1) {
-          // Save the post
-          toast.show("Comment Reported successfully", { type: "success" });
-
-          /**
-           * Function For Getting Comment Actions For Api
-           */
-          setAction(options[buttonIndex]);
-          const Action = {
-            user_id: user.id, // This will change when User Authentication has been carried out and user can be accessed Globally
-            post_id: comment.id,
-            action: action,
-          };
-          console.log(Action);
+            /**
+             * Function For Getting Comment Actions For Api
+             */
+            setAction(options[buttonIndex]);
+            const Action = {
+              user_id: user.id, // This will change when User Authentication has been carried out and user can be accessed Globally
+              post_id: comment.id,
+              action: action,
+            };
+            console.log(Action);
+          }
         }
       }
     );

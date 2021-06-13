@@ -5,4 +5,6 @@
 
 
 ### Tasks that need to be addressed
-- [ ] Possibility of using an env file
+- [x] Possibility of using an env file
+- [ ] Issue with refreshing not working on empty postlist
+- [ ] Updating posts and counts on user actions

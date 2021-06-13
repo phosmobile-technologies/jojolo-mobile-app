@@ -110,6 +110,18 @@ export type Child = {
   track_milestones: Scalars['Boolean'];
 };
 
+/** Cursor based pagination parameters */
+export type ConnectionArgs = {
+  /** Paginate after opaque cursor */
+  after?: Maybe<Scalars['String']>;
+  /** Paginate before opaque cursor */
+  before?: Maybe<Scalars['String']>;
+  /** Number of records to get after the cursor */
+  first?: Maybe<Scalars['Float']>;
+  /** Number of records to get before the cursor */
+  last?: Maybe<Scalars['Float']>;
+};
+
 /** Input used in creating a child when signing up a care giver account */
 export type CreateCareGiverChildInput = {
   /** A list of allergies that the child has */
@@ -234,6 +246,8 @@ export type GetPostCommentsInput = {
 
 /** Input for getting the forum news feed of posts */
 export type GetPostsFeedInput = {
+  /** The cursor (id) of the last post loaded. This will serve as the starting point when loading more data */
+  cursor?: Maybe<Scalars['Int']>;
   /** The type of sorting to be done on the posts, either by popularity or by latest posts */
   sortType?: Maybe<PostsSortType>;
 };
@@ -342,6 +356,8 @@ export type Mutation = {
   CreatePostCommentReply: PostCommentReply;
   /** Create a post tag */
   CreatePostTag: PostTag;
+  /** Edit a post comment */
+  EditPostComment: PostComment;
   /** Like a post */
   LikePost: ApiResponse;
   /** Login a user */
@@ -377,6 +393,12 @@ export type MutationCreatePostCommentReplyArgs = {
 
 export type MutationCreatePostTagArgs = {
   input: PostTagInput;
+};
+
+
+export type MutationEditPostCommentArgs = {
+  comment_id: Scalars['Int'];
+  content: Scalars['String'];
 };
 
 
@@ -418,6 +440,20 @@ export type MutationUpdatePostArgs = {
 
 export type MutationTestFileUploadArgs = {
   files: Array<Scalars['Upload']>;
+};
+
+export type PageData = {
+  __typename?: 'PageData';
+  count: Scalars['Float'];
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+};
+
+/** Cursor based paginated list of posts */
+export type PaginatedPostResponse = {
+  __typename?: 'PaginatedPostResponse';
+  page: PostConnection;
+  pageData?: Maybe<PageData>;
 };
 
 /** Model for a post */
@@ -501,6 +537,18 @@ export type PostCommentReplyInput = {
   user_id: Scalars['Int'];
 };
 
+export type PostConnection = {
+  __typename?: 'PostConnection';
+  edges?: Maybe<Array<PostEdge>>;
+  pageInfo?: Maybe<PostPageInfo>;
+};
+
+export type PostEdge = {
+  __typename?: 'PostEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Post>;
+};
+
 /** Model for files uploaded to a post */
 export type PostFileUpload = {
   __typename?: 'PostFileUpload';
@@ -508,6 +556,14 @@ export type PostFileUpload = {
   file_url: Scalars['String'];
   /** The id of the file uploaded to the post */
   id: Scalars['Int'];
+};
+
+export type PostPageInfo = {
+  __typename?: 'PostPageInfo';
+  endCursor?: Maybe<Scalars['String']>;
+  hasNextPage: Scalars['Boolean'];
+  hasPreviousPage: Scalars['Boolean'];
+  startCursor?: Maybe<Scalars['String']>;
 };
 
 /** Model for a post tag */
@@ -550,7 +606,7 @@ export type Query = {
   /** Get the comments on a post */
   GetPostComments: Array<PostComment>;
   /** Get the posts feed */
-  GetPostsFeed: Array<Maybe<Post>>;
+  GetPostsFeed: PaginatedPostResponse;
   /** Get the posts for a tag */
   GetPostsForTag: Array<Maybe<Post>>;
   /** Get all forum posts tags */
@@ -576,6 +632,7 @@ export type QueryGetPostCommentsArgs = {
 
 export type QueryGetPostsFeedArgs = {
   input?: Maybe<GetPostsFeedInput>;
+  paginationArgs: ConnectionArgs;
 };
 
 
@@ -699,6 +756,14 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'Mutation', CreatePost: { __typename?: 'Post', id: number, uuid: string, posted_anonymously: boolean, title: string, content: string, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, files: Array<Maybe<{ __typename?: 'PostFileUpload', id: number, file_url: string }>>, user: { __typename?: 'User', id: number } } };
 
+export type EditPostCommentMutationVariables = Exact<{
+  comment_id: Scalars['Int'];
+  content: Scalars['String'];
+}>;
+
+
+export type EditPostCommentMutation = { __typename?: 'Mutation', EditPostComment: { __typename?: 'PostComment', id: number, content: string, user: { __typename?: 'User', id: number }, post?: Maybe<{ __typename?: 'Post', id: number }> } };
+
 export type LikePostMutationVariables = Exact<{
   input: LikePostInput;
 }>;
@@ -750,10 +815,16 @@ export type GetPostsForTagQuery = { __typename?: 'Query', GetPostsForTag: Array<
     & PostFragmentFragment
   )>> };
 
-export type GetPostsFeedQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPostsFeedQueryVariables = Exact<{
+  input?: Maybe<GetPostsFeedInput>;
+  paginationArgs: ConnectionArgs;
+}>;
 
 
-export type GetPostsFeedQuery = { __typename?: 'Query', GetPostsFeed: Array<Maybe<{ __typename?: 'Post', id: number, uuid: string, title: string, likes: number, content: string, created_at: any, comments: Array<Maybe<{ __typename?: 'PostComment', id: number }>>, tags: Array<Maybe<{ __typename?: 'PostTag', id: number, name: string }>>, user: { __typename?: 'User', id: number, full_name: string, phone_number: string, email: string, user_type: UserType, profile_image: string, care_giver_profile?: Maybe<{ __typename?: 'CareGiverProfile', id: number, role: CareGiverRole }>, health_care_professional_profile?: Maybe<{ __typename?: 'HealthCareProfessionalProfile', id: number, role: HealthCareProfessionalRole, years_of_experience: number }> } }>> };
+export type GetPostsFeedQuery = { __typename?: 'Query', GetPostsFeed: { __typename?: 'PaginatedPostResponse', pageData?: Maybe<{ __typename?: 'PageData', count: number, limit: number, offset: number }>, page: { __typename?: 'PostConnection', pageInfo?: Maybe<{ __typename?: 'PostPageInfo', endCursor?: Maybe<string>, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: Maybe<string> }>, edges?: Maybe<Array<{ __typename?: 'PostEdge', cursor?: Maybe<string>, node?: Maybe<(
+          { __typename?: 'Post' }
+          & PostFragmentFragment
+        )> }>> } } };
 
 export type GetUserPostsQueryVariables = Exact<{
   input: GetUserPostsInput;
@@ -1016,6 +1087,31 @@ export const useCreatePostMutation = <
       (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables)(),
       options
     );
+export const EditPostCommentDocument = `
+    mutation EditPostComment($comment_id: Int!, $content: String!) {
+  EditPostComment(comment_id: $comment_id, content: $content) {
+    id
+    content
+    user {
+      id
+    }
+    post {
+      id
+    }
+  }
+}
+    `;
+export const useEditPostCommentMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient, 
+      options?: UseMutationOptions<EditPostCommentMutation, TError, EditPostCommentMutationVariables, TContext>
+    ) => 
+    useMutation<EditPostCommentMutation, TError, EditPostCommentMutationVariables, TContext>(
+      (variables?: EditPostCommentMutationVariables) => fetcher<EditPostCommentMutation, EditPostCommentMutationVariables>(client, EditPostCommentDocument, variables)(),
+      options
+    );
 export const LikePostDocument = `
     mutation LikePost($input: LikePostInput!) {
   LikePost(input: $input) {
@@ -1160,6 +1256,8 @@ export const useGetPostCommentsQuery = <
       fetcher<GetPostCommentsQuery, GetPostCommentsQueryVariables>(client, GetPostCommentsDocument, variables),
       options
     );
+useGetPostCommentsQuery.document = GetPostCommentsDocument;
+
 useGetPostCommentsQuery.getKey = (variables: GetPostCommentsQueryVariables) => ['GetPostComments', variables];
 
 export const GetTagsDocument = `
@@ -1184,6 +1282,8 @@ export const useGetTagsQuery = <
       fetcher<GetTagsQuery, GetTagsQueryVariables>(client, GetTagsDocument, variables),
       options
     );
+useGetTagsQuery.document = GetTagsDocument;
+
 useGetTagsQuery.getKey = (variables?: GetTagsQueryVariables) => ['GetTags', variables];
 
 export const GetPostsForTagDocument = `
@@ -1206,50 +1306,41 @@ export const useGetPostsForTagQuery = <
       fetcher<GetPostsForTagQuery, GetPostsForTagQueryVariables>(client, GetPostsForTagDocument, variables),
       options
     );
+useGetPostsForTagQuery.document = GetPostsForTagDocument;
+
 useGetPostsForTagQuery.getKey = (variables: GetPostsForTagQueryVariables) => ['GetPostsForTag', variables];
 
 export const GetPostsFeedDocument = `
-    query GetPostsFeed {
-  GetPostsFeed {
-    id
-    uuid
-    title
-    likes
-    content
-    comments {
-      id
+    query GetPostsFeed($input: GetPostsFeedInput, $paginationArgs: ConnectionArgs!) {
+  GetPostsFeed(input: $input, paginationArgs: $paginationArgs) {
+    pageData {
+      count
+      limit
+      offset
     }
-    tags {
-      id
-      name
-    }
-    user {
-      id
-      full_name
-      phone_number
-      email
-      user_type
-      profile_image
-      care_giver_profile {
-        id
-        role
+    page {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
       }
-      health_care_professional_profile {
-        id
-        role
-        years_of_experience
+      edges {
+        cursor
+        node {
+          ...postFragment
+        }
       }
     }
-    created_at
   }
 }
-    `;
+    ${PostFragmentFragmentDoc}`;
 export const useGetPostsFeedQuery = <
       TData = GetPostsFeedQuery,
       TError = unknown
     >(
       client: GraphQLClient, 
-      variables?: GetPostsFeedQueryVariables, 
+      variables: GetPostsFeedQueryVariables, 
       options?: UseQueryOptions<GetPostsFeedQuery, TError, TData>
     ) => 
     useQuery<GetPostsFeedQuery, TError, TData>(
@@ -1257,7 +1348,9 @@ export const useGetPostsFeedQuery = <
       fetcher<GetPostsFeedQuery, GetPostsFeedQueryVariables>(client, GetPostsFeedDocument, variables),
       options
     );
-useGetPostsFeedQuery.getKey = (variables?: GetPostsFeedQueryVariables) => ['GetPostsFeed', variables];
+useGetPostsFeedQuery.document = GetPostsFeedDocument;
+
+useGetPostsFeedQuery.getKey = (variables: GetPostsFeedQueryVariables) => ['GetPostsFeed', variables];
 
 export const GetUserPostsDocument = `
     query GetUserPosts($input: GetUserPostsInput!) {
@@ -1308,6 +1401,8 @@ export const useGetUserPostsQuery = <
       fetcher<GetUserPostsQuery, GetUserPostsQueryVariables>(client, GetUserPostsDocument, variables),
       options
     );
+useGetUserPostsQuery.document = GetUserPostsDocument;
+
 useGetUserPostsQuery.getKey = (variables: GetUserPostsQueryVariables) => ['GetUserPosts', variables];
 
 export const GetUserSavedPostsDocument = `
@@ -1359,6 +1454,8 @@ export const useGetUserSavedPostsQuery = <
       fetcher<GetUserSavedPostsQuery, GetUserSavedPostsQueryVariables>(client, GetUserSavedPostsDocument, variables),
       options
     );
+useGetUserSavedPostsQuery.document = GetUserSavedPostsDocument;
+
 useGetUserSavedPostsQuery.getKey = (variables: GetUserSavedPostsQueryVariables) => ['GetUserSavedPosts', variables];
 
 export const SearchPostsDocument = `
@@ -1410,4 +1507,6 @@ export const useSearchPostsQuery = <
       fetcher<SearchPostsQuery, SearchPostsQueryVariables>(client, SearchPostsDocument, variables),
       options
     );
+useSearchPostsQuery.document = SearchPostsDocument;
+
 useSearchPostsQuery.getKey = (variables: SearchPostsQueryVariables) => ['SearchPosts', variables];
